@@ -4,6 +4,8 @@ import express from 'express';
 import morgan from 'morgan';
 import helmet from 'helmet';
 
+import { healthRouter } from './routes/health';
+
 class App {
   constructor() {
     this.app = express();
@@ -30,7 +32,9 @@ class App {
     });
   }
 
-  private routes(): void {}
+  private routes(): void {
+    this.app.use('/health', healthRouter);
+  }
 }
 
 export default new App().app;
