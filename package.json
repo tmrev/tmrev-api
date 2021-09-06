@@ -6,7 +6,7 @@
   "author": "Kegen Guyll <guyllkegen@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "start": "node lib",
+    "start": "node lib/src",
     "dev": "nodemon --config nodemon.json src/index.ts",
     "dev:debug": "nodemon --config nodemon.json --inspect-brk src/index.ts",
     "build": "tsc"
