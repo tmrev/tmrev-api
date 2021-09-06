@@ -5,6 +5,7 @@ import morgan from 'morgan';
 import helmet from 'helmet';
 
 import { healthRouter } from './routes/health';
+import { PageRouter } from './routes/page';
 
 class App {
   constructor() {
@@ -34,6 +35,7 @@ class App {
 
   private routes(): void {
     this.app.use('/health', healthRouter);
+    this.app.use('/page', PageRouter);
   }
 }
 
