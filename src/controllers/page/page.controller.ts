@@ -3,7 +3,7 @@ import { metaScrapService } from '../../service/page/metaScrap.service';
 
 export const metaScrap = async (req: Request, res: Response) => {
   try {
-    const url = req.body.url as string | undefined;
+    const url = req.query.url as string | undefined;
 
     if (!url) throw Error('URL is required');
 
