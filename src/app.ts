@@ -6,6 +6,8 @@ import helmet from 'helmet';
 
 import { healthRouter } from './routes/health';
 import { PageRouter } from './routes/page';
+import { RottenRouter } from './routes/rottenTomatoes';
+import { ImdbRouter } from './routes/imdb';
 
 class App {
   constructor() {
@@ -36,6 +38,8 @@ class App {
   private routes(): void {
     this.app.use('/health', healthRouter);
     this.app.use('/page', PageRouter);
+    this.app.use('/rotten', RottenRouter);
+    this.app.use('/imdb', ImdbRouter);
   }
 }
 
