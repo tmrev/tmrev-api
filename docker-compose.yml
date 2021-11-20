@@ -1,0 +1,55 @@
+version: '3.7'
+services:
+  movielot_api_container:
+    container_name: movielot_api_container
+    restart: always
+    build: './'
+    environment:
+      VIRTUAL_HOST: api.movielot.xyz
+      LETSENCRYPT_HOST: api.movielot.xyz
+    expose:
+      - '8080'
+  # movielot_web_container:
+  #   container_name: movielot_web_container
+  #   restart: always
+  #   build: './'
+  #   environment:
+  #     VIRTUAL_HOST: movielot.xyz
+  #     LETSENCRYPT_HOST: movielot.xyz
+  #   expose:
+  #     - '3000'
+  nginx-proxy:
+    container_name: nginx_container
+    restart: always
+    image: jwilder/nginx-proxy
+    ports:
+      - '80:80'
+      - '443:443'
+    volumes:
+      - '/etc/nginx/vhost.d'
+      - '/usr/share/nginx/html'
+      - '/var/run/docker.sock:/tmp/docker.sock:ro'
+      - '/etc/nginx/certs'
+    depends_on:
+      - movielot_api_container
+      - movielot_web_container
+  redis:
+    image: 'redis:alpine'
+    command: redis-server
+    ports:
+     - "6379"
+    volumes:
+     - $PWD/redis-data:/var/lib/redis
+     - $PWD/redis.conf:/usr/local/etc/redis/redis.conf
+    environment:
+     - ALLOW_EMPTY_PASSWORD=yes
+    expose:
+     - '6379' 
+  letsencrypt-nginx-proxy-companion:
+    container_name: letsencrypt
+    restart: always
+    image: jrcs/letsencrypt-nginx-proxy-companion
+    volumes:
+      - '/var/run/docker.sock:/var/run/docker.sock:ro'
+    volumes_from:
+      - 'nginx-proxy'
