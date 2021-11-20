@@ -1,5 +1,15 @@
 import cheerio, { CheerioAPI } from 'cheerio';
 import request from 'request-promise';
+import { metaDataService } from './metaData.service';
+import { movePosterService } from './moviePoster.service';
+
+type Data = {
+  url: string;
+  type: string;
+  uuid: string;
+  img: string;
+  title: string;
+};
 
 export const popularMovies = async () => {
   try {
@@ -21,6 +31,11 @@ export const popularMovies = async () => {
           uuid: element('a').attr('href')?.split('/')[2],
           img: element('a > img').attr('src'),
           title: element('td:nth-child(2) > a').text().trim(),
+          year: element('td.titleColumn > span')
+            .text()
+            .replace('(', '')
+            .replace(')', '')
+            .trim(),
         });
       });
 

@@ -1,7 +1,6 @@
 import { Request, Response } from 'express';
-import { metaScrapService } from '../../service/page/metaScrap.service';
+import { set } from '../..';
 import { metaDataService } from '../../service/rottenTomatoes/metaData.service';
-import { searchService } from '../../service/rottenTomatoes/search.service';
 
 export const metaDataController = async (req: Request, res: Response) => {
   try {
@@ -16,6 +15,8 @@ export const metaDataController = async (req: Request, res: Response) => {
     const meta = await metaDataService(
       `https://www.rottentomatoes.com/${type}/${uuid}`
     );
+
+    set(`${req.route.path}'/${req.params.uuid}'`, meta);
 
     res.send(meta);
   } catch (err: any) {

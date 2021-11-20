@@ -22,6 +22,7 @@ export const searchService = async (url: string) => {
           type: element('a:nth-child(1)').attr('href')?.split('/')[3],
           uuid: element('a:nth-child(1)').attr('href')?.split('/')[4],
           title: element('a:nth-child(2)').text().trim(),
+          year: $(el).attr('releaseyear'),
         });
       });
 

@@ -1,7 +1,7 @@
 import cheerio, { CheerioAPI } from 'cheerio';
 import request from 'request-promise';
 
-export const searchService = async (url: string) => {
+export const searchService = async (url: string, path: string) => {
   try {
     const options = {
       uri: url,

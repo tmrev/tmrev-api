@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+import { set } from '../..';
 import { searchService } from '../../service/imdb/search.service';
 
 export const searchController = async (req: Request, res: Response) => {
@@ -7,7 +8,12 @@ export const searchController = async (req: Request, res: Response) => {
 
     if (!search) throw Error('search query is required');
 
-    const meta = await searchService(`https://www.imdb.com/find?q=${search}`);
+    const meta = await searchService(
+      `https://www.imdb.com/find?q=${search}`,
+      req.route.path
+    );
+
+    set(`${req.route.path}/${search}`, meta);
 
     res.send(meta);
   } catch (err: any) {
