@@ -7,15 +7,17 @@ require('dotenv').config();
 const PORT_REDIS = process.env.PORT_REDIS || 6379;
 const PORT = process.env.PORT || 8080;
 
-export const redisClient = redis.createClient({
-  host: 'redis',
-  port: Number(PORT_REDIS),
-});
+// export const redisClient = redis.createClient({
+//   host: 'redis',
+//   port: Number(PORT_REDIS),
+// });
+
+export const redisClient = redis.createClient(Number(PORT_REDIS));
 
 export const set = (key: string, value: any) => {
   console.log('set');
   redisClient.set(key, JSON.stringify(value));
-  redisClient.expire(key, 604800);
+  redisClient.expire(key, 1800);
 };
 
 redisClient.on('connect', () => console.log('redis is connected'));
