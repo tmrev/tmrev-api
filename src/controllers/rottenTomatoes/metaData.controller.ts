@@ -13,7 +13,8 @@ export const metaDataController = async (req: Request, res: Response) => {
       throw Error('incorrect type use either "m" or "tv"');
 
     const meta = await metaDataService(
-      `https://www.rottentomatoes.com/${type}/${uuid}`
+      `https://www.rottentomatoes.com/${type}/${uuid}`,
+      uuid
     );
 
     set(`${req.route.path}'/${req.params.uuid}'`, meta);

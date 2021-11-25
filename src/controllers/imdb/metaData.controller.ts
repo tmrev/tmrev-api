@@ -11,7 +11,10 @@ export const metaDataController = async (req: Request, res: Response) => {
 
     if (type !== 'title') throw Error('incorrect type use "title"');
 
-    const meta = await metaDataService(`https://www.imdb.com/${type}/${uuid}/`);
+    const meta = await metaDataService(
+      `https://www.imdb.com/${type}/${uuid}/`,
+      uuid
+    );
 
     set(`${req.route.path}'/${req.params.uuid}'`, meta);
 

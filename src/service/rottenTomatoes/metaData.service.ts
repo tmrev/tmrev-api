@@ -1,7 +1,7 @@
 import cheerio, { CheerioAPI } from 'cheerio';
 import request from 'request-promise';
 
-export const metaDataService = async (url: string) => {
+export const metaDataService = async (url: string, uuid: string) => {
   try {
     const options = {
       uri: url,
@@ -80,6 +80,7 @@ export const metaDataService = async (url: string) => {
       }
 
       return {
+        uuid,
         audiencescore: $('score-board').attr('audiencescore'),
         rating: $('score-board').attr('rating'),
         audiencestate: $('score-board').attr('audiencestate'),

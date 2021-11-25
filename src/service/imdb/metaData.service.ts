@@ -1,7 +1,7 @@
 import cheerio, { CheerioAPI } from 'cheerio';
 import request from 'request-promise';
 
-export const metaDataService = async (url: string) => {
+export const metaDataService = async (url: string, uuid: string) => {
   try {
     const options = {
       uri: url,
@@ -12,6 +12,7 @@ export const metaDataService = async (url: string) => {
 
     const data = request(options).then(($: CheerioAPI) => {
       return {
+        uuid,
         title: $('.dxSWFG').text(),
         score: $('.iTLWoV')
           .text()
