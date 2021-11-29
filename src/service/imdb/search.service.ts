@@ -1,5 +1,6 @@
 import cheerio, { CheerioAPI } from 'cheerio';
 import request from 'request-promise';
+import OrdinalImage from '../../utils/ordinalImage';
 
 export const searchService = async (url: string, path: string) => {
   try {
@@ -19,7 +20,7 @@ export const searchService = async (url: string, path: string) => {
           url: element('a').attr('href'),
           type: element('a').attr('href')?.split('/')[1],
           uuid: element('a').attr('href')?.split('/')[2],
-          img: element('a > img').attr('src'),
+          img: OrdinalImage(element('a > img').attr('src') as string | null),
           title: element('td:nth-child(2) > a').text().trim(),
         });
       });
