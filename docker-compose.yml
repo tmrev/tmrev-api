@@ -9,15 +9,6 @@ services:
       LETSENCRYPT_HOST: api.movielot.xyz
     expose:
       - '8080'
-  # movielot_web_container:
-  #   container_name: movielot_web_container
-  #   restart: always
-  #   build: './'
-  #   environment:
-  #     VIRTUAL_HOST: movielot.xyz
-  #     LETSENCRYPT_HOST: movielot.xyz
-  #   expose:
-  #     - '3000'
   nginx-proxy:
     container_name: nginx_container
     restart: always
@@ -32,7 +23,6 @@ services:
       - '/etc/nginx/certs'
     depends_on:
       - movielot_api_container
-      - movielot_web_container
   redis:
     image: 'redis:alpine'
     command: redis-server
