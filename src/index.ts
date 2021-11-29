@@ -12,11 +12,11 @@ const password = process.env.DB_PASS;
 const host = process.env.DB_HOST;
 const projectId = process.env.PROJECT_ID;
 
-// export const redisClient = redis.createClient({
-//   host: 'redis',
-//   port: Number(PORT_REDIS),
-// });
-export const redisClient = redis.createClient(Number(PORT_REDIS));
+export const redisClient = redis.createClient({
+  host: 'redis',
+  port: Number(PORT_REDIS),
+});
+//export const redisClient = redis.createClient(Number(PORT_REDIS));
 export const firebaseApp = initializeApp({
   projectId,
 });
