@@ -8,6 +8,7 @@ import { healthRouter } from './routes/health';
 import { PageRouter } from './routes/page';
 import { RottenRouter } from './routes/rottenTomatoes';
 import { ImdbRouter } from './routes/imdb';
+import { MovieRouter } from './routes/movieReivew';
 
 class App {
   constructor() {
@@ -40,6 +41,7 @@ class App {
     this.app.use('/page', PageRouter);
     this.app.use('/rotten', RottenRouter);
     this.app.use('/imdb', ImdbRouter);
+    this.app.use('/movie', MovieRouter);
   }
 }
 
