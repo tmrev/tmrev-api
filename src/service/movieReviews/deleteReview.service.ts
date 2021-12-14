@@ -1,4 +1,5 @@
 import { getAuth } from 'firebase-admin/auth';
+import { ObjectId } from 'mongodb';
 import { client } from '../..';
 
 export const deleteReviewService = async (authToken: string, uuid: string) => {
@@ -7,7 +8,9 @@ export const deleteReviewService = async (authToken: string, uuid: string) => {
 
     const db = client.db('MovieRatings').collection(user.uid);
 
-    const result = await db.deleteOne({ uuid });
+    const id = new ObjectId(uuid);
+
+    const result = await db.deleteOne({ _id: id });
 
     return result;
   } catch (err) {
