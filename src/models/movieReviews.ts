@@ -1,3 +1,5 @@
+import { ObjectId } from 'mongodb';
+
 export interface CreateMoviePayload {
   advancedScore: AdvancedScore | null;
   averagedAdvancedScore: number | null;
@@ -5,6 +7,24 @@ export interface CreateMoviePayload {
   imdb: IMDBMovie | null;
   simpleScore: number | null;
 }
+
+export interface MovieDocument {
+  _id: ObjectId;
+  uuid: string;
+  createdAt: TimeStamp;
+  updatedAt: TimeStamp;
+  title: string;
+  advancedScore: AdvancedScore | null;
+  averagedAdvancedScore: number | null;
+  rotten: RottenMovie | null;
+  imdb: IMDBMovie | null;
+  simpleScore: number | null;
+}
+
+type TimeStamp = {
+  seconds: number;
+  nanoseconds: number;
+};
 
 type AdvancedScore = {
   acting: number;
