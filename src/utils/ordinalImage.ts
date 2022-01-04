@@ -1,4 +1,4 @@
-const OrdinalImage = (imdbImage: string | null) => {
+const OrdinalImage = (imdbImage: string | null | undefined) => {
   if (!imdbImage) return '';
 
   const array = imdbImage.split('.');
