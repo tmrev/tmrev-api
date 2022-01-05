@@ -4,12 +4,15 @@ import { createWatchListController } from '../controllers/watchLists/createWatch
 import { deleteWatchListController } from '../controllers/watchLists/deleteWatchList.controller';
 import { getAllWatchListsController } from '../controllers/watchLists/getAllWatchLists.controller';
 import { getWatchListController } from '../controllers/watchLists/getWatchList.controller';
+import { movieWatchListCheckController } from '../controllers/watchLists/movieWatchListCheck.controller';
 import { updateWatchListController } from '../controllers/watchLists/updateWatchList.controller';
 import asyncMiddleware from '../middleware/async.middleware';
 
 const router: Router = Router();
 
 router.post('/:listId', asyncMiddleware(addMovieToWatchListController));
+
+router.get('/check/:uuid', asyncMiddleware(movieWatchListCheckController));
 
 router.post('/', asyncMiddleware(createWatchListController));
 
