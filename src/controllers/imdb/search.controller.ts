@@ -9,7 +9,7 @@ export const searchController = async (req: Request, res: Response) => {
     if (!search) throw Error('search query is required');
 
     const meta = await searchService(
-      `https://www.imdb.com/find?q=${search}`,
+      `https://www.imdb.com/find?q=${search}&s=tt&ttype=ft&ref_=fn_ft`,
       req.route.path
     );
 

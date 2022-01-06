@@ -30,7 +30,14 @@ export const popularMovies = async () => {
           url: element('a').attr('href'),
           type: element('a').attr('href')?.split('/')[1],
           uuid: element('a').attr('href')?.split('/')[2],
-          img: OrdinalImage(element('a > img').attr('src') as string | null),
+          poster: OrdinalImage(element('a > img').attr('src') as string | null),
+          rating: element('td.ratingColumn.imdbRating').text().trim(),
+          titleMeter: element('span.up').length ? 'positive' : 'negative',
+          popularityChange: element('td.titleColumn > div > span')
+            .text()
+            .replace('(', '')
+            .replace(')', '')
+            .trim(),
           title: element('td:nth-child(2) > a').text().trim(),
           year: element('td.titleColumn > span')
             .text()

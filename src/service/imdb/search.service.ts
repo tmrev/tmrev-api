@@ -20,8 +20,15 @@ export const searchService = async (url: string, path: string) => {
           url: element('a').attr('href'),
           type: element('a').attr('href')?.split('/')[1],
           uuid: element('a').attr('href')?.split('/')[2],
-          img: OrdinalImage(element('a > img').attr('src') as string | null),
+          poster: OrdinalImage(element('a > img').attr('src') as string | null),
           title: element('td:nth-child(2) > a').text().trim(),
+          year:
+            element('td.result_text').text().replace(/[^\d]/g, '').length > 4
+              ? element('td.result_text')
+                  .text()
+                  .replace(/[^\d]/g, '')
+                  .substring(1)
+              : element('td.result_text').text().replace(/[^\d]/g, ''),
         });
       });
 

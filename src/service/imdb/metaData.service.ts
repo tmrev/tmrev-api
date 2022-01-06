@@ -1,5 +1,6 @@
 import cheerio, { CheerioAPI } from 'cheerio';
 import request from 'request-promise';
+import OrdinalImage from '../../utils/ordinalImage';
 
 export const metaDataService = async (url: string, uuid: string) => {
   try {
@@ -24,7 +25,7 @@ export const metaDataService = async (url: string, uuid: string) => {
           .text()
           .split(/(?=[A-Z])/)
           .map((value) => value.trim()),
-        poster: $('.ipc-image').attr('src'),
+        poster: OrdinalImage($('.ipc-image').attr('src')),
         year: $(
           '#__next > main > div > section.ipc-page-background.ipc-page-background--base.TitlePage__StyledPageBackground-wzlr49-0.dDUGgO > section > div:nth-child(4) > section > section > div.TitleBlock__Container-sc-1nlhx7j-0.hglRHk > div.TitleBlock__TitleContainer-sc-1nlhx7j-1.jxsVNt > div.TitleBlock__TitleMetaDataContainer-sc-1nlhx7j-2.hWHMKr > ul > li:nth-child(1) > span'
         )
