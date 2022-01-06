@@ -10,6 +10,7 @@ import { RottenRouter } from './routes/rottenTomatoes';
 import { ImdbRouter } from './routes/imdb';
 import { MovieRouter } from './routes/movieReivew';
 import { WatchListRouter } from './routes/watchList';
+import { userRouter } from './routes/user';
 
 class App {
   constructor() {
@@ -44,6 +45,7 @@ class App {
     this.app.use('/imdb', ImdbRouter);
     this.app.use('/movie', MovieRouter);
     this.app.use('/watch-list', WatchListRouter);
+    this.app.use('/user', userRouter);
   }
 }
 

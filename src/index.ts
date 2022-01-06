@@ -1,7 +1,9 @@
 import app from './app';
 import redis from 'redis';
-import { initializeApp } from 'firebase-admin/app';
+import { initializeApp, cert } from 'firebase-admin/app';
 import { MongoClient } from 'mongodb';
+
+const test = require('../cred.json');
 
 require('dotenv').config();
 
@@ -11,14 +13,19 @@ const user = process.env.DB_USER;
 const password = process.env.DB_PASS;
 const host = process.env.DB_HOST;
 const projectId = process.env.PROJECT_ID;
+const privateKey = process.env.PRIVATE_KEY;
+const clientEmail = process.env.CLIENT_EMAIL;
 
 // export const redisClient = redis.createClient({
 //   host: 'redis',
 //   port: Number(PORT_REDIS),
 // });
 export const redisClient = redis.createClient(Number(PORT_REDIS));
+
+console.log(test);
+
 export const firebaseApp = initializeApp({
-  projectId,
+  credential: cert(test),
 });
 
 const uri = `mongodb+srv://${user}:${password}@${host}`;
