@@ -6,6 +6,7 @@ export interface CreateMoviePayload {
   rotten: RottenMovie | null;
   imdb: IMDBMovie | null;
   simpleScore: number | null;
+  notes: string;
 }
 
 export interface MovieDocument {
