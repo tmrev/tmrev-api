@@ -11,6 +11,8 @@ import { ImdbRouter } from './routes/imdb';
 import { MovieRouter } from './routes/movieReivew';
 import { WatchListRouter } from './routes/watchList';
 import { userRouter } from './routes/user';
+import { numberMoviesRouter } from './routes/123Movies';
+import { fMoviesRouter } from './routes/fMovies';
 
 class App {
   constructor() {
@@ -46,6 +48,8 @@ class App {
     this.app.use('/movie', MovieRouter);
     this.app.use('/watch-list', WatchListRouter);
     this.app.use('/user', userRouter);
+    this.app.use('/123', numberMoviesRouter);
+    this.app.use('/f', fMoviesRouter);
   }
 }
 

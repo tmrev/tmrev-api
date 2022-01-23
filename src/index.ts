@@ -22,8 +22,6 @@ const clientEmail = process.env.CLIENT_EMAIL;
 // });
 export const redisClient = redis.createClient(Number(PORT_REDIS));
 
-console.log(test);
-
 export const firebaseApp = initializeApp({
   credential: cert(test),
 });
