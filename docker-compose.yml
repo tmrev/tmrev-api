@@ -5,8 +5,8 @@ services:
     restart: always
     build: './'
     environment:
-      VIRTUAL_HOST: api.movielot.xyz
-      LETSENCRYPT_HOST: api.movielot.xyz
+      VIRTUAL_HOST: movietest.footballplayers.io
+      LETSENCRYPT_HOST: movietest.footballplayers.io
     expose:
       - '8080'
   nginx-proxy:
