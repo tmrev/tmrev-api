@@ -17,11 +17,12 @@ type Movie = {
   poster: string;
   year: number;
   rottenId: string;
+  tmdbID: number
 };
 
 export const MovieWatchListCheckService = async (
   authToken: string,
-  imdbId: string
+  tmdbID: number
 ) => {
   try {
     const listWithMovie: any[] = [];
@@ -34,7 +35,7 @@ export const MovieWatchListCheckService = async (
 
     lists.forEach((list) => {
       list.movies.forEach((movie) => {
-        if (movie.imdbId === imdbId) {
+        if (movie.tmdbID === tmdbID) {
           listWithMovie.push({
             listTitle: list.title,
             listId: list._id,
@@ -42,6 +43,7 @@ export const MovieWatchListCheckService = async (
             imdbId: movie.imdbId,
             rottenId: movie.rottenId,
             year: movie.year,
+            tmdbID: movie.imdbId
           });
         }
       });

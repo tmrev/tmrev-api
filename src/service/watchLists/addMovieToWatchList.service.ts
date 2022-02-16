@@ -15,35 +15,30 @@ export const AddMovieToWatchList = async (
   authToken: string,
   list_id: string,
   data: {
-    rottenId: string;
-    imdbId: string;
-    title: string;
-    poster: string;
-    description: string;
-    ratings: any;
+    id: number
   }
 ) => {
   try {
     const user = await getAuth().verifyIdToken(authToken);
 
-    const db = client.db('WatchLists').collection(user.uid);
+    const db = client.db('WatchLists').collection('collection');
 
     const id = new ObjectId(list_id);
 
-    const watchList = await db.findOne({ _id: id });
+    const watchList = await db.findOne({ _id: id, userId: user.uid });
 
     if (!watchList) {
       throw new Error('List does not exist');
     }
 
     const newWatchList = JSON.parse(JSON.stringify(watchList));
-    newWatchList.movies.push(data);
+    newWatchList.movies.push(data.id);
     newWatchList.updated_at = Timestamp.now();
     if (newWatchList._id) {
       delete newWatchList._id;
     }
 
-    const result = await db.updateOne({ _id: id }, { $set: newWatchList });
+    const result = await db.updateOne({ _id: id, userId: user.uid }, { $set: newWatchList });
 
     return result;
   } catch (err) {

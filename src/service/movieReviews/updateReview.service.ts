@@ -12,7 +12,7 @@ export const updateReviewService = async (
 
     const db = client.db('MovieRatings').collection(user.uid);
 
-    const result = await db.updateOne({ uuid }, { $set: data });
+    const result = await db.updateOne({ tmdbID:uuid }, { $set: data });
 
     return result;
   } catch (err) {

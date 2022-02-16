@@ -14,8 +14,8 @@ export const createReviewController = async (req: Request, res: Response) => {
       throw new Error('no body provided');
     }
 
-    if (!body.uuid) {
-      throw new Error('must have movie uuid');
+    if (!body.tmdbID) {
+      throw new Error('must have movie tmdbID');
     }
 
     const result = await createReviewService(auth, body);

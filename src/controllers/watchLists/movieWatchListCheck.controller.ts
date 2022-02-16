@@ -17,7 +17,7 @@ export const movieWatchListCheckController = async (
       throw new Error('no imdb id provided');
     }
 
-    const result = await MovieWatchListCheckService(auth, uuid);
+    const result = await MovieWatchListCheckService(auth, Number(uuid));
 
     res.send(result);
   } catch (err: any) {

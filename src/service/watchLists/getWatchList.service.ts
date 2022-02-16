@@ -14,11 +14,11 @@ export const getWatchListService = async (
 
     const user = async () => await getAuth().verifyIdToken(authToken || '');
 
-    const db = client.db('WatchLists').collection(userId || (await user()).uid);
+    const db = client.db('WatchLists').collection('collection');
 
     const id = new ObjectId(uuid);
 
-    const result = await db.findOne({ _id: id });
+    const result = await db.findOne({ userId: userId || (await user()).uid, _id: id });
 
     if (userId && result && result.public === false) {
       throw new Error('Watchlist is either private or removed');
