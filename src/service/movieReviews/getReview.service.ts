@@ -7,7 +7,7 @@ export const getReviewService = async (authToken: string, uuid: string) => {
 
     const db = client.db('MovieRatings').collection(user.uid);
 
-    const result = await db.findOne({ uuid });
+    const result = await db.findOne({ tmdbID:Number(uuid) });
 
     return result;
   } catch (err) {

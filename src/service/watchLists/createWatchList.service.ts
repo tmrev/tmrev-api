@@ -15,7 +15,7 @@ export const createWatchListService = async (
   try {
     const user = await getAuth().verifyIdToken(authToken);
 
-    const db = client.db('WatchLists').collection(user.uid);
+    const db = client.db('WatchLists').collection('collection');
 
     const newWatchList = {
       ...data,
