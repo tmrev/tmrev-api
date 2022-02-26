@@ -3,13 +3,10 @@ import { getAuth } from 'firebase-admin/auth';
 import { client } from '../..';
 
 export const createReviewService = async (
-  authToken: string,
   data: CreateMoviePayload
 ) => {
   try {
-    const user = await getAuth().verifyIdToken(authToken);
-
-    const db = client.db('MovieRatings').collection(user.uid);
+    const db = client.db('Reviews').collection('MovieReviews');
 
     const result = await db.insertOne(data);
 

@@ -10,9 +10,9 @@ export const updateReviewService = async (
   try {
     const user = await getAuth().verifyIdToken(authToken);
 
-    const db = client.db('MovieRatings').collection(user.uid);
+    const db = client.db('Reviews').collection('MovieReviews');
 
-    const result = await db.updateOne({ tmdbID:uuid }, { $set: data });
+    const result = await db.updateOne({ tmdbID:uuid, userId: user.uid }, { $set: data });
 
     return result;
   } catch (err) {

@@ -18,7 +18,7 @@ export const createReviewController = async (req: Request, res: Response) => {
       throw new Error('must have movie tmdbID');
     }
 
-    const result = await createReviewService(auth, body);
+    const result = await createReviewService(body);
 
     res.send(result);
   } catch (err: any) {
