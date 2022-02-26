@@ -5,9 +5,9 @@ export const getAllReviewsService = async (authToken: string) => {
   try {
     const user = await getAuth().verifyIdToken(authToken);
 
-    const db = client.db('MovieRatings').collection(user.uid);
+    const db = client.db('Reviews').collection('MovieReviews');
 
-    const result = await db.find({}).toArray();
+    const result = await db.find({userId: user.uid}).toArray();
 
     return result;
   } catch (err) {

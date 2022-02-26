@@ -7,6 +7,7 @@ export const getUserByUidService = async (uid: string) => {
     return {
       displayName: user.displayName,
       photoUrl: user.photoURL,
+      email: user.email
     };
   } catch (error) {
     throw error;
