@@ -7,7 +7,7 @@ export const getAllWatchListsService = async (authToken: string) => {
 
     const db = client.db('WatchLists').collection('collection');
 
-    const result = await db.find({userId: user.uid}).toArray();
+    const result = await db.find({userId: user.uid, public: true}).toArray();
 
     return result;
   } catch (err) {
