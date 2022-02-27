@@ -16,8 +16,6 @@ export const getWatchListService = async (
 
       const db = client.db('WatchLists').collection('collection');
 
-      console.log(id, user.uid)
-
       const result = await db.findOne({ _id: id });
 
       if(!result) throw new Error('Watchlist is either private or removed');
@@ -36,8 +34,6 @@ export const getWatchListService = async (
 
       const id = new ObjectId(uuid);
       const db = client.db('WatchLists').collection('collection');
-
-      console.log(id)
 
       const result = await db.findOne({ _id: id, public: true });
 

@@ -17,8 +17,6 @@ export const favoriteMovieGenreService = async (authToken: string) => {
       }
     });
 
-    console.log(allGenres);
-
     return commonListElement(allGenres);
   } catch (err) {
     throw err;

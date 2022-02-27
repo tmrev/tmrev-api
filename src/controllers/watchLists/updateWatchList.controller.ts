@@ -10,8 +10,6 @@ export const updateWatchListController = async (
     const body = req.body;
     const uuid = req.params.uuid;
 
-    console.log(auth);
-
     if (!auth) {
       throw new Error('no auth provided');
     }
