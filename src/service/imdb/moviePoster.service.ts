@@ -9,8 +9,6 @@ export const movePosterService = async (imdbID: string) => {
 
     const data = await axios.get(options.url);
 
-    console.log(data);
-
     return data.data;
   } catch (err) {
     throw err;

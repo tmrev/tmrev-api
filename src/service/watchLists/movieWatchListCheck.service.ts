@@ -10,15 +10,7 @@ interface List {
   movies: Movie[];
 }
 
-type Movie = {
-  title: string;
-  description: string;
-  imdbId: string;
-  poster: string;
-  year: number;
-  rottenId: string;
-  tmdbID: number
-};
+type Movie = number
 
 export const MovieWatchListCheckService = async (
   authToken: string,
@@ -29,21 +21,16 @@ export const MovieWatchListCheckService = async (
 
     const user = await getAuth().verifyIdToken(authToken);
 
-    const db = client.db('WatchLists').collection(user.uid);
+    const db = client.db('WatchLists').collection('collection');
 
-    const lists = (await db.find({}).toArray()) as unknown as List[];
-
+    const lists = (await db.find({ userId: user.uid }).toArray()) as unknown as List[];
+    
     lists.forEach((list) => {
       list.movies.forEach((movie) => {
-        if (movie.tmdbID === tmdbID) {
+        if (movie === tmdbID) {
           listWithMovie.push({
             listTitle: list.title,
             listId: list._id,
-            title: movie.title,
-            imdbId: movie.imdbId,
-            rottenId: movie.rottenId,
-            year: movie.year,
-            tmdbID: movie.imdbId
           });
         }
       });

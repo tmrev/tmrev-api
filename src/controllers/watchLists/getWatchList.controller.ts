@@ -5,7 +5,6 @@ export const getWatchListController = async (req: Request, res: Response) => {
   try {
     const auth = req.headers.authorization;
     const uuid = req.params.uuid;
-    const userId = req.query.user as string;
 
     if (!uuid) {
       throw new Error('no uuid provided');
@@ -15,7 +14,7 @@ export const getWatchListController = async (req: Request, res: Response) => {
       throw new Error('incorrect format');
     }
 
-    const result = await getWatchListService(uuid, auth, userId);
+    const result = await getWatchListService(uuid, auth);
 
     res.send(result);
   } catch (err: any) {
