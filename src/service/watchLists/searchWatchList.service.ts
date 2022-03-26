@@ -5,7 +5,7 @@ export const searchWatchListService = async (
     q: string
 ) => {
     try {
-        const db = client.db('WatchLists').collection('collection');
+        const db = client.db('Reviews').collection('WatchLists');
 
         const result = await db.aggregate([
             {

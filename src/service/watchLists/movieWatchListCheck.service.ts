@@ -21,7 +21,7 @@ export const MovieWatchListCheckService = async (
 
     const user = await getAuth().verifyIdToken(authToken);
 
-    const db = client.db('WatchLists').collection('collection');
+    const db = client.db('Reviews').collection('WatchLists');
 
     const lists = (await db.find({ userId: user.uid }).toArray()) as unknown as List[];
     

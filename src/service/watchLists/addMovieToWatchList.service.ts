@@ -21,7 +21,7 @@ export const AddMovieToWatchList = async (
   try {
     const user = await getAuth().verifyIdToken(authToken);
 
-    const db = client.db('WatchLists').collection('collection');
+    const db = client.db('Reviews').collection('WatchLists');
 
     const id = new ObjectId(list_id);
 
