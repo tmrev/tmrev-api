@@ -15,13 +15,14 @@ export const createWatchListService = async (
   try {
     const user = await getAuth().verifyIdToken(authToken);
 
-    const db = client.db('WatchLists').collection('collection');
+    const db = client.db('Reviews').collection('WatchLists');
 
     const newWatchList = {
       ...data,
       movies: [],
       created_at: Timestamp.now(),
       updated_at: Timestamp.now(),
+      userId: user.uid
     };
 
     const result = await db.insertOne(newWatchList);

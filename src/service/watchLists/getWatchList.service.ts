@@ -14,7 +14,7 @@ export const getWatchListService = async (
 
       const id = new ObjectId(uuid);
 
-      const db = client.db('WatchLists').collection('collection');
+      const db = client.db('Reviews').collection('WatchLists');
 
       const result = await db.findOne({ _id: id });
 
@@ -33,7 +33,7 @@ export const getWatchListService = async (
     } else {
 
       const id = new ObjectId(uuid);
-      const db = client.db('WatchLists').collection('collection');
+      const db = client.db('Reviews').collection('WatchLists');
 
       const result = await db.findOne({ _id: id, public: true });
 
