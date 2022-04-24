@@ -1,5 +1,7 @@
 import { Router } from 'express';
 import { createUserController } from '../controllers/users/createUser.controller';
+import { followerFeedController } from '../controllers/users/followerFeed.controller';
+import { followUserController } from '../controllers/users/followUser.controller';
 import { getUserController } from '../controllers/users/getUser.controller';
 import { getUserCategoryController } from '../controllers/users/getUserBestMovies.controller';
 import { getUserByUidController } from '../controllers/users/getUserByUid.controller';
@@ -13,6 +15,10 @@ const router: Router = Router();
 router.get('/topMovies/:uuid', asyncMiddleware(getUserTopMoviesController))
 
 router.get('/full/:uid', asyncMiddleware(getUserController));
+
+router.get('/follow/feed', asyncMiddleware(followerFeedController))
+
+router.post('/follow/:uid', asyncMiddleware(followUserController))
 
 router.get('/:category/:uuid', asyncMiddleware(getUserCategoryController))
 
