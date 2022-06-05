@@ -5,8 +5,8 @@ services:
     restart: always
     build: './'
     environment:
-      VIRTUAL_HOST: movietest.footballplayers.io
-      LETSENCRYPT_HOST: movietest.footballplayers.io
+      VIRTUAL_HOST: api.tmrev.io
+      LETSENCRYPT_HOST: api.tmrev.io
     expose:
       - '8080'
   nginx-proxy:
