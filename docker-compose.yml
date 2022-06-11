@@ -1,7 +1,7 @@
 version: '3.7'
 services:
-  movielot_api_container:
-    container_name: movielot_api_container
+  tmrev_api_container:
+    container_name: tmrev_api_container
     restart: always
     build: './'
     environment:
@@ -22,7 +22,7 @@ services:
       - '/var/run/docker.sock:/tmp/docker.sock:ro'
       - '/etc/nginx/certs'
     depends_on:
-      - movielot_api_container
+      - tmrev_api_container
   letsencrypt-nginx-proxy-companion:
     container_name: letsencrypt
     restart: always
