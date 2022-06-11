@@ -9,8 +9,8 @@ services:
       LETSENCRYPT_HOST: api.tmrev.io
     expose:
       - '8080'
-  nginx-proxy:
-    container_name: nginx_container
+  nginx-proxy-2:
+    container_name: nginx_container-2
     restart: always
     image: jwilder/nginx-proxy
     ports:
@@ -23,11 +23,11 @@ services:
       - '/etc/nginx/certs'
     depends_on:
       - tmrev_api_container
-  letsencrypt-nginx-proxy-companion:
-    container_name: letsencrypt
+  letsencrypt-nginx-proxy-companion-2:
+    container_name: letsencrypt-2
     restart: always
     image: jrcs/letsencrypt-nginx-proxy-companion
     volumes:
       - '/var/run/docker.sock:/var/run/docker.sock:ro'
     volumes_from:
-      - 'nginx-proxy'
+      - 'nginx-proxy-2'
