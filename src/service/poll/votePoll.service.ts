@@ -2,6 +2,7 @@ import { getAuth } from "firebase-admin/auth"
 import { Timestamp } from "firebase-admin/firestore"
 import { ObjectId } from "mongodb"
 import { client } from "../.."
+import { tmrev } from "../../models/mongodb"
 import { Categories } from "./createPoll.service"
 
 interface Poll {
@@ -18,7 +19,7 @@ interface Poll {
 export const votePollService = async (authToken: string, pollId: string, voteCategory: string) => {
     try {
         const user = await getAuth().verifyIdToken(authToken)
-        const db = client.db('Reviews').collection('Polls')
+        const db = client.db(tmrev.db).collection(tmrev.collection.poll);
 
         const _id = new ObjectId(pollId);
 

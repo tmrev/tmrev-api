@@ -1,9 +1,10 @@
 import { client } from "../..";
+import { tmrev } from "../../models/mongodb";
 
 export const getUserTopMoviesService = async (limit: number, sort: '-1' | '1', uuid: string) => {
 
     try {
-        const db = client.db('Reviews').collection('Users');
+        const db = client.db(tmrev.db).collection(tmrev.collection.users);
 
         const pipeline = [
             

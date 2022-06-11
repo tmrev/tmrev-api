@@ -1,12 +1,13 @@
 import { getAuth } from 'firebase-admin/auth';
 import { ObjectId } from 'mongodb';
 import { client } from '../..';
+import { tmrev } from '../../models/mongodb';
 
 export const deleteReviewService = async (authToken: string, uuid: string) => {
   try {
     const user = await getAuth().verifyIdToken(authToken);
 
-    const db = client.db('Reviews').collection('MovieReviews');
+    const db = client.db(tmrev.db).collection(tmrev.collection.reviews);
 
     const id = new ObjectId(uuid);
 

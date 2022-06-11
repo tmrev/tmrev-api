@@ -1,6 +1,7 @@
 import { getAuth } from 'firebase-admin/auth';
 import { ObjectId } from 'mongodb';
 import { client } from '../..';
+import { tmrev } from '../../models/mongodb';
 
 export const getWatchListService = async (
   uuid: string,
@@ -14,7 +15,7 @@ export const getWatchListService = async (
 
       const id = new ObjectId(uuid);
 
-      const db = client.db('Reviews').collection('WatchLists');
+      const db = client.db(tmrev.db).collection(tmrev.collection.watchlists);
 
       const result = await db.findOne({ _id: id });
 
@@ -33,7 +34,7 @@ export const getWatchListService = async (
     } else {
 
       const id = new ObjectId(uuid);
-      const db = client.db('Reviews').collection('WatchLists');
+      const db = client.db(tmrev.db).collection(tmrev.collection.watchlists);
 
       const result = await db.findOne({ _id: id, public: true });
 

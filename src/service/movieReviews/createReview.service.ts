@@ -1,12 +1,12 @@
 import { CreateMoviePayload } from '../../models/movieReviews';
-import { getAuth } from 'firebase-admin/auth';
 import { client } from '../..';
+import { tmrev } from '../../models/mongodb';
 
 export const createReviewService = async (
   data: CreateMoviePayload
 ) => {
   try {
-    const db = client.db('Reviews').collection('MovieReviews');
+    const db = client.db(tmrev.db).collection(tmrev.collection.reviews);
 
     const result = await db.insertOne(data);
 

@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { set } from '../..';
+
 import { metaDataService } from '../../service/rottenTomatoes/metaData.service';
 
 export const metaDataController = async (req: Request, res: Response) => {
@@ -17,7 +17,7 @@ export const metaDataController = async (req: Request, res: Response) => {
       uuid
     );
 
-    set(`${req.route.path}'/${req.params.uuid}'`, meta);
+
 
     res.send(meta);
   } catch (err: any) {

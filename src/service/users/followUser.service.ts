@@ -1,10 +1,11 @@
 import { getAuth } from "firebase-admin/auth";
 import { client } from "../..";
+import { tmrev } from "../../models/mongodb";
 
 export const followUserService = async (authToken: string, userId: string) => {
     try {
         const user = await getAuth().verifyIdToken(authToken)
-        const db = client.db('Reviews').collection('Users');
+        const db = client.db(tmrev.db).collection(tmrev.collection.users);
         let result = {}
 
         const userDoc = await db.findOne({ uuid: user.uid })

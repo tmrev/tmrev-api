@@ -1,11 +1,12 @@
 import { getAuth } from "firebase-admin/auth";
 import { client } from "../..";
+import { tmrev } from "../../models/mongodb";
 
 export const followerFeedService = async (limit: number, authToken: string) => {
 
     try {
         const user = await getAuth().verifyIdToken(authToken);
-        const db = client.db('Reviews').collection('Users');
+        const db = client.db(tmrev.db).collection(tmrev.collection.users);
 
         const pipeline = [
             {

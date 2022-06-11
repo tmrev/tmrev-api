@@ -1,9 +1,10 @@
 import { client } from '../..';
+import { tmrev } from '../../models/mongodb';
 import lastWeekDate from '../../utils/lastWeekDate';
 
 export const getUserLeaderBoardService = async () => {
     try {
-        const db = client.db('Reviews').collection('MovieReviews');
+        const db = client.db(tmrev.db).collection(tmrev.collection.reviews);
 
         console.log(lastWeekDate())
 

@@ -23,18 +23,6 @@ services:
       - '/etc/nginx/certs'
     depends_on:
       - movielot_api_container
-  redis:
-    image: 'redis:alpine'
-    command: redis-server
-    ports:
-     - "6379"
-    volumes:
-     - $PWD/redis-data:/var/lib/redis
-     - $PWD/redis.conf:/usr/local/etc/redis/redis.conf
-    environment:
-     - ALLOW_EMPTY_PASSWORD=yes
-    expose:
-     - '6379' 
   letsencrypt-nginx-proxy-companion:
     container_name: letsencrypt
     restart: always

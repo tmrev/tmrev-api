@@ -1,11 +1,12 @@
 import { client } from "../..";
+import { tmrev } from "../../models/mongodb";
 
 type Category = 'acting' | 'characters' | 'cinematography' | 'climax' | 'ending' | 'music' | 'personalScore' | 'plot' | 'theme' | 'visuals'
 
 export const GetUserCategoryMoviesService = async (limit: number, sort: '-1' | '1', category: Category, uuid: string) => {
 
     try {
-        const db = client.db('Reviews').collection('Users');
+        const db = client.db(tmrev.db).collection(tmrev.collection.users);
         const cat = `movies.advancedScore.${category}`
 
         const pipeline = [

@@ -1,6 +1,7 @@
 import { getAuth } from 'firebase-admin/auth';
 import { ObjectId } from 'mongodb';
 import { client } from '../..';
+import { tmrev } from '../../models/mongodb';
 
 export const deleteWatchListService = async (
   authToken: string,
@@ -9,7 +10,7 @@ export const deleteWatchListService = async (
   try {
     const user = await getAuth().verifyIdToken(authToken);
 
-    const db = client.db('Reviews').collection('WatchLists');
+    const db = client.db(tmrev.db).collection(tmrev.collection.watchlists);
 
     const id = new ObjectId(uuid);
 
