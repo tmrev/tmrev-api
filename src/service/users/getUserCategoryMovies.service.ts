@@ -16,7 +16,7 @@ export const GetUserCategoryMoviesService = async (limit: number, sort: '-1' | '
                 }
             }, {
                 '$lookup': {
-                    'from': 'MovieReviews',
+                    'from': tmrev.collection.reviews,
                     'localField': 'uuid',
                     'foreignField': 'userId',
                     'as': 'movies'

@@ -24,7 +24,7 @@ export const getUserLeaderBoardService = async () => {
                 }
             }, {
                 '$lookup': {
-                    'from': 'Users',
+                    'from': tmrev.collection.users,
                     'localField': '_id',
                     'foreignField': 'uuid',
                     'as': 'user'
@@ -59,7 +59,7 @@ export const getUserLeaderBoardService = async () => {
                 }
             }, {
                 '$lookup': {
-                    'from': 'Users',
+                    'from': tmrev.collection.users,
                     'localField': '_id',
                     'foreignField': 'uuid',
                     'as': 'user'

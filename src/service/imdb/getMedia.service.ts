@@ -12,7 +12,7 @@ export const getMediaService = async (uid: string) => {
               }
             }, {
               '$lookup': {
-                'from': 'ratings', 
+                'from': imdb.collection.ratings, 
                 'localField': 'uid', 
                 'foreignField': 'uid', 
                 'as': 'rating'

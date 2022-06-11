@@ -15,7 +15,7 @@ export const followerFeedService = async (limit: number, authToken: string) => {
                 }
             }, {
                 '$lookup': {
-                    'from': 'MovieReviews',
+                    'from': tmrev.collection.reviews,
                     'as': 'followingReviews',
                     'let': {
                         'indicator_id': '$following'

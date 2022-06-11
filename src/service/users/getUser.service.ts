@@ -14,14 +14,14 @@ export const getUserService = async (uuid: string) => {
                 }
             }, {
                 '$lookup': {
-                    'from': 'MovieReviews',
+                    'from': tmrev.collection.reviews,
                     'localField': 'uuid',
                     'foreignField': 'userId',
                     'as': 'reviews'
                 }
             }, {
                 '$lookup': {
-                    'from': 'WatchLists',
+                    'from': tmrev.collection.watchlists,
                     'localField': 'uuid',
                     'foreignField': 'userId',
                     'as': 'watchLists'
