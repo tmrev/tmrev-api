@@ -14,6 +14,7 @@ import { userRouter } from './routes/user';
 import { numberMoviesRouter } from './routes/123Movies';
 import { fMoviesRouter } from './routes/fMovies';
 import { pollRouter } from './routes/poll';
+import { theNumbersRouter } from './routes/theNumbers';
 
 class App {
   constructor() {
@@ -52,6 +53,7 @@ class App {
     this.app.use('/123', numberMoviesRouter);
     this.app.use('/f', fMoviesRouter);
     this.app.use('/poll', pollRouter)
+    this.app.use('/numbers', theNumbersRouter)
   }
 }
 

@@ -20,59 +20,38 @@ export const getAvgScoreService = async (tmdbID: number) => {
             'title': '$title'
           },
           'totalScore': {
-            '$avg': {
-              '$round': '$averagedAdvancedScore'
-            }
+            '$avg':'$averagedAdvancedScore'
           },
           'plot': {
-            '$avg': {
-              '$round': '$advancedScore.plot'
-            }
+            '$avg':'$advancedScore.plot'
           },
           'theme': {
-            '$avg': {
-              '$round': '$advancedScore.theme'
-            }
+            '$avg':'$advancedScore.theme'
           },
           'climax': {
-            '$avg': {
-              '$round': '$advancedScore.climax'
-            }
+            '$avg':'$advancedScore.climax'
           },
           'ending': {
-            '$avg': {
-              '$round': '$advancedScore.ending'
-            }
+            '$avg':'$advancedScore.ending'
           },
           'acting': {
-            '$avg': {
-              '$round': '$advancedScore.acting'
-            }
+            '$avg': '$advancedScore.acting'
           },
           'characters': {
-            '$avg': {
-              '$round': '$advancedScore.characters'
-            }
+            '$avg': '$advancedScore.characters'
           },
           'music': {
-            '$avg': {
-              '$round': '$advancedScore.music'
-            }
+            '$avg': '$advancedScore.music'
           },
           'cinematography': {
-            '$avg': {
-              '$round': '$advancedScore.cinematography'
-            }
+            '$avg': '$advancedScore.cinematography'
           },
           'visuals': {
-            '$avg': {
-              '$round': '$advancedScore.visuals'
-            }
+            '$avg': '$advancedScore.visuals'
           },
           'personalScore': {
-            '$avg': {
-              '$round': '$advancedScore.personalScore'
-            }
+            '$avg': '$advancedScore.personalScore'
+            
           }
         }
       }
