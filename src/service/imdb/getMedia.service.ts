@@ -40,7 +40,7 @@ export const getMediaService = async (uid: string) => {
 
         const results = await db.aggregate(pipeline).toArray() 
 
-        return results[0]
+        return results[0] || []
     } catch (error) {
         throw error
     }
