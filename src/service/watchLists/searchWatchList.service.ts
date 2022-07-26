@@ -8,7 +8,7 @@ export const searchWatchListService = async (
     try {
         const db = client.db(tmrev.db).collection(tmrev.collection.watchlists);
 
-        const result = await db.find({$text: {$search: q}}).toArray()
+        const result = await db.find({$text: {$search: q}, $and:[{public: true}]}).toArray()
 
 
         return result
