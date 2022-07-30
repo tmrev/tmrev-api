@@ -1,4 +1,5 @@
 import { Request, Response, NextFunction, RequestHandler } from 'express';
+import { ValidationChain, validationResult } from 'express-validator';
 
 type AsyncRequestHandler = (
   req: Request,
@@ -8,7 +9,17 @@ type AsyncRequestHandler = (
 
 export default (handler: AsyncRequestHandler): RequestHandler => {
   return (req, res, next) => {
-    return handler(req, res, next).catch(next);
+    const errors = validationResult(req)
+    if (errors.isEmpty()) {
+      return handler(req, res, next).catch(next);
+    }
+    const extractedErrors: { [x: string]: any; }[] = []
+    errors.array().map(err => extractedErrors.push({ [err.param]: err.msg }))
+  
+
+    return res.status(422).json({
+      errors: extractedErrors,
+    })
   }    
 };
 

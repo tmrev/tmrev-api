@@ -1,12 +1,28 @@
 import { ObjectId } from 'mongodb';
 
 export interface CreateMoviePayload {
-  advancedScore: AdvancedScore | null;
-  averagedAdvancedScore: number | null;
-  rotten: RottenMovie | null;
-  imdb: IMDBMovie | null;
-  simpleScore: number | null;
-  notes: string;
+  title: string,
+  advancedScore: AdvancedScore,
+  tmdbID: number
+  reviewedDate: string
+  notes: string
+  public: boolean
+  release_date: string
+}
+
+export interface MongoMoviePayload {
+  userId: string,
+  tmdbID: number,
+  advancedScore: AdvancedScore,
+  notes: string,
+  public: boolean
+  createdAt: TimeStamp
+  updatedAt: TimeStamp
+  averagedAdvancedScore: number
+  release_date: string
+  reviewedDate: string
+  user?: ObjectId
+  title: string
 }
 
 export interface MovieDocument {

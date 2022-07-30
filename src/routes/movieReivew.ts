@@ -1,4 +1,5 @@
 import { Router } from 'express';
+import { movieCreateValidationRules } from '../../validation/movies';
 import { createReviewController } from '../controllers/movieReviews/createReview.controller';
 import { deleteReviewController } from '../controllers/movieReviews/deleteReview.controller';
 import { getAllMovieReviewsController } from '../controllers/movieReviews/getAllMovieReviews.controller';
@@ -10,7 +11,7 @@ import asyncMiddleware from '../middleware/async.middleware';
 
 const router: Router = Router();
 
-router.post('/', asyncMiddleware(createReviewController));
+router.post('/', movieCreateValidationRules(), asyncMiddleware(createReviewController));
 
 router.get('/all/:uuid', asyncMiddleware(getAllMovieReviewsController))
 

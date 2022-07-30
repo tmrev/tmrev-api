@@ -6,19 +6,7 @@ export const createReviewController = async (req: Request, res: Response) => {
     const auth = req.headers.authorization;
     const body = req.body;
 
-    if (!auth) {
-      throw new Error('no auth provided');
-    }
-
-    if (!body) {
-      throw new Error('no body provided');
-    }
-
-    if (!body.tmdbID) {
-      throw new Error('must have movie tmdbID');
-    }
-
-    const result = await createReviewService(body);
+    const result = await createReviewService(body, auth as string);
 
     res.send(result);
   } catch (err: any) {
