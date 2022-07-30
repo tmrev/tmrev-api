@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { movieCreateValidationRules } from '../../validation/movies';
+import { movieCreateValidationRules } from '../validation/movies';
 import { createReviewController } from '../controllers/movieReviews/createReview.controller';
 import { deleteReviewController } from '../controllers/movieReviews/deleteReview.controller';
 import { getAllMovieReviewsController } from '../controllers/movieReviews/getAllMovieReviews.controller';
