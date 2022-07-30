@@ -1,11 +1,33 @@
 import cheerio, { CheerioAPI } from 'cheerio';
+import dayjs from 'dayjs';
 import request from 'request-promise';
-import { camelize } from '../../utils/common';
+import { client } from '../..';
+import { tmdb } from '../../models/mongodb';
+import { camelize, timestamp } from '../../utils/common';
 
-export const dailyBoxOffice = async (title: string, year: string) => {
+export const dailyBoxOffice = async (title: string, year: string, tmdbID: number) => {
     try {
-        const uri = `https://www.the-numbers.com/movie/${title.replace(/[^a-zA-Z0-9,;\-.!? ]/g, ' ').replace(/\s+/g, '-')}-(${year})#tab=box-office`
-        console.log(uri)
+        const db = await client.db(tmdb.db).collection(tmdb.collection.movies)
+
+        const result = await db.findOne({id: tmdbID});
+
+
+        if(result && result.theNumbers && result.theNumbers.length) {
+            const hours = dayjs().diff(dayjs(result.lastUpdated.seconds), 'hours')
+        
+           if(hours <= 24) {
+            return result.theNumbers
+           }
+        }
+
+        const createURI = ():string => {
+            if(result && result.url) return result.url
+
+            return  `https://www.the-numbers.com/movie/${title.replace(/[^a-zA-Z0-9,;\-.!? ]/g, ' ').replace(/\s+/g, '-')}-(${year})#tab=box-office`
+        }
+
+
+        const uri = createURI()
 
         const numbersOptions = {
             uri,
@@ -15,9 +37,7 @@ export const dailyBoxOffice = async (title: string, year: string) => {
         }
 
         const numbersData = await request(numbersOptions) as CheerioAPI
-        const table = '#box-office > #box_office_chart'
         
-
         const collectiveTableData: any[] = []
         
 
@@ -71,9 +91,9 @@ export const dailyBoxOffice = async (title: string, year: string) => {
 
 
 
+    await  db.updateOne({id: tmdbID},{ $set: {theNumbers: collectiveTableData, url: uri, lastUpdated: timestamp()}})
 
-
-        return collectiveTableData
+    return collectiveTableData
         
 
     } catch (error) {

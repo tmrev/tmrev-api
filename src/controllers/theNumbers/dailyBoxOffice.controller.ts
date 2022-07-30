@@ -5,11 +5,13 @@ export const dailyBoxOfficeController = async (req: Request, res:Response) => {
     try {
         const title = req.query.title as string
         const year = req.query.year as string 
+        const tmdbID = req.query.id as string
 
         if(!title) throw Error('title query is required')
-        if(!year) throw Error('title query is required')
+        if(!year) throw Error('year query is required')
+        if(!tmdbID) throw Error('id query is required')
 
-        const numbers = await dailyBoxOffice(title, year)
+        const numbers = await dailyBoxOffice(title, year, Number(tmdbID))
 
         res.send(numbers)
     } catch (error) {

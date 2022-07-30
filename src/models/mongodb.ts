@@ -15,5 +15,12 @@ const imdb = {
     }
 }
 
+const tmdb = {
+    db: 'tmdb',
+    collection: {
+        movies: 'movies'
+    }
+}
 
-export {tmrev, imdb}
+
+export {tmrev, imdb, tmdb}
