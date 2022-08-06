@@ -7,11 +7,14 @@ import { getUserCategoryController } from '../controllers/users/getUserBestMovie
 import { getUserByUidController } from '../controllers/users/getUserByUid.controller';
 import { getUserLeaderBoardController } from '../controllers/users/getUserLeaderBoard.controller';
 import { getUserTopMoviesController } from '../controllers/users/getUserTopMovies.controller';
+import { isUserController } from '../controllers/users/isUser.controller';
 import { searchUserController } from '../controllers/users/searchUser.controller';
 import { updateUserController } from '../controllers/users/updateUser.controller';
 import asyncMiddleware from '../middleware/async.middleware';
 
 const router: Router = Router();
+
+router.get('/isUser/:uid', asyncMiddleware(isUserController))
 
 router.get('/search', asyncMiddleware(searchUserController))
 
