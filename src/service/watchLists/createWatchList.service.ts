@@ -1,7 +1,7 @@
 import { getAuth } from 'firebase-admin/auth';
-import { Timestamp } from 'firebase-admin/firestore';
 import { client } from '../..';
 import { tmrev } from '../../models/mongodb';
+import { timestamp } from '../../utils/common';
 
 export type ListData = {
   title: string;
@@ -21,8 +21,8 @@ export const createWatchListService = async (
     const newWatchList = {
       ...data,
       movies: [],
-      created_at: Timestamp.now(),
-      updated_at: Timestamp.now(),
+      created_at: timestamp(),
+      updated_at: timestamp(),
       userId: user.uid
     };
 

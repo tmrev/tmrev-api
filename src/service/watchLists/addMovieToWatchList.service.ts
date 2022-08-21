@@ -1,8 +1,8 @@
 import { getAuth } from 'firebase-admin/auth';
-import { Timestamp } from 'firebase-admin/firestore';
 import { ObjectId } from 'mongodb';
 import { client } from '../..';
 import { tmrev } from '../../models/mongodb';
+import { timestamp } from '../../utils/common';
 
 type WatchList = {
   _id: ObjectId;
@@ -34,7 +34,7 @@ export const AddMovieToWatchList = async (
 
     const newWatchList = JSON.parse(JSON.stringify(watchList));
     newWatchList.movies.push(data.id);
-    newWatchList.updated_at = Timestamp.now();
+    newWatchList.updated_at = timestamp()
     if (newWatchList._id) {
       delete newWatchList._id;
     }

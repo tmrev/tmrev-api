@@ -1,4 +1,4 @@
-import { body, validationResult, header, checkSchema } from 'express-validator';
+import { checkSchema } from 'express-validator';
 
 export const movieCreateValidationRules = () => {
     return checkSchema({

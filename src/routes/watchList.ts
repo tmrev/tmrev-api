@@ -8,6 +8,7 @@ import { movieWatchListCheckController } from '../controllers/watchLists/movieWa
 import { searchWatchListController } from '../controllers/watchLists/searchWatchLists.controller';
 import { updateWatchListController } from '../controllers/watchLists/updateWatchList.controller';
 import asyncMiddleware from '../middleware/async.middleware';
+import { watchListUpdateValidationRules } from '../validation/watchList';
 
 const router: Router = Router();
 
@@ -25,6 +26,6 @@ router.get('/:uuid', asyncMiddleware(getWatchListController));
 
 router.delete('/:uuid', asyncMiddleware(deleteWatchListController));
 
-router.put('/:uuid', asyncMiddleware(updateWatchListController));
+router.put('/:uuid', watchListUpdateValidationRules(),  asyncMiddleware(updateWatchListController));
 
 export const WatchListRouter: Router = router;
