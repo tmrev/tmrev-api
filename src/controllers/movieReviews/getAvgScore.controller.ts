@@ -1,16 +1,16 @@
-import { Request, Response } from 'express';
-import { getAvgScoreService } from '../../service/movieReviews/getAvgScore.service';
+import { Request, Response } from "express";
+import getAvgScoreService from "../../service/movieReviews/getAvgScore.service";
 
-export const getAvgScoreController = async (req: Request, res: Response) => {
+const getAvgScoreController = async (req: Request, res: Response) => {
   try {
-    const uuid = req.params.uuid;
+    const { uuid } = req.params;
 
     if (!uuid) {
-      throw new Error('no uuid provided');
+      throw new Error("no uuid provided");
     }
 
-    if (typeof uuid !== 'string') {
-      throw new Error('incorrect format');
+    if (typeof uuid !== "string") {
+      throw new Error("incorrect format");
     }
 
     const result = await getAvgScoreService(Number(uuid));
@@ -20,3 +20,5 @@ export const getAvgScoreController = async (req: Request, res: Response) => {
     res.status(500).send(err.message);
   }
 };
+
+export default getAvgScoreController;

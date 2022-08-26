@@ -1,16 +1,16 @@
-import { Request, Response } from 'express';
-import { getAllMovieReviewsService } from '../../service/movieReviews/getAllMovieReviews';
+import { Request, Response } from "express";
+import getAllMovieReviewsService from "../../service/movieReviews/getAllMovieReviews";
 
-export const getAllMovieReviewsController = async (req: Request, res: Response) => {
+const getAllMovieReviewsController = async (req: Request, res: Response) => {
   try {
-    const uuid = req.params.uuid;
+    const { uuid } = req.params;
 
     if (!uuid) {
-      throw new Error('no id provided');
+      throw new Error("no id provided");
     }
 
-    if (typeof uuid !== 'string') {
-      throw new Error('id is not properly formatted')
+    if (typeof uuid !== "string") {
+      throw new Error("id is not properly formatted");
     }
 
     const result = await getAllMovieReviewsService(uuid);
@@ -20,3 +20,5 @@ export const getAllMovieReviewsController = async (req: Request, res: Response) 
     res.status(500).send(err.message);
   }
 };
+
+export default getAllMovieReviewsController;

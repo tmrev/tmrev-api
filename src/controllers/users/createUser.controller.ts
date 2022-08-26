@@ -1,15 +1,15 @@
-import { Request, Response } from 'express';
-import { createUserService } from '../../service/users/createUser.service';
+import { Request, Response } from "express";
+import createUserService from "../../service/users/createUser.service";
 
-export const createUserController = async (req: Request, res: Response) => {
+const createUserController = async (req: Request, res: Response) => {
   try {
-     const auth = req.headers.authorization;
-     const body = req.body
+    const auth = req.headers.authorization;
+    const { body } = req;
 
-     console.log(req)
+    console.log(req);
 
-     if (!auth) {
-      throw new Error('no auth provided');
+    if (!auth) {
+      throw new Error("no auth provided");
     }
 
     const result = await createUserService(auth, body);
@@ -19,3 +19,5 @@ export const createUserController = async (req: Request, res: Response) => {
     res.status(500).send(err.message);
   }
 };
+
+export default createUserController;

@@ -1,10 +1,10 @@
-import { Request, Response } from 'express';
-import { createReviewService } from '../../service/movieReviews/createReview.service';
+import { Request, Response } from "express";
+import createReviewService from "../../service/movieReviews/createReview.service";
 
-export const createReviewController = async (req: Request, res: Response) => {
+const createReviewController = async (req: Request, res: Response) => {
   try {
     const auth = req.headers.authorization;
-    const body = req.body;
+    const { body } = req;
 
     const result = await createReviewService(body, auth as string);
 
@@ -13,3 +13,5 @@ export const createReviewController = async (req: Request, res: Response) => {
     res.status(500).send(err.message);
   }
 };
+
+export default createReviewController;

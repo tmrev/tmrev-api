@@ -1,46 +1,47 @@
-import { ObjectId } from 'mongodb';
+/* eslint-disable no-use-before-define */
+import { ObjectId } from "mongodb";
 
 export interface CreateMoviePayload {
-  title: string,
-  advancedScore: AdvancedScore,
-  tmdbID: number
-  reviewedDate: string
-  notes: string
-  public: boolean
-  release_date: string
+  advancedScore: AdvancedScore;
+  notes: string;
+  public: boolean;
+  release_date: string;
+  reviewedDate: string;
+  title: string;
+  tmdbID: number;
 }
 
 export interface MongoMoviePayload {
-  userId: string,
-  tmdbID: number,
-  advancedScore: AdvancedScore,
-  notes: string,
-  public: boolean
-  createdAt: TimeStamp
-  updatedAt: TimeStamp
-  averagedAdvancedScore: number
-  release_date: string
-  reviewedDate: string
-  user?: ObjectId
-  title: string
+  advancedScore: AdvancedScore;
+  averagedAdvancedScore: number;
+  createdAt: TimeStamp;
+  notes: string;
+  public: boolean;
+  release_date: string;
+  reviewedDate: string;
+  title: string;
+  tmdbID: number;
+  updatedAt: TimeStamp;
+  user?: ObjectId;
+  userId: string;
 }
 
 export interface MovieDocument {
   _id: ObjectId;
-  uuid: string;
-  createdAt: TimeStamp;
-  updatedAt: TimeStamp;
-  title: string;
   advancedScore: AdvancedScore | null;
   averagedAdvancedScore: number | null;
-  rotten: RottenMovie | null;
+  createdAt: TimeStamp;
   imdb: IMDBMovie | null;
+  rotten: RottenMovie | null;
   simpleScore: number | null;
+  title: string;
+  updatedAt: TimeStamp;
+  uuid: string;
 }
 
 type TimeStamp = {
-  seconds: number;
   nanoseconds: number;
+  seconds: number;
 };
 
 type AdvancedScore = {
@@ -57,61 +58,61 @@ type AdvancedScore = {
 };
 
 type RottenMovie = {
-  uuid: string;
   audiencescore: string;
-  rating: string;
   audiencestate: string;
-  tomatometerstate: string;
-  tomatometerscore: string;
-  title: string;
-  info: Info;
-  movieSynopsis: string;
-  poster: string;
   cast: Cast[];
+  info: Info;
   movieInfo: MovieInfo;
-  whereToWatch: WhereToWatch[];
+  movieSynopsis: string;
   photos: string[];
+  poster: string;
+  rating: string;
+  title: string;
+  tomatometerscore: string;
+  tomatometerstate: string;
+  uuid: string;
+  whereToWatch: WhereToWatch[];
 };
 
 type Cast = {
-  name: string;
   character: string;
   img: string;
+  name: string;
 };
 
 type Info = {
-  year: string;
   duration: string;
+  year: string;
 };
 
 type MovieInfo = {
-  rating: string;
-  genre: string[];
-  'original-language': string;
+  "aspect-ratio": string;
+  "box-office (gross usa)": string;
   director: string;
-  producer: string[];
-  writer: string[];
-  'release-date (theaters)': string;
-  'release-date (streaming)': string;
-  'box-office (gross usa)': string;
-  runtime: string;
   distributor: string;
-  'sound-mix': string;
-  'aspect-ratio': string;
+  genre: string[];
+  "original-language": string;
+  producer: string[];
+  rating: string;
+  "release-date (streaming)": string;
+  "release-date (theaters)": string;
+  runtime: string;
+  "sound-mix": string;
+  writer: string[];
 };
 
 type WhereToWatch = {
-  provider: string;
   availability: string;
+  provider: string;
 };
 
 type IMDBMovie = {
-  uuid: string;
-  title: string;
-  score: string;
-  metaScore: string;
-  rating: string;
-  movieSynopsis: string;
   genre: string[];
+  metaScore: string;
+  movieSynopsis: string;
   poster: string;
+  rating: string;
+  score: string;
+  title: string;
+  uuid: string;
 };

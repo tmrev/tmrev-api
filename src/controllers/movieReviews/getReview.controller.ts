@@ -1,21 +1,21 @@
-import { Request, Response } from 'express';
-import { getReviewService } from '../../service/movieReviews/getReview.service';
+import { Request, Response } from "express";
+import getReviewService from "../../service/movieReviews/getReview.service";
 
-export const getReviewController = async (req: Request, res: Response) => {
+const getReviewController = async (req: Request, res: Response) => {
   try {
     const auth = req.headers.authorization;
-    const uuid = req.params.uuid;
+    const { uuid } = req.params;
 
     if (!auth) {
-      throw new Error('no auth provided');
+      throw new Error("no auth provided");
     }
 
     if (!uuid) {
-      throw new Error('no uuid provided');
+      throw new Error("no uuid provided");
     }
 
-    if (typeof uuid !== 'string') {
-      throw new Error('incorrect format');
+    if (typeof uuid !== "string") {
+      throw new Error("incorrect format");
     }
 
     const result = await getReviewService(auth, uuid);
@@ -25,3 +25,5 @@ export const getReviewController = async (req: Request, res: Response) => {
     res.status(500).send(err.message);
   }
 };
+
+export default getReviewController;

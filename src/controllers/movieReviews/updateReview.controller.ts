@@ -1,30 +1,30 @@
-import { Request, Response } from 'express';
-import { updateReviewService } from '../../service/movieReviews/updateReview.service';
+import { Request, Response } from "express";
+import updateReviewService from "../../service/movieReviews/updateReview.service";
 
-export const updateReviewController = async (req: Request, res: Response) => {
+const updateReviewController = async (req: Request, res: Response) => {
   try {
     const auth = req.headers.authorization;
-    const body = req.body;
-    const uuid = req.params.uuid;
+    const { body } = req;
+    const { uuid } = req.params;
 
     if (!auth) {
-      throw new Error('no auth provided');
+      throw new Error("no auth provided");
     }
 
     if (!body) {
-      throw new Error('no body provided');
+      throw new Error("no body provided");
     }
 
     if (!body.uuid) {
-      throw new Error('must have movie uuid');
+      throw new Error("must have movie uuid");
     }
 
     if (!uuid) {
-      throw new Error('no uuid provided');
+      throw new Error("no uuid provided");
     }
 
-    if (typeof uuid !== 'string') {
-      throw new Error('incorrect format');
+    if (typeof uuid !== "string") {
+      throw new Error("incorrect format");
     }
 
     const result = await updateReviewService(auth, uuid, body);
@@ -34,3 +34,5 @@ export const updateReviewController = async (req: Request, res: Response) => {
     res.status(500).send(err.message);
   }
 };
+
+export default updateReviewController;

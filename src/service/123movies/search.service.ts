@@ -1,28 +1,26 @@
-import cheerio, { CheerioAPI } from 'cheerio';
-import request from 'request-promise';
+import cheerio, { CheerioAPI } from "cheerio";
+import request from "request-promise";
 
-export const searchService = async (url: string, path: string) => {
+const searchService = async (url: string) => {
   try {
     const options = {
       uri: url,
-      transform: (body: string) => {
-        return cheerio.load(body);
-      },
+      transform: (body: string) => cheerio.load(body),
     };
 
     const data = request(options).then(($: CheerioAPI) => {
       const numberMoviesSearchData: any = [];
 
-      $('a.poster').each((i, el) => {
+      $("a.poster").each((i, el) => {
         const element = cheerio.load(el);
 
         numberMoviesSearchData.push({
-          url: element('a').attr('href'),
-          uuid: element('a').attr('href')?.split('/')[4],
-          title: element('.item-title').text().trim(),
+          url: element("a").attr("href"),
+          uuid: element("a").attr("href")?.split("/")[4],
+          title: element(".item-title").text().trim(),
           hd:
-            element('span.mlbq').length &&
-            element('span.mlbq').text().trim() === 'HD',
+            element("span.mlbq").length &&
+            element("span.mlbq").text().trim() === "HD",
         });
       });
 
@@ -31,6 +29,11 @@ export const searchService = async (url: string, path: string) => {
 
     return data;
   } catch (err) {
-    throw err;
+    return {
+      success: false,
+      error: err,
+    };
   }
 };
+
+export default searchService;

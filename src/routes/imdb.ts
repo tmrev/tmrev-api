@@ -1,13 +1,12 @@
-import { Router } from 'express';
-import { getMediaController } from '../controllers/imdb/getMedia.controller';
+import { Router } from "express";
+import getMediaController from "../controllers/imdb/getMedia.controller";
 
-
-import asyncMiddleware from '../middleware/async.middleware';
+import asyncMiddleware from "../middleware/async.middleware";
 
 const router: Router = Router();
 
+router.get("/:uid", asyncMiddleware(getMediaController));
 
-router.get('/:uid', asyncMiddleware(getMediaController))
+const imdbRouter: Router = router;
 
-
-export const ImdbRouter: Router = router;
+export default imdbRouter;
