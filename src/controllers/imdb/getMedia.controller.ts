@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import getMediaService from "../../service/imdb/getMedia.service";
+import getImdbMovie from "../../service/imdb/getMedia.service";
 
 const getMediaController = async (req: Request, res: Response) => {
   try {
@@ -7,7 +7,7 @@ const getMediaController = async (req: Request, res: Response) => {
 
     if (!uid) throw Error("uid query is required");
 
-    const result = await getMediaService(uid);
+    const result = await getImdbMovie(uid);
 
     res.send(result);
   } catch (error: any) {

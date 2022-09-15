@@ -44,7 +44,7 @@ type TimeStamp = {
   seconds: number;
 };
 
-type AdvancedScore = {
+export type AdvancedScore = {
   acting: number;
   characters: number;
   cinematography: number;

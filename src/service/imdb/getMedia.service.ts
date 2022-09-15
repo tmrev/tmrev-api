@@ -1,7 +1,7 @@
 import { client } from "../..";
 import { imdb } from "../../models/mongodb";
 
-const getMediaService = async (uid: string) => {
+const getImdbMovie = async (uid: string) => {
   try {
     const db = client.db(imdb.db).collection(imdb.collection.basic);
 
@@ -43,7 +43,7 @@ const getMediaService = async (uid: string) => {
 
     const results = await db.aggregate(pipeline).toArray();
 
-    return results[0] || [];
+    return results[0] || null;
   } catch (error) {
     return {
       success: false,
@@ -52,4 +52,4 @@ const getMediaService = async (uid: string) => {
   }
 };
 
-export default getMediaService;
+export default getImdbMovie;

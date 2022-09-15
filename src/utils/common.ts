@@ -1,4 +1,5 @@
 import dayjs from "dayjs";
+import { AdvancedScore } from "../models/movieReviews";
 
 function camelize(text: string) {
   let newTest = JSON.parse(JSON.stringify(text));
@@ -16,4 +17,21 @@ function timestamp() {
   };
 }
 
-export { camelize, timestamp };
+const generateUrl = (url: string, params: any) => {
+  const myUrlWithParams = new URL(url);
+
+  Object.keys(params).forEach((value) => {
+    myUrlWithParams.searchParams.append(value, params[value]);
+  });
+
+  return myUrlWithParams.href;
+};
+
+const getAvg = (advancedScore: AdvancedScore) => {
+  const allValues = Object.values(advancedScore);
+  const sum = allValues.reduce((prev, curr) => prev + curr, 0) as number;
+
+  return sum / allValues.length;
+};
+
+export { camelize, timestamp, generateUrl, getAvg };

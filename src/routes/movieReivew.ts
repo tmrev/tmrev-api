@@ -1,33 +1,10 @@
 import { Router } from "express";
-import movieCreateValidationRules from "../validation/movies";
-import createReviewController from "../controllers/movieReviews/createReview.controller";
-import deleteReviewController from "../controllers/movieReviews/deleteReview.controller";
-import getAllMovieReviewsController from "../controllers/movieReviews/getAllMovieReviews.controller";
 import getAllReviewsController from "../controllers/movieReviews/getAllReviews.controller";
-import getAvgScoreController from "../controllers/movieReviews/getAvgScore.controller";
-import getReviewController from "../controllers/movieReviews/getReview.controller";
-import updateReviewController from "../controllers/movieReviews/updateReview.controller";
 import asyncMiddleware from "../middleware/async.middleware";
 
 const router: Router = Router();
 
-router.post(
-  "/",
-  movieCreateValidationRules(),
-  asyncMiddleware(createReviewController)
-);
-
-router.get("/all/:uuid", asyncMiddleware(getAllMovieReviewsController));
-
 router.get("/all", asyncMiddleware(getAllReviewsController));
-
-router.get("/score/:uuid", asyncMiddleware(getAvgScoreController));
-
-router.get("/:uuid", asyncMiddleware(getReviewController));
-
-router.delete("/:uuid", asyncMiddleware(deleteReviewController));
-
-router.put("/:uuid", asyncMiddleware(updateReviewController));
 
 const movieRouter: Router = router;
 

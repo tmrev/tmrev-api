@@ -1,7 +1,8 @@
 // eslint-disable-next-line import/no-unresolved
 import { getAuth } from "firebase-admin/auth";
-import { client } from "../..";
-import { tmrev } from "../../models/mongodb";
+import { ObjectId } from "mongodb";
+import { client } from "../../..";
+import { tmrev } from "../../../models/mongodb";
 
 const getReviewService = async (authToken: string, uuid: string) => {
   try {
@@ -9,9 +10,14 @@ const getReviewService = async (authToken: string, uuid: string) => {
 
     const db = client.db(tmrev.db).collection(tmrev.collection.reviews);
 
-    const result = await db.findOne({ tmdbID: Number(uuid), userId: user.uid });
+    const id = new ObjectId(uuid);
 
-    return result;
+    const result = await db.findOne({ _id: id, userId: user.uid });
+
+    return {
+      success: true,
+      body: result,
+    };
   } catch (err) {
     return {
       success: false,

@@ -3,10 +3,10 @@ import { getAuth } from "firebase-admin/auth";
 import {
   CreateMoviePayload,
   MongoMoviePayload,
-} from "../../models/movieReviews";
-import { client } from "../..";
-import { tmrev } from "../../models/mongodb";
-import { timestamp } from "../../utils/common";
+} from "../../../models/movieReviews";
+import { client } from "../../..";
+import { tmrev } from "../../../models/mongodb";
+import { timestamp } from "../../../utils/common";
 
 const createReviewService = async (
   data: CreateMoviePayload,
@@ -17,7 +17,7 @@ const createReviewService = async (
     const dbUsers = client.db(tmrev.db).collection(tmrev.collection.users);
 
     const firebaseUser = await getAuth().verifyIdToken(authToken);
-    console.log(firebaseUser.uid);
+
     const dbUser = await dbUsers.findOne({ uuid: firebaseUser.uid });
 
     const getAvg = () => {
@@ -42,10 +42,15 @@ const createReviewService = async (
       title: data.title,
     };
 
-    const result = await dbReviews.insertOne(payload);
+    const created = await dbReviews.insertOne(payload);
 
-    return result;
-  } catch (err: any) {
+    const result = await dbReviews.findOne({ _id: created.insertedId });
+
+    return {
+      success: true,
+      body: result,
+    };
+  } catch (err: unknown) {
     return {
       success: false,
       error: err,

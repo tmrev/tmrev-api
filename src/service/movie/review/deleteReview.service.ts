@@ -1,8 +1,8 @@
 // eslint-disable-next-line import/no-unresolved
 import { getAuth } from "firebase-admin/auth";
 import { ObjectId } from "mongodb";
-import { client } from "../..";
-import { tmrev } from "../../models/mongodb";
+import { client } from "../../..";
+import { tmrev } from "../../../models/mongodb";
 
 const deleteReviewService = async (authToken: string, uuid: string) => {
   try {
@@ -16,14 +16,24 @@ const deleteReviewService = async (authToken: string, uuid: string) => {
 
     if (movie) {
       if (movie.userId === user.uid) {
-        const result = await db.deleteOne({ _id: id });
+        await db.deleteOne({ _id: id });
 
-        return result;
+        return {
+          success: true,
+          body: `Successfully deleted ${id}`,
+        };
       }
-      throw new Error("Not authorized to delete this review");
+
+      return {
+        success: false,
+        error: "Not authorized to delete this review",
+      };
     }
 
-    throw new Error("Review not found");
+    return {
+      success: false,
+      error: "Review not found",
+    };
   } catch (err) {
     return {
       success: false,

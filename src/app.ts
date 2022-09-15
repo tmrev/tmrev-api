@@ -8,13 +8,15 @@ import healthRouter from "./routes/health";
 import PageRouter from "./routes/page";
 import RottenRouter from "./routes/rottenTomatoes";
 import ImdbRouter from "./routes/imdb";
-import MovieRouter from "./routes/movieReivew";
+import MovieReviewRouter from "./routes/movieReivew";
 import WatchListRouter from "./routes/watchList";
 import userRouter from "./routes/user";
 import numberMoviesRouter from "./routes/123Movies";
 import fMoviesRouter from "./routes/fMovies";
 import pollRouter from "./routes/poll";
 import theNumbersRouter from "./routes/theNumbers";
+import movieRouter from "./routes/movie";
+import searchRouter from "./routes/search";
 
 class App {
   constructor() {
@@ -47,13 +49,15 @@ class App {
     this.app.use("/page", PageRouter);
     this.app.use("/rotten", RottenRouter);
     this.app.use("/imdb", ImdbRouter);
-    this.app.use("/movie", MovieRouter);
+    this.app.use("/movie-review", MovieReviewRouter);
+    this.app.use("/movie", movieRouter);
     this.app.use("/watch-list", WatchListRouter);
     this.app.use("/user", userRouter);
     this.app.use("/123", numberMoviesRouter);
     this.app.use("/f", fMoviesRouter);
     this.app.use("/poll", pollRouter);
     this.app.use("/numbers", theNumbersRouter);
+    this.app.use("/search", searchRouter);
   }
 }
 

@@ -75,7 +75,9 @@ const dailyBoxOffice = async (title: string, year: string, tmdbID: number) => {
 
           const numbers = (columns as any[]).reduce(
             (acc, curr, index) => ({
-              [curr]: loadTable(rows[index]).text().trim(),
+              [curr.trim().replace(/\s/g, "")]: loadTable(rows[index])
+                .text()
+                .trim(),
               ...acc,
             }),
             {}
@@ -104,6 +106,7 @@ const dailyBoxOffice = async (title: string, year: string, tmdbID: number) => {
 
     return collectiveTableData;
   } catch (error) {
+    console.log(error);
     return {
       success: false,
       error,

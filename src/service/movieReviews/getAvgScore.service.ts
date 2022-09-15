@@ -57,7 +57,10 @@ const getAvgScoreService = async (tmdbID: number) => {
       ])
       .toArray();
 
-    return result;
+    return {
+      success: true,
+      body: result[0],
+    };
   } catch (err) {
     return {
       success: false,
