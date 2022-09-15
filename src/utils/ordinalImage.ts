@@ -1,10 +1,10 @@
 const OrdinalImage = (imdbImage: string | null | undefined) => {
-  if (!imdbImage) return '';
+  if (!imdbImage) return "";
 
-  const array = imdbImage.split('.');
-  array[3] = '_V1_';
+  const array = imdbImage.split(".");
+  array[3] = "_V1_";
 
-  return array.join('.');
+  return array.join(".");
 };
 
 export default OrdinalImage;

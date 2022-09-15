@@ -1,16 +1,16 @@
-import { Request, Response } from 'express';
-import { getUserService } from '../../service/users/getUser.service';
+import { Request, Response } from "express";
+import getUserService from "../../service/users/getUser.service";
 
-export const getUserController = async (req: Request, res: Response) => {
+const getUserController = async (req: Request, res: Response) => {
   try {
-    const uid = req.params.uid;
+    const { uid } = req.params;
 
     if (!uid) {
-      throw new Error('no uid provided');
+      throw new Error("no uid provided");
     }
 
-    if (typeof uid !== 'string') {
-      throw new Error('incorrect format');
+    if (typeof uid !== "string") {
+      throw new Error("incorrect format");
     }
 
     const result = await getUserService(uid);
@@ -20,3 +20,5 @@ export const getUserController = async (req: Request, res: Response) => {
     res.status(500).send(err.message);
   }
 };
+
+export default getUserController;

@@ -1,26 +1,22 @@
-import { Request, Response } from 'express';
-import { AddMovieToWatchList } from '../../service/watchLists/addMovieToWatchList.service';
-import { createWatchListService } from '../../service/watchLists/createWatchList.service';
+import { Request, Response } from "express";
+import AddMovieToWatchList from "../../service/watchLists/addMovieToWatchList.service";
 
-export const addMovieToWatchListController = async (
-  req: Request,
-  res: Response
-) => {
+const addMovieToWatchListController = async (req: Request, res: Response) => {
   try {
     const auth = req.headers.authorization;
-    const listId = req.params.listId;
-    const body = req.body;
+    const { listId } = req.params;
+    const { body } = req;
 
     if (!auth) {
-      throw new Error('no auth provided');
+      throw new Error("no auth provided");
     }
 
     if (!listId) {
-      throw new Error('no listId provided');
+      throw new Error("no listId provided");
     }
 
     if (!body) {
-      throw new Error('no body provided');
+      throw new Error("no body provided");
     }
 
     const result = await AddMovieToWatchList(auth, listId, body);
@@ -30,3 +26,5 @@ export const addMovieToWatchListController = async (
     res.status(500).send(err.message);
   }
 };
+
+export default addMovieToWatchListController;

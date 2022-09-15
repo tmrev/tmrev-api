@@ -1,9 +1,11 @@
-import { Request, Response } from 'express';
+import { Request, Response } from "express";
 
-export const generalHealthController = async (req: Request, res: Response) => {
+const generalHealthController = async (req: Request, res: Response) => {
   try {
-    res.send('ok');
+    res.send("ok");
   } catch (err) {
     res.status(500).send(err);
   }
 };
+
+export default generalHealthController;

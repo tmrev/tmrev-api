@@ -1,11 +1,11 @@
-import { Request, Response } from 'express';
-import { metaScrapService } from '../../service/page/metaScrap.service';
+import { Request, Response } from "express";
+import metaScrapService from "../../service/page/metaScrap.service";
 
-export const metaScrap = async (req: Request, res: Response) => {
+const metaScrap = async (req: Request, res: Response) => {
   try {
     const url = req.query.url as string | undefined;
 
-    if (!url) throw Error('URL is required');
+    if (!url) throw Error("URL is required");
 
     const meta = await metaScrapService(url);
 
@@ -14,3 +14,5 @@ export const metaScrap = async (req: Request, res: Response) => {
     res.status(500).send(err.message);
   }
 };
+
+export default metaScrap;

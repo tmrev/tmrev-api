@@ -1,20 +1,17 @@
-import { Request, Response } from 'express';
-import { createWatchListService } from '../../service/watchLists/createWatchList.service';
+import { Request, Response } from "express";
+import { createWatchListService } from "../../service/watchLists/createWatchList.service";
 
-export const createWatchListController = async (
-  req: Request,
-  res: Response
-) => {
+const createWatchListController = async (req: Request, res: Response) => {
   try {
     const auth = req.headers.authorization;
-    const body = req.body;
+    const { body } = req;
 
     if (!auth) {
-      throw new Error('no auth provided');
+      throw new Error("no auth provided");
     }
 
     if (!body) {
-      throw new Error('no body provided');
+      throw new Error("no body provided");
     }
 
     const result = await createWatchListService(auth, body);
@@ -24,3 +21,5 @@ export const createWatchListController = async (
     res.status(500).send(err.message);
   }
 };
+
+export default createWatchListController;

@@ -1,21 +1,21 @@
-import { Request, Response } from 'express';
-import { searchService } from '../../service/rottenTomatoes/search.service';
+import { Request, Response } from "express";
+import searchService from "../../service/rottenTomatoes/search.service";
 
 type Search = {
-  url: string;
   img: string;
   type: string;
+  url: string;
   uuid: string;
   year: string;
 };
 
-export const searchController = async (req: Request, res: Response) => {
+const searchController = async (req: Request, res: Response) => {
   try {
     const search = req.query.search as string | undefined;
     const type = req.query.type as string | undefined;
     const year = req.query.year as string | undefined;
 
-    if (!search) throw Error('search query is required');
+    if (!search) throw Error("search query is required");
 
     const meta: Search[] = await searchService(
       `https://www.rottentomatoes.com/search?search=${search}`
@@ -36,3 +36,5 @@ export const searchController = async (req: Request, res: Response) => {
     res.status(500).send(err.message);
   }
 };
+
+export default searchController;

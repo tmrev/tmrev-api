@@ -1,10 +1,12 @@
-import { Router } from 'express';
-import { dailyBoxOfficeController } from '../controllers/theNumbers/dailyBoxOffice.controller';
+import { Router } from "express";
+import dailyBoxOfficeController from "../controllers/theNumbers/dailyBoxOffice.controller";
 
-import asyncMiddleware from '../middleware/async.middleware';
+import asyncMiddleware from "../middleware/async.middleware";
 
 const router: Router = Router();
 
-router.get('/daily', asyncMiddleware(dailyBoxOfficeController));
+router.get("/daily", asyncMiddleware(dailyBoxOfficeController));
 
-export const theNumbersRouter: Router = router;
+const theNumbersRouter: Router = router;
+
+export default theNumbersRouter;

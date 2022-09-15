@@ -1,15 +1,15 @@
-import { Request, Response } from 'express';
+import { Request, Response } from "express";
 
-import { metaDataService } from '../../service/rottenTomatoes/metaData.service';
+import metaDataService from "../../service/rottenTomatoes/metaData.service";
 
-export const metaDataController = async (req: Request, res: Response) => {
+const metaDataController = async (req: Request, res: Response) => {
   try {
     const uuid = req.params.uuid as string | undefined;
-    const type = req.params.type as 'm' | 'tv';
+    const type = req.params.type as "m" | "tv";
 
-    if (!uuid) throw Error('uuid query is required');
+    if (!uuid) throw Error("uuid query is required");
 
-    if (type !== 'm' && type !== 'tv')
+    if (type !== "m" && type !== "tv")
       throw Error('incorrect type use either "m" or "tv"');
 
     const meta = await metaDataService(
@@ -17,10 +17,10 @@ export const metaDataController = async (req: Request, res: Response) => {
       uuid
     );
 
-
-
     res.send(meta);
   } catch (err: any) {
     res.status(500).send(err.message);
   }
 };
+
+export default metaDataController;

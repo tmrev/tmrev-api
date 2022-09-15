@@ -1,12 +1,13 @@
-import { getAuth } from 'firebase-admin/auth';
-import { client } from '../..';
-import { tmrev } from '../../models/mongodb';
-import { timestamp } from '../../utils/common';
+// eslint-disable-next-line import/no-unresolved
+import { getAuth } from "firebase-admin/auth";
+import { client } from "../..";
+import { tmrev } from "../../models/mongodb";
+import { timestamp } from "../../utils/common";
 
 export type ListData = {
-  title: string;
   description: string;
   public: boolean;
+  title: string;
 };
 
 export const createWatchListService = async (
@@ -23,13 +24,16 @@ export const createWatchListService = async (
       movies: [],
       created_at: timestamp(),
       updated_at: timestamp(),
-      userId: user.uid
+      userId: user.uid,
     };
 
     const result = await db.insertOne(newWatchList);
 
     return result;
   } catch (err) {
-    throw err;
+    return {
+      success: false,
+      error: err,
+    };
   }
 };
