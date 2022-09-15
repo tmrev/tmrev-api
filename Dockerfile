@@ -1,5 +1,5 @@
 #!/bin/bash
-FROM node:14.16.0-alpine
+FROM node:14.17.0-alpine
 
 # Set working directory
 WORKDIR /usr/app
