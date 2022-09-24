@@ -1,6 +1,10 @@
 /* eslint-disable prefer-promise-reject-errors */
 import { body, header, checkSchema, check } from "express-validator";
 
+const movieBatchValidation = () => {
+  return [check("movieId").isArray()];
+};
+
 const movieCreateDataValidation = () => {
   return [
     check("title")
@@ -8,7 +12,6 @@ const movieCreateDataValidation = () => {
       .withMessage("the title must have less then 265 characters")
       .trim(),
     check("public").isBoolean().exists().toBoolean(),
-    check("notes").isString(),
     header("Authorization").isString().exists(),
     body("advancedScore").custom((value) => {
       if (!value.acting) {
@@ -48,11 +51,6 @@ const movieCreateDataValidation = () => {
 
 const movieCreateSchemaValidationRules = () =>
   checkSchema({
-    notes: {
-      isString: true,
-      errorMessage: "Notes must be a string",
-      in: ["body"],
-    },
     public: {
       isBoolean: true,
       errorMessage: "Public must be a boolean",
@@ -120,4 +118,5 @@ export {
   movieCreateSchemaValidationRules,
   movieGetValidationRules,
   movieCreateDataValidation,
+  movieBatchValidation,
 };
