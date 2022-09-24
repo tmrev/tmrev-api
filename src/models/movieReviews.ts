@@ -39,7 +39,7 @@ export interface MovieDocument {
   uuid: string;
 }
 
-type TimeStamp = {
+export type TimeStamp = {
   nanoseconds: number;
   seconds: number;
 };

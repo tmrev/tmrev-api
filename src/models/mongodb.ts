@@ -5,6 +5,7 @@ const tmrev = {
     reviews: "reviews",
     users: "users",
     watchlists: "watchlists",
+    watched: "watched",
   },
 };
 const imdb = {

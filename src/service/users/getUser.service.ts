@@ -30,6 +30,14 @@ const getUserService = async (uuid: string) => {
           as: "watchLists",
         },
       },
+      {
+        $lookup: {
+          from: tmrev.collection.watched,
+          localField: "uuid",
+          foreignField: "userId",
+          as: "watched",
+        },
+      },
     ];
 
     const result = await db.aggregate(pipeline).toArray();
