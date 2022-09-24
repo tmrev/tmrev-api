@@ -21,9 +21,8 @@ const createWatchService = async (
     const dbUser = await dbUsers.findOne({ uuid: firebaseUser.uid });
 
     const findWatched = await dbWatched
-      .find({ tmdbID: Number(data.tmdbID) })
+      .find({ tmdbID: Number(data.tmdbID), userId: firebaseUser.uid })
       .toArray();
-
     if (findWatched.length) {
       return {
         success: false,
