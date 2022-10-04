@@ -3,6 +3,7 @@ import { client } from "../..";
 import { tmrev } from "../../models/mongodb";
 import getImdbMovie from "../imdb/getMedia.service";
 import getAvgScoreService from "../movieReviews/getAvgScore.service";
+import getWatchProviders from "../../endpoints/tmdb/getWatchProviders";
 
 const getMovie = async (movieId: number) => {
   try {
@@ -50,11 +51,13 @@ const getMovie = async (movieId: number) => {
 
     const imdbMovie = await getImdbMovie(tmdbMovie.imdb_id);
     const avgScore = await getAvgScoreService(tmdbMovie.id);
+    const watchProvider = await getWatchProviders(tmdbMovie.id);
 
     return {
       success: true,
       body: {
         ...tmdbMovie,
+        watchProvider: watchProvider?.results,
         tmrev: {
           reviews: tmrevMovie,
           avgScore: avgScore.body || null,

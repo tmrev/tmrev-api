@@ -23,7 +23,27 @@ import type {
   SearchMovieResponse,
 } from "./searchMovie";
 
+interface Buy {
+  display_priority: number;
+  logo_path: string;
+  provider_id: number;
+  provider_name: string;
+}
+interface WatchProviderResponse {
+  id: number;
+  results: {
+    [x: string]: {
+      buy: Buy[];
+      flatrate: Buy[];
+      link: string;
+      rent: Buy[];
+    };
+  };
+}
+
 export type {
+  Buy,
+  WatchProviderResponse,
   Cast,
   Credits,
   DiscoverMovie,
