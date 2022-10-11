@@ -23,6 +23,8 @@ import {
   createWatchedSchema,
   createWatchedValidation,
 } from "../validation/watched";
+import topReviewedController from "../controllers/movie/review/topReviewed.controller";
+import justReviewedController from "../controllers/movie/review/justReviewed.controller";
 
 const router: Router = Router();
 
@@ -44,6 +46,10 @@ router.get("/watched/:id", asyncMiddleware(getWatchedController));
 router.put("/watched/:id", asyncMiddleware(updateWatchedController));
 
 router.delete("/watched/:id", asyncMiddleware(deleteWatchedController));
+
+router.get("/just-reviewed", asyncMiddleware(justReviewedController));
+
+router.get("/top-reviewed", asyncMiddleware(topReviewedController));
 
 router.get(
   "/:movieId",
