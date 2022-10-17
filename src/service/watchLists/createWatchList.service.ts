@@ -6,6 +6,7 @@ import { timestamp } from "../../utils/common";
 
 export type ListData = {
   description: string;
+  movies?: number[];
   public: boolean;
   title: string;
 };
@@ -21,7 +22,7 @@ export const createWatchListService = async (
 
     const newWatchList = {
       ...data,
-      movies: [],
+      movies: data.movies || [],
       created_at: timestamp(),
       updated_at: timestamp(),
       userId: user.uid,

@@ -17,6 +17,7 @@ import pollRouter from "./routes/poll";
 import theNumbersRouter from "./routes/theNumbers";
 import movieRouter from "./routes/movie";
 import searchRouter from "./routes/search";
+import importRouter from "./routes/import";
 
 class App {
   constructor() {
@@ -58,6 +59,7 @@ class App {
     this.app.use("/poll", pollRouter);
     this.app.use("/numbers", theNumbersRouter);
     this.app.use("/search", searchRouter);
+    this.app.use("/import", importRouter);
   }
 }
 
