@@ -3,6 +3,7 @@ import cors from "cors";
 import express from "express";
 import morgan from "morgan";
 import helmet from "helmet";
+import compression from "compression";
 
 import healthRouter from "./routes/health";
 import PageRouter from "./routes/page";
@@ -19,6 +20,15 @@ import movieRouter from "./routes/movie";
 import searchRouter from "./routes/search";
 import importRouter from "./routes/import";
 
+const shouldCompress = (req: any, res: any) => {
+  if (req.headers["x-no-compression"]) {
+    // Will not compress responses, if this header is present
+    return false;
+  }
+  // Resort to standard compression
+  return compression.filter(req, res);
+};
+
 class App {
   constructor() {
     this.app = express();
@@ -29,6 +39,12 @@ class App {
   public app: express.Application;
 
   private config(): void {
+    this.app.use(
+      compression({
+        filter: shouldCompress,
+        threshold: 0,
+      })
+    );
     this.app.use(bodyParser.urlencoded({ extended: false }));
     this.app.use(bodyParser.json());
     this.app.use(cors());

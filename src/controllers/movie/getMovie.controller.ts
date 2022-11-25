@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { validationResult } from "express-validator";
+import { appCache } from "../..";
 import getMovie from "../../service/movie/getMovie";
 import controllerResponse from "../../utils/controllerResponse";
 
@@ -16,6 +17,8 @@ const getMovieController = async (req: Request, res: Response) => {
     }
 
     const result = await getMovie(Number(movieId));
+
+    appCache.set(movieId, result);
 
     controllerResponse(res, result);
   } catch (err: unknown) {

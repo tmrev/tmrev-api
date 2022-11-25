@@ -1,5 +1,6 @@
 // eslint-disable-next-line import/no-unresolved
 import { initializeApp, cert } from "firebase-admin/app";
+import NodeCache from "node-cache";
 import { MongoClient } from "mongodb";
 import app from "./app";
 
@@ -20,6 +21,7 @@ export const firebaseApp = initializeApp({
 
 const uri = `mongodb+srv://${user}:${password}@${host}`;
 
+export const appCache = new NodeCache({ stdTTL: 3599 });
 export const client = new MongoClient(uri);
 
 const connectMongoDb = () => {
