@@ -25,6 +25,7 @@ import {
 } from "../validation/watched";
 import topReviewedController from "../controllers/movie/review/topReviewed.controller";
 import justReviewedController from "../controllers/movie/review/justReviewed.controller";
+import getAllReviewsController from "../controllers/movie/review/getAllReviews.controller";
 
 const router: Router = Router();
 
@@ -55,6 +56,12 @@ router.get(
   "/:movieId",
   movieGetValidationRules(),
   asyncMiddleware(getMovieController)
+);
+
+router.get(
+  "/reviews/:movieId",
+  movieGetValidationRules(),
+  asyncMiddleware(getAllReviewsController)
 );
 
 router.get(

@@ -1,71 +1,37 @@
 import getDetails from "../../endpoints/tmdb/getDetails";
-import { client } from "../..";
-import { tmrev } from "../../models/mongodb";
+import { appCache } from "../..";
 import getImdbMovie from "../imdb/getMedia.service";
-import getAvgScoreService from "../movieReviews/getAvgScore.service";
 import getWatchProviders from "../../endpoints/tmdb/getWatchProviders";
 
 const getMovie = async (movieId: number) => {
   try {
-    const db = client.db(tmrev.db).collection(tmrev.collection.reviews);
-    const watchedDB = client.db(tmrev.db).collection(tmrev.collection.watched);
+    console.log(appCache.get(movieId));
+
+    if (appCache.has(movieId)) {
+      return appCache.get(movieId);
+    }
 
     const tmdbMovie = await getDetails(movieId);
-    const tmrevMovie = await db
-      .aggregate([
-        {
-          $match: {
-            tmdbID: movieId,
-            public: true,
-          },
-        },
-        {
-          $lookup: {
-            from: "users",
-            localField: "userId",
-            foreignField: "uuid",
-            as: "profile",
-          },
-        },
-        {
-          $unwind: {
-            path: "$profile",
-          },
-        },
-      ])
-      .toArray();
-    const ratings = await watchedDB.find({ tmdbID: Number(movieId) }).toArray();
-
-    const likes = [];
-    const dislikes = [];
-
-    ratings.forEach((value) => {
-      if (value.liked) {
-        likes.push(value);
-      } else {
-        dislikes.push(value);
-      }
-    });
 
     if (!tmdbMovie) throw new Error("Movie not found");
 
     const imdbMovie = await getImdbMovie(tmdbMovie.imdb_id);
-    const avgScore = await getAvgScoreService(tmdbMovie.id);
     const watchProvider = await getWatchProviders(tmdbMovie.id);
+
+    const body = {
+      ...tmdbMovie,
+      watchProvider: watchProvider?.results,
+      imdb: imdbMovie,
+    };
+
+    appCache.set(movieId, {
+      success: true,
+      body,
+    });
 
     return {
       success: true,
-      body: {
-        ...tmdbMovie,
-        watchProvider: watchProvider?.results,
-        tmrev: {
-          reviews: tmrevMovie,
-          avgScore: avgScore.body || null,
-          likes: likes.length,
-          dislikes: dislikes.length,
-        },
-        imdb: imdbMovie,
-      },
+      body,
     };
   } catch (error: any) {
     return {
