@@ -11,13 +11,12 @@ const convertOrder = (order: "asc" | "desc" | string) => {
   return 0;
 };
 
-let userReview: Document;
-
 const getAllReviewsService = async (
   movieId: number,
   query: GetMovieReviewQuery
 ) => {
   try {
+    let userReview: Document[] = [];
     const { count, skip, sort_by, include_user_review } = query;
     const db = client.db(tmrev.db).collection(tmrev.collection.reviews);
     const watchedDB = client.db(tmrev.db).collection(tmrev.collection.watched);
@@ -101,7 +100,7 @@ const getAllReviewsService = async (
       const review = await db.aggregate(singleUserPipeline).toArray();
       if (review.length) {
         // eslint-disable-next-line prefer-destructuring
-        userReview = [...review][0];
+        userReview = [...review];
       }
     }
 
@@ -126,8 +125,8 @@ const getAllReviewsService = async (
       success: true,
       body: {
         reviews:
-          userReview && include_user_review
-            ? [userReview, ...tmrevMovie]
+          userReview.length && include_user_review
+            ? [...userReview, ...tmrevMovie]
             : tmrevMovie,
         avgScore: avgScore.body || null,
         likes: likes.length,
