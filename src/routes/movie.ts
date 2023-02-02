@@ -7,6 +7,7 @@ import {
   movieCreateDataValidation,
   movieCreateSchemaValidationRules,
   movieDeleteValidationRules,
+  movieGetReviewsValidation,
   movieGetValidationRules,
   movieReviewGetValidationRules,
 } from "../validation/movies";
@@ -61,6 +62,7 @@ router.get(
 router.get(
   "/reviews/:movieId",
   movieGetValidationRules(),
+  movieGetReviewsValidation(),
   asyncMiddleware(getAllReviewsController)
 );
 

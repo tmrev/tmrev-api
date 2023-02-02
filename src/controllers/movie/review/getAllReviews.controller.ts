@@ -15,7 +15,7 @@ const getAllReviewsController = async (req: Request, res: Response) => {
       });
     }
 
-    const result = await getAllReviewsService(Number(movieId));
+    const result = await getAllReviewsService(Number(movieId), req.query);
 
     controllerResponse(res, result);
   } catch (err: unknown) {

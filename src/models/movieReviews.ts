@@ -116,3 +116,36 @@ type IMDBMovie = {
   title: string;
   uuid: string;
 };
+
+export type GetMovieReviewSortBy =
+  | "date.asc"
+  | "date.desc"
+  | "avgScore.asc"
+  | "avgScore.desc"
+  | "acting.asc"
+  | "acting.desc"
+  | "characters.asc"
+  | "characters.desc"
+  | "cinematography.asc"
+  | "cinematography.desc"
+  | "climax.asc"
+  | "climax.desc"
+  | "ending.asc"
+  | "ending.desc"
+  | "music.asc"
+  | "music.desc"
+  | "personalScore.asc"
+  | "personalScore.desc"
+  | "plot.asc"
+  | "plot.desc"
+  | "theme.asc"
+  | "theme.desc"
+  | "visuals.asc"
+  | "visuals.desc";
+
+export interface GetMovieReviewQuery {
+  count?: number;
+  include_user_review?: string;
+  skip?: number;
+  sort_by?: GetMovieReviewSortBy;
+}

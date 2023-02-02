@@ -1,5 +1,32 @@
 /* eslint-disable prefer-promise-reject-errors */
-import { body, header, checkSchema, check } from "express-validator";
+import { body, header, checkSchema, check, query } from "express-validator";
+
+export const movieReviewSortList = [
+  "averagedAdvancedScore.asc",
+  "averagedAdvancedScore.desc",
+  "acting.asc.advancedScore",
+  "acting.desc.advancedScore",
+  "characters.asc.advancedScore",
+  "characters.desc.advancedScore",
+  "cinematography.asc.advancedScore",
+  "cinematography.desc.advancedScore",
+  "climax.asc.advancedScore",
+  "climax.desc.advancedScore",
+  "ending.asc.advancedScore",
+  "ending.desc.advancedScore",
+  "music.asc.advancedScore",
+  "music.desc.advancedScore",
+  "personalScore.asc.advancedScore",
+  "personalScore.desc.advancedScore",
+  "plot.asc.advancedScore",
+  "plot.desc.advancedScore",
+  "theme.asc.advancedScore",
+  "theme.desc.advancedScore",
+  "visuals.asc.advancedScore",
+  "visuals.desc.advancedScore",
+  "reviewedDate.asc",
+  "reviewedDate.desc",
+];
 
 const movieBatchValidation = () => {
   return [check("movieId").isArray()];
@@ -112,6 +139,35 @@ const movieDeleteValidationRules = () =>
     },
   });
 
+const movieGetReviewsValidation = () => {
+  return [
+    query("count")
+      .isNumeric()
+      .withMessage("count must be a number.")
+      .toInt()
+      .optional(),
+    query("skip")
+      .isNumeric()
+      .withMessage("skip must be a number.")
+      .toInt()
+      .optional(),
+    query("sort_by")
+      .isString()
+      .withMessage("sort_by must be a string.")
+      .isIn(movieReviewSortList)
+      .withMessage(
+        `sort_by can only be one of these items:${movieReviewSortList.map(
+          (v) => ` ${v}`
+        )}.`
+      )
+      .optional(),
+    query("include_user_review")
+      .isString()
+      .withMessage("include_user must be the users id.")
+      .optional(),
+  ];
+};
+
 export {
   movieReviewGetValidationRules,
   movieDeleteValidationRules,
@@ -119,4 +175,5 @@ export {
   movieGetValidationRules,
   movieCreateDataValidation,
   movieBatchValidation,
+  movieGetReviewsValidation,
 };

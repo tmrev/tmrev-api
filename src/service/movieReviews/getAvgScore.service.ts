@@ -15,10 +15,7 @@ const getAvgScoreService = async (tmdbID: number) => {
         },
         {
           $group: {
-            _id: {
-              tmdbID: "$tmdbID",
-              title: "$title",
-            },
+            _id: "$tmdbID",
             totalScore: {
               $avg: "$averagedAdvancedScore",
             },
