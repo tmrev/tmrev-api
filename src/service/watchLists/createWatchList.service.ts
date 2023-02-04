@@ -8,6 +8,7 @@ export type ListData = {
   description: string;
   movies?: number[];
   public: boolean;
+  tags: string[];
   title: string;
 };
 
@@ -21,7 +22,10 @@ export const createWatchListService = async (
     const db = client.db(tmrev.db).collection(tmrev.collection.watchlists);
 
     const newWatchList = {
-      ...data,
+      tags: data.tags,
+      public: data.public,
+      description: data.description,
+      title: data.title,
       movies: data.movies || [],
       created_at: timestamp(),
       updated_at: timestamp(),
@@ -30,7 +34,9 @@ export const createWatchListService = async (
 
     const result = await db.insertOne(newWatchList);
 
-    return result;
+    const watchList = await db.findOne({ _id: result.insertedId });
+
+    return watchList;
   } catch (err) {
     return {
       success: false,

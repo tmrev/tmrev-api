@@ -23,10 +23,6 @@ const watchListUpdateValidationRules = () =>
       isArray: true,
       errorMessage: "Movies is required",
     },
-    userId: {
-      isString: true,
-      errorMessage: "userId is required",
-    },
   });
 
 export default watchListUpdateValidationRules;
