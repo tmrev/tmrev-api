@@ -11,18 +11,14 @@ const certs = require("../cred.json");
 require("dotenv").config();
 
 const PORT = process.env.PORT || 8080;
-const user = process.env.DB_USER;
-const password = process.env.DB_PASS;
-const host = process.env.DB_HOST;
+const host = process.env.DB_HOST || "";
 
 export const firebaseApp = initializeApp({
   credential: cert(certs),
 });
 
-const uri = `mongodb+srv://${user}:${password}@${host}`;
-
 export const appCache = new NodeCache({ stdTTL: 3599 });
-export const client = new MongoClient(uri);
+export const client = new MongoClient(host);
 
 const connectMongoDb = () => {
   client
