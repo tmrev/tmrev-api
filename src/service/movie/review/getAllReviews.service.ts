@@ -32,6 +32,25 @@ const getAllReviewsService = async (
 
     pipeline.push({
       $lookup: {
+        from: "comments",
+        pipeline: [
+          {
+            $lookup: {
+              from: "users",
+              localField: "author",
+              foreignField: "_id",
+              as: "profile",
+            },
+          },
+        ],
+        localField: "_id",
+        foreignField: "post.id",
+        as: "comments",
+      },
+    });
+
+    pipeline.push({
+      $lookup: {
         from: "users",
         localField: "userId",
         foreignField: "uuid",
@@ -135,6 +154,8 @@ const getAllReviewsService = async (
       },
     };
   } catch (err) {
+    console.error(err);
+
     return {
       success: false,
       error: err,

@@ -27,6 +27,7 @@ import {
 import topReviewedController from "../controllers/movie/review/topReviewed.controller";
 import justReviewedController from "../controllers/movie/review/justReviewed.controller";
 import getAllReviewsController from "../controllers/movie/review/getAllReviews.controller";
+import createCommentController from "../controllers/movie/comment/createComment.controller";
 
 const router: Router = Router();
 
@@ -52,6 +53,8 @@ router.delete("/watched/:id", asyncMiddleware(deleteWatchedController));
 router.get("/just-reviewed", asyncMiddleware(justReviewedController));
 
 router.get("/top-reviewed", asyncMiddleware(topReviewedController));
+
+router.post("/review/:id/comment", asyncMiddleware(createCommentController));
 
 router.get(
   "/:movieId",

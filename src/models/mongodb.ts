@@ -7,6 +7,7 @@ const tmrev = {
     watchlists: "watchlists",
     watched: "watched",
     tmdb: "tmdb_movies",
+    comments: "comments",
   },
 };
 const imdb = {
