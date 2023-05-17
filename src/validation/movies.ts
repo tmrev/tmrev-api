@@ -76,6 +76,13 @@ const movieCreateDataValidation = () => {
   ];
 };
 
+const voteReviewValidation = () => {
+  return [
+    body("vote").isBoolean().toBoolean(),
+    header("Authorization").isString().exists(),
+  ];
+};
+
 const movieCreateSchemaValidationRules = () =>
   checkSchema({
     public: {
@@ -176,4 +183,5 @@ export {
   movieCreateDataValidation,
   movieBatchValidation,
   movieGetReviewsValidation,
+  voteReviewValidation,
 };

@@ -40,6 +40,10 @@ const createReviewService = async (
       public: data.public,
       release_date: data.release_date,
       title: data.title,
+      votes: {
+        upVote: [],
+        downVote: [],
+      },
     };
 
     const created = await dbReviews.insertOne(payload);

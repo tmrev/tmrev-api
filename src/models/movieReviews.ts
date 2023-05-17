@@ -1,5 +1,6 @@
 /* eslint-disable no-use-before-define */
 import { ObjectId } from "mongodb";
+import { Vote } from "./tmdb/comments";
 
 export interface CreateMoviePayload {
   advancedScore: AdvancedScore;
@@ -24,6 +25,7 @@ export interface MongoMoviePayload {
   updatedAt: TimeStamp;
   user?: ObjectId;
   userId: string;
+  votes: Vote;
 }
 
 export interface MovieDocument {

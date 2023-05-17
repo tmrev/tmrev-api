@@ -10,6 +10,7 @@ import {
   movieGetReviewsValidation,
   movieGetValidationRules,
   movieReviewGetValidationRules,
+  voteReviewValidation,
 } from "../validation/movies";
 import createMovieReviewController from "../controllers/movie/review/createMovieReview.controller";
 import deleteMovieReviewController from "../controllers/movie/review/deleteMovieReivew.controller";
@@ -28,8 +29,15 @@ import topReviewedController from "../controllers/movie/review/topReviewed.contr
 import justReviewedController from "../controllers/movie/review/justReviewed.controller";
 import getAllReviewsController from "../controllers/movie/review/getAllReviews.controller";
 import createCommentController from "../controllers/movie/comment/createComment.controller";
+import voteReviewController from "../controllers/movie/review/voteReview.controller";
 
 const router: Router = Router();
+
+router.post(
+  "/review/vote/:id",
+  voteReviewValidation(),
+  asyncMiddleware(voteReviewController)
+);
 
 router.post(
   "/batch",
