@@ -8,8 +8,6 @@ const createCommentController = async (req: Request, res: Response) => {
     const errors = validationResult(req);
     const auth = req.headers.authorization;
 
-    console.log(auth);
-
     const { body } = req;
     const { id } = req.params;
 

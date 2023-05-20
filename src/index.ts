@@ -1,5 +1,7 @@
 // eslint-disable-next-line import/no-unresolved
 import { initializeApp, cert } from "firebase-admin/app";
+// eslint-disable-next-line import/no-unresolved
+import { getMessaging } from "firebase-admin/messaging";
 import NodeCache from "node-cache";
 import { MongoClient } from "mongodb";
 import app from "./app";
@@ -16,6 +18,7 @@ const host = process.env.DB_HOST || "";
 export const firebaseApp = initializeApp({
   credential: cert(certs),
 });
+export const messaging = getMessaging(firebaseApp);
 
 export const appCache = new NodeCache({ stdTTL: 3599 });
 export const client = new MongoClient(host);

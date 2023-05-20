@@ -8,8 +8,6 @@ const updateWatchedController = async (req: Request, res: Response) => {
     const { body } = req;
     const { id } = req.params;
 
-    console.log("endpoint");
-
     const result = await updateWatchedService(auth, id, body);
 
     controllerResponse(res, result);

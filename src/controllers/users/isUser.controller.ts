@@ -13,8 +13,6 @@ const isUserController = async (req: Request, res: Response) => {
       throw new Error("incorrect format");
     }
 
-    console.log(uid);
-
     const result = await isUserService(uid);
 
     res.send(result);

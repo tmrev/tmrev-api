@@ -11,8 +11,11 @@ import isUserController from "../controllers/users/isUser.controller";
 import searchUserController from "../controllers/users/searchUser.controller";
 import updateUserController from "../controllers/users/updateUser.controller";
 import asyncMiddleware from "../middleware/async.middleware";
+import saveUserDeviceTokenController from "../controllers/users/saveUserDeviceToken.controller";
 
 const router: Router = Router();
+
+router.post("/device", asyncMiddleware(saveUserDeviceTokenController));
 
 router.get("/isUser/:uid", asyncMiddleware(isUserController));
 

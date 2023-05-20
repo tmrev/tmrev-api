@@ -6,8 +6,6 @@ const createUserController = async (req: Request, res: Response) => {
     const auth = req.headers.authorization;
     const { body } = req;
 
-    console.log(req);
-
     if (!auth) {
       throw new Error("no auth provided");
     }
