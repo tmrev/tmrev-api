@@ -12,6 +12,8 @@ import searchUserController from "../controllers/users/searchUser.controller";
 import updateUserController from "../controllers/users/updateUser.controller";
 import asyncMiddleware from "../middleware/async.middleware";
 import saveUserDeviceTokenController from "../controllers/users/saveUserDeviceToken.controller";
+import ratedUserMoviesController from "../controllers/users/data/ratedMovies.controller";
+import categoryChartController from "../controllers/users/data/categoryChart.controller";
 
 const router: Router = Router();
 
@@ -29,13 +31,17 @@ router.get("/follow/feed", asyncMiddleware(followerFeedController));
 
 router.post("/follow/:uid", asyncMiddleware(followUserController));
 
-router.get("/:category/:uuid", asyncMiddleware(getUserCategoryController));
-
 router.get("/leaderboard", asyncMiddleware(getUserLeaderBoardController));
 
 router.post("/", asyncMiddleware(createUserController));
 
 router.put("/", asyncMiddleware(updateUserController));
+
+router.get("/:uid/ratedMovies", asyncMiddleware(ratedUserMoviesController));
+
+router.get("/:uid/categoryRatings", asyncMiddleware(categoryChartController));
+
+router.get("/:category/:uuid", asyncMiddleware(getUserCategoryController));
 
 router.get("/:uid", asyncMiddleware(getUserByUidController));
 

@@ -10,8 +10,25 @@ const saveUserDeviceTokenService = async (
   deviceToken: string
 ) => {
   try {
-    await getAuth().verifyIdToken(authToken);
+    const firebaseUser = await getAuth().verifyIdToken(authToken);
     const db = client.db(tmrev.db).collection(tmrev.collection.users);
+
+    console.log(firebaseUser.uid);
+
+    const user = await db.findOne({ uuid: firebaseUser.uid });
+
+    if (!user)
+      return {
+        success: false,
+        error: "Unable to find user",
+      };
+
+    if ((user.devices as string[]).includes(deviceToken)) {
+      return {
+        success: false,
+        error: "device token already exist",
+      };
+    }
 
     await db.updateOne(
       { uuid: userId },
