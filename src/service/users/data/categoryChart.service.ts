@@ -27,6 +27,18 @@ const categoryChartService = async (uid: string, authToken: string | null) => {
     const userReviews = await dbReviews.find({ userId: user.uuid }).toArray();
 
     const data = {
+      personalScore: {
+        1: [],
+        2: [],
+        3: [],
+        4: [],
+        5: [],
+        6: [],
+        7: [],
+        8: [],
+        9: [],
+        10: [],
+      },
       acting: {
         1: [],
         2: [],
@@ -99,18 +111,7 @@ const categoryChartService = async (uid: string, authToken: string | null) => {
         9: [],
         10: [],
       },
-      personalScore: {
-        1: [],
-        2: [],
-        3: [],
-        4: [],
-        5: [],
-        6: [],
-        7: [],
-        8: [],
-        9: [],
-        10: [],
-      },
+
       plot: {
         1: [],
         2: [],
