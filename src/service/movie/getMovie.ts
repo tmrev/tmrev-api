@@ -1,6 +1,5 @@
 import getDetails from "../../endpoints/tmdb/getDetails";
 import { appCache } from "../..";
-import getImdbMovie from "../imdb/getMedia.service";
 import getWatchProviders from "../../endpoints/tmdb/getWatchProviders";
 
 const getMovie = async (movieId: number) => {
@@ -15,13 +14,11 @@ const getMovie = async (movieId: number) => {
 
     if (!tmdbMovie) throw new Error("Movie not found");
 
-    const imdbMovie = await getImdbMovie(tmdbMovie.imdb_id);
     const watchProvider = await getWatchProviders(tmdbMovie.id);
 
     const body = {
       ...tmdbMovie,
       watchProvider: watchProvider?.results,
-      imdb: imdbMovie,
     };
 
     appCache.set(movieId, {
