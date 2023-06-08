@@ -39,10 +39,7 @@ const votePollService = async (
         category.votes.forEach((vote, voteIndex) => {
           category.votes.splice(voteIndex, 1);
         });
-        console.log(category, index);
-
         newPoll.categories[index].votes = [...new Set(category.votes)];
-        console.log(newPoll.categories[index].votes);
       }
     });
 

@@ -14,6 +14,7 @@ import theNumbersRouter from "./routes/theNumbers";
 import movieRouter from "./routes/movie";
 import searchRouter from "./routes/search";
 import importRouter from "./routes/import";
+import notificationsRouter from "./routes/notifications";
 
 const shouldCompress = (req: any, res: any) => {
   if (req.headers["x-no-compression"]) {
@@ -66,6 +67,7 @@ class App {
     this.app.use("/numbers", theNumbersRouter);
     this.app.use("/search", searchRouter);
     this.app.use("/import", importRouter);
+    this.app.use("/notification", notificationsRouter);
   }
 }
 

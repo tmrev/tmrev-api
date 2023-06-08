@@ -22,8 +22,6 @@ const updateWatchedService = async (
         _id: id,
       })) as any;
 
-    console.log(currentWatched, "27");
-
     if (!currentWatched) {
       return {
         success: false,

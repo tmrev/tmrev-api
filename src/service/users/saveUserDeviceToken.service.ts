@@ -13,8 +13,6 @@ const saveUserDeviceTokenService = async (
     const firebaseUser = await getAuth().verifyIdToken(authToken);
     const db = client.db(tmrev.db).collection(tmrev.collection.users);
 
-    console.log(firebaseUser.uid);
-
     const user = await db.findOne({ uuid: firebaseUser.uid });
 
     if (!user)

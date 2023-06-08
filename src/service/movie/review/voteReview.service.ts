@@ -5,6 +5,10 @@ import { ObjectId } from "mongodb";
 import { client } from "../../..";
 import { tmrev } from "../../../models/mongodb";
 import { Vote } from "../../../models/tmdb/comments";
+import {
+  NotificationTypes,
+  createNotification,
+} from "../../../functions/notifications";
 
 const hasUserVoted = (userId: ObjectId, votes: Vote) => {
   const upVoteMatch = votes.upVote.filter((vote) => vote.equals(userId));
@@ -12,14 +16,14 @@ const hasUserVoted = (userId: ObjectId, votes: Vote) => {
 
   if (upVoteMatch.length) {
     return {
-      type: "upVote",
+      type: NotificationTypes.UP_VOTE,
       index: votes.upVote.findIndex((vote) => vote.equals(userId)),
     };
   }
 
   if (downVoteMatch.length) {
     return {
-      type: "downVote",
+      type: NotificationTypes.DOWN_VOTE,
       index: votes.downVote.findIndex((vote) => vote.equals(userId)),
     };
   }
@@ -60,9 +64,9 @@ const voteReviewService = async (
 
     const voted = hasUserVoted(user._id, currentMovie.votes);
 
-    if (voted && voted.type === "upVote") {
+    if (voted && voted.type === NotificationTypes.UP_VOTE) {
       currentMovie.votes.upVote.splice(voted.index, 1);
-    } else if (voted && voted.type === "downVote") {
+    } else if (voted && voted.type === NotificationTypes.DOWN_VOTE) {
       (currentMovie.votes.downVote as any[]).splice(voted.index, 1);
     }
 
@@ -73,6 +77,19 @@ const voteReviewService = async (
     }
 
     await db.updateOne({ _id: new ObjectId(reviewId) }, { $set: currentMovie });
+
+    const currentMovieAuthor = await userDb.findOne({
+      uuid: currentMovie.userId,
+    });
+
+    if (currentMovieAuthor) {
+      await createNotification({
+        recipient: currentMovieAuthor._id.toString(),
+        sender: user._id.toString(),
+        reviewId,
+        type: vote ? NotificationTypes.UP_VOTE : NotificationTypes.DOWN_VOTE,
+      });
+    }
 
     const result = await db.findOne({
       _id: new ObjectId(reviewId),

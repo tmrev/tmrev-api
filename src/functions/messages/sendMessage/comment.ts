@@ -48,10 +48,9 @@ const sendCommentMessage = async (topic: string, message: MessageParam) => {
     },
   };
 
-  console.log(messages);
-
   const response = await getMessaging().send(messages);
-  console.log(response);
+
+  return response;
 };
 
 export default sendCommentMessage;

@@ -5,8 +5,10 @@ import { client } from "../../..";
 import { PostTypes, Comment } from "../../../models/tmdb/comments";
 import { tmrev } from "../../../models/mongodb";
 import { timestamp } from "../../../utils/common";
-import subscribeTopic from "../../../functions/messages/subscribeTopic";
-import sendCommentMessage from "../../../functions/messages/sendMessage/comment";
+import {
+  NotificationTypes,
+  createNotification,
+} from "../../../functions/notifications";
 
 const createCommentService = async (
   reviewId: string,
@@ -44,13 +46,16 @@ const createCommentService = async (
 
     const { insertedId } = await dbComments.insertOne(payload);
 
-    await sendCommentMessage(reviewId, {
-      title: `${user.firstName} has commented on your review!`,
-      body: comment,
-      link: "https://tmrev.io",
+    await createNotification({
+      recipient: review.user,
+      sender: user._id.toString(),
+      reviewId: review._id.toString(),
+      reply: {
+        id: insertedId.toString(),
+        message: comment,
+      },
+      type: NotificationTypes.REPLY,
     });
-
-    await subscribeTopic(insertedId.toString(), user.devices as string[]);
 
     const result = await dbComments.findOne({ _id: insertedId });
 

@@ -4,8 +4,6 @@ import getWatchProviders from "../../endpoints/tmdb/getWatchProviders";
 
 const getMovie = async (movieId: number) => {
   try {
-    console.log(appCache.get(movieId));
-
     if (appCache.has(movieId)) {
       return appCache.get(movieId);
     }
