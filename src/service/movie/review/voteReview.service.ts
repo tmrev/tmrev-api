@@ -51,9 +51,18 @@ const voteReviewService = async (
       };
     }
 
-    const currentMovie = await db.findOne({
+    const correctMovieId = await db.findOne({
       _id: new ObjectId(reviewId),
     });
+
+    const brokenMovieId = await db.findOne({
+      _id: reviewId,
+    });
+
+    const currentMovie = {
+      ...correctMovieId,
+      ...brokenMovieId,
+    };
 
     if (!currentMovie) {
       return {

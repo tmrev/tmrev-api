@@ -11,16 +11,22 @@ import {
 
 const router: Router = Router();
 
+// marks notifications as read
 router.post("/:id/read", asyncMiddleware(readNotificationController));
 
+// marks notification as un-read
+// TODO: rename this endpoint
 router.post("/:id/forget", asyncMiddleware(forgetNotificationController));
 
+// returns all new notifications
 router.get(
   "/",
   retrieveNotificationValidation(),
   asyncMiddleware(retrieveNotificationController)
 );
 
+// creates notification
+// TODO: remove this endpoint not needed
 router.post(
   "/",
   createNotificationValidation(),

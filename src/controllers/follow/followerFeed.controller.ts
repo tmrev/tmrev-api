@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import followerFeedService from "../../service/users/followerFeed.service";
+import followerFeedService from "../../service/follow/followerFeed.service";
 
 const followerFeedController = async (req: Request, res: Response) => {
   try {

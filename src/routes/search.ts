@@ -5,6 +5,8 @@ import searchValidationRules from "../validation/search";
 
 const router: Router = Router();
 
+// used for search through watchlist, users and review. Also searches tmdb
+// TODO: remove tmdb search and separate concerns
 router.get(
   "/",
   searchValidationRules(),

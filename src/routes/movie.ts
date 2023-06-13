@@ -17,14 +17,7 @@ import deleteMovieReviewController from "../controllers/movie/review/deleteMovie
 import updateMovieReviewController from "../controllers/movie/review/updateMovieReview.controller";
 import getMovieReviewController from "../controllers/movie/review/getMovieReview.controller";
 import batchMovieController from "../controllers/movie/batchMovie.controller";
-import deleteWatchedController from "../controllers/movie/watched/deleteWatched.controller";
-import createWatchedController from "../controllers/movie/watched/createWatched.controller";
-import getWatchedController from "../controllers/movie/watched/getWatched.controller";
-import updateWatchedController from "../controllers/movie/watched/updateWatched.controller";
-import {
-  createWatchedSchema,
-  createWatchedValidation,
-} from "../validation/watched";
+
 import topReviewedController from "../controllers/movie/review/topReviewed.controller";
 import justReviewedController from "../controllers/movie/review/justReviewed.controller";
 import getAllReviewsController from "../controllers/movie/review/getAllReviews.controller";
@@ -33,43 +26,38 @@ import voteReviewController from "../controllers/movie/review/voteReview.control
 
 const router: Router = Router();
 
+// up/down vote a movie review
 router.post(
   "/review/vote/:id",
   voteReviewValidation(),
   asyncMiddleware(voteReviewController)
 );
 
+// given an array of tmdbIds will return tmdb movie details
 router.post(
   "/batch",
   movieBatchValidation(),
   asyncMiddleware(batchMovieController)
 );
 
-router.post(
-  "/watched",
-  createWatchedSchema(),
-  createWatchedValidation(),
-  asyncMiddleware(createWatchedController)
-);
-
-router.get("/watched/:id", asyncMiddleware(getWatchedController));
-
-router.put("/watched/:id", asyncMiddleware(updateWatchedController));
-
-router.delete("/watched/:id", asyncMiddleware(deleteWatchedController));
-
+// gets the latest review movies
 router.get("/just-reviewed", asyncMiddleware(justReviewedController));
 
+// gets the movies with the most reviews
 router.get("/top-reviewed", asyncMiddleware(topReviewedController));
 
+// creates a comment attached to a review
 router.post("/review/:id/comment", asyncMiddleware(createCommentController));
 
+// returns movie details from tmdb as well as saved reviews
 router.get(
   "/:movieId",
   movieGetValidationRules(),
   asyncMiddleware(getMovieController)
 );
 
+// returns all of the reviews for a given movie
+// TODO: Clean this up and separate concerns
 router.get(
   "/reviews/:movieId",
   movieGetValidationRules(),
@@ -77,12 +65,15 @@ router.get(
   asyncMiddleware(getAllReviewsController)
 );
 
+// returns a single review based on the mongodbId
+// TODO: Fix all review endpoints to use mongodbId instead of firebase
 router.get(
   "/review/:id",
   movieReviewGetValidationRules(),
   asyncMiddleware(getMovieReviewController)
 );
 
+// creates a review
 router.post(
   "/review",
   movieCreateSchemaValidationRules(),
@@ -90,12 +81,14 @@ router.post(
   asyncMiddleware(createMovieReviewController)
 );
 
+// deletes a review
 router.delete(
   "/review/:id",
   movieDeleteValidationRules(),
   asyncMiddleware(deleteMovieReviewController)
 );
 
+// updates a review
 router.put(
   "/review/:id",
   movieCreateSchemaValidationRules(),

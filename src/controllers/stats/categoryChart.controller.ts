@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import categoryChartService from "../../../service/users/data/categoryChart.service";
+import categoryChartService from "../../service/stats/categoryChart.service";
 
 const categoryChartController = async (req: Request, res: Response) => {
   try {

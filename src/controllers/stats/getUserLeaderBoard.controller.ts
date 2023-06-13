@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import getUserLeaderBoardService from "../../service/users/getUserLeaderBoard.service";
+import getUserLeaderBoardService from "../../service/stats/getUserLeaderBoard.service";
 
 const getUserLeaderBoardController = async (req: Request, res: Response) => {
   try {

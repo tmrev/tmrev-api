@@ -6,7 +6,6 @@ import helmet from "helmet";
 import compression from "compression";
 
 import healthRouter from "./routes/health";
-import MovieReviewRouter from "./routes/movieReivew";
 import WatchListRouter from "./routes/watchList";
 import userRouter from "./routes/user";
 import pollRouter from "./routes/poll";
@@ -15,6 +14,8 @@ import movieRouter from "./routes/movie";
 import searchRouter from "./routes/search";
 import importRouter from "./routes/import";
 import notificationsRouter from "./routes/notifications";
+import statsRouter from "./routes/stats";
+import followRouter from "./routes/follow";
 
 const shouldCompress = (req: any, res: any) => {
   if (req.headers["x-no-compression"]) {
@@ -59,7 +60,6 @@ class App {
 
   private routes(): void {
     this.app.use("/health", healthRouter);
-    this.app.use("/movie-review", MovieReviewRouter);
     this.app.use("/movie", movieRouter);
     this.app.use("/watch-list", WatchListRouter);
     this.app.use("/user", userRouter);
@@ -68,6 +68,8 @@ class App {
     this.app.use("/search", searchRouter);
     this.app.use("/import", importRouter);
     this.app.use("/notification", notificationsRouter);
+    this.app.use("/stats", statsRouter);
+    this.app.use("/follow", followRouter);
   }
 }
 

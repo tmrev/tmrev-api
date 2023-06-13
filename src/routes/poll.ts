@@ -7,6 +7,9 @@ import asyncMiddleware from "../middleware/async.middleware";
 
 const router: Router = Router();
 
+// legacy router leftover from https://movielot.vercel.app
+// TODO: refactor this for https://tmrev.io
+
 router.post("/", asyncMiddleware(createPollController));
 
 router.get("/:id", asyncMiddleware(getPollController));

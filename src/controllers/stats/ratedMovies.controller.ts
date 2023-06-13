@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import ratedUserMoviesService from "../../../service/users/data/ratedMovies.service";
+import ratedUserMoviesService from "../../service/stats/ratedMovies.service";
 
 const ratedUserMoviesController = async (req: Request, res: Response) => {
   try {

@@ -1,7 +1,7 @@
 // eslint-disable-next-line import/no-unresolved
 import { DecodedIdToken, getAuth } from "firebase-admin/auth";
-import { client } from "../../..";
-import { tmrev } from "../../../models/mongodb";
+import { client } from "../..";
+import { tmrev } from "../../models/mongodb";
 
 const categoryChartService = async (uid: string, authToken: string | null) => {
   try {

@@ -1,28 +1,38 @@
 // eslint-disable-next-line import/no-unresolved
 import { getAuth } from "firebase-admin/auth";
-import { WithId } from "mongodb";
-import {
-  CreateMoviePayload,
-  MongoMoviePayload,
-} from "../../../models/movieReviews";
+import { ObjectId } from "mongodb";
+import { CreateMoviePayload } from "../../../models/movieReviews";
 import { client } from "../../..";
 import { tmrev } from "../../../models/mongodb";
 import { getAvg, timestamp } from "../../../utils/common";
 
 const updateReviewService = async (
   authToken: string,
-  uuid: string,
+  reviewId: string,
   data: CreateMoviePayload
 ) => {
   try {
-    const user = await getAuth().verifyIdToken(authToken);
+    await getAuth().verifyIdToken(authToken);
 
     const db = client.db(tmrev.db).collection(tmrev.collection.reviews);
 
-    const currentMovie: WithId<MongoMoviePayload | null> = (await db.findOne({
-      tmdbID: Number(uuid),
-      userId: user.uid,
-    })) as any;
+    const correctMovieId = await db.findOne({
+      _id: new ObjectId(reviewId),
+    });
+
+    const brokenMovieId = await db.findOne({
+      _id: reviewId,
+    });
+
+    const currentMovie = {
+      ...correctMovieId,
+      ...brokenMovieId,
+    };
+
+    // const currentMovie: WithId<MongoMoviePayload | null> = (await db.findOne({
+    //   tmdbID: Number(uuid),
+    //   userId: user.uid,
+    // })) as any;
 
     if (!currentMovie) {
       return {
@@ -38,12 +48,9 @@ const updateReviewService = async (
       updatedAt: timestamp(),
     };
 
-    await db.updateOne(
-      { tmdbID: Number(uuid), userId: user.uid },
-      { $set: payload }
-    );
+    await db.updateOne({ _id: currentMovie._id }, { $set: payload });
 
-    const result = await db.findOne({ tmdbID: Number(uuid), userId: user.uid });
+    const result = await db.findOne({ _id: currentMovie._id });
 
     return {
       success: true,

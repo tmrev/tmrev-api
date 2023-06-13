@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import followUserService from "../../service/users/followUser.service";
+import followUserService from "../../service/follow/followUser.service";
 
 const followUserController = async (req: Request, res: Response) => {
   try {
