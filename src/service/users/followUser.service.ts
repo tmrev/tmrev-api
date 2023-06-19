@@ -16,16 +16,21 @@ const followUserService = async (authToken: string, userId: string) => {
 
     const _id = new ObjectId(userId);
 
-    const userDoc = await db.findOne({ uuid: user.uid });
+    const currentUser = await db.findOne({ uuid: user.uid });
 
     const followerUser = await db.findOne({ _id });
 
-    const flatFollowers = userDoc?.following.map((s: ObjectId) => s.toString());
+    const flatFollowers = currentUser?.following.map((s: ObjectId) =>
+      s.toString()
+    );
 
-    if (userDoc && followerUser) {
-      if (userDoc.following && flatFollowers.includes(_id.toString())) {
+    if (currentUser && followerUser) {
+      if (currentUser.following && flatFollowers.includes(_id.toString())) {
         // current user
-        await db.updateOne({ _id: userDoc._id }, { $pull: { following: _id } });
+        await db.updateOne(
+          { _id: currentUser._id },
+          { $pull: { following: _id } }
+        );
 
         // user that will be unfollowed
         await db.updateOne(
@@ -37,14 +42,14 @@ const followUserService = async (authToken: string, userId: string) => {
         result = "unfollowed";
 
         await createNotification({
-          sender: userDoc._id.toString(),
+          sender: currentUser._id.toString(),
           recipient: followerUser._id.toString(),
           type: NotificationTypes.UN_FOLLOW,
         });
       } else {
         // current user
         await db.updateOne(
-          { _id: userDoc._id },
+          { _id: currentUser._id },
           { $addToSet: { following: _id } }
         );
 
@@ -53,7 +58,7 @@ const followUserService = async (authToken: string, userId: string) => {
         result = "followed";
 
         await createNotification({
-          sender: userDoc._id.toString(),
+          sender: currentUser._id.toString(),
           recipient: followerUser._id.toString(),
           type: NotificationTypes.FOLLOW,
         });

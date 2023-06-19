@@ -7,7 +7,7 @@ import {
 import { client } from "../../..";
 import { tmrev } from "../../../models/mongodb";
 import { timestamp } from "../../../utils/common";
-import subscribeTopic from "../../../functions/messages/subscribeTopic";
+import postReviewFeed from "../../../functions/feed/updateFeed/postReview";
 
 const createReviewService = async (
   data: CreateMoviePayload,
@@ -49,10 +49,9 @@ const createReviewService = async (
 
     const created = await dbReviews.insertOne(payload);
 
-    await subscribeTopic(
-      created.insertedId.toString(),
-      dbUser?.devices as string[]
-    );
+    if (dbUser && created) {
+      await postReviewFeed(payload, dbUser, dbUser.followers);
+    }
 
     const result = await dbReviews.findOne({ _id: created.insertedId });
 

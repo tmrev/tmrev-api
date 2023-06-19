@@ -12,7 +12,8 @@
           "typescript"
         ],
         "conventionalCommits.scopes": [
-          "Profile"
+          "Profile",
+          "Feed"
         ]
     
 }
