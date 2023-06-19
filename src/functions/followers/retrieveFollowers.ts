@@ -14,13 +14,13 @@ const retrieveFollowers = async (
   if (!account) return null;
 
   const followers = await userDB
-    .find({ following: account.uuid })
+    .find({ following: new ObjectId(account._id) })
     .skip((page - 1) * pageSize)
     .limit(pageSize)
     .toArray();
 
   const total = await userDB.countDocuments({
-    following: account.uuid,
+    following: new ObjectId(account._id),
   });
 
   return {

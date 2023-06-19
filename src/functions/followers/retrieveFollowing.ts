@@ -15,16 +15,14 @@ const retrieveFollowing = async (
     if (!account) return null;
 
     const following = await userDB
-      .find({ uuid: { $in: account.following } })
+      .find({ _id: { $in: account.following } })
       .skip((page - 1) * pageSize)
       .limit(pageSize)
       .toArray();
 
     const total = await userDB.countDocuments({
-      uuid: { $in: account.following },
+      _id: { $in: account.following },
     });
-
-    console.log(following);
 
     return {
       total,
