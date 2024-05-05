@@ -16,6 +16,8 @@ import searchRouter from "./routes/search";
 import importRouter from "./routes/import";
 import notificationsRouter from "./routes/notifications";
 import followRouter from "./routes/follow";
+import userV2Router from "./routes/v2/userV2";
+import movieV2Router from "./routes/v2/movieV2";
 
 const shouldCompress = (req: any, res: any) => {
   if (req.headers["x-no-compression"]) {
@@ -61,8 +63,10 @@ class App {
   private routes(): void {
     this.app.use("/health", healthRouter);
     this.app.use("/movie-review", MovieReviewRouter);
+    this.app.use("/movie/v2", movieV2Router);
     this.app.use("/movie", movieRouter);
     this.app.use("/watch-list", WatchListRouter);
+    this.app.use("/user/v2", userV2Router);
     this.app.use("/user", userRouter);
     this.app.use("/poll", pollRouter);
     this.app.use("/numbers", theNumbersRouter);
