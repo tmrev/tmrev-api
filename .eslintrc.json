@@ -33,7 +33,8 @@
         "import/extensions": "off",
         "no-underscore-dangle": "off",
         "camelcase": "off",
-        "resolveJsonModule": "off"
+        "resolveJsonModule": "off",
+        "import/no-unresolved": "off"
     }, 
     "settings": {
     "import/resolver": {
