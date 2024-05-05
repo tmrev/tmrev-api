@@ -26,6 +26,10 @@ export const movieReviewSortList = [
   "visuals.desc.advancedScore",
   "reviewedDate.asc",
   "reviewedDate.desc",
+  "votes.upVote.asc",
+  "votes.upVote.desc",
+  "votes.downVote.asc",
+  "votes.downVote.desc",
 ];
 
 const movieBatchValidation = () => {
@@ -175,6 +179,33 @@ const movieGetReviewsValidation = () => {
   ];
 };
 
+const getUserMovieReviewsValidation = () => {
+  return [
+    header("Authorization").isString().optional(),
+    query("pageNumber")
+      .isNumeric()
+      .withMessage("Page Number must be a number.")
+      .toInt()
+      .exists(),
+    query("pageSize")
+      .isNumeric()
+      .withMessage("Page Size must be a number.")
+      .toInt()
+      .exists(),
+    query("sort_by")
+      .isString()
+      .withMessage("sort_by must be a string.")
+      .isIn(movieReviewSortList)
+      .withMessage(
+        `sort_by can only be one of these items:${movieReviewSortList.map(
+          (v) => ` ${v}`
+        )}.`
+      )
+      .optional(),
+    query("advancedScore").isString().optional(),
+  ];
+};
+
 export {
   movieReviewGetValidationRules,
   movieDeleteValidationRules,
@@ -184,4 +215,5 @@ export {
   movieBatchValidation,
   movieGetReviewsValidation,
   voteReviewValidation,
+  getUserMovieReviewsValidation,
 };
