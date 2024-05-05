@@ -4,7 +4,6 @@ import { tmrev } from "../../../models/mongodb";
 const topReviewedService = async () => {
   try {
     const db = client.db(tmrev.db).collection(tmrev.collection.reviews);
-
     const result = await db
       .aggregate([
         {
@@ -12,6 +11,9 @@ const topReviewedService = async () => {
             _id: "$tmdbID",
             count: {
               $sum: 1,
+            },
+            moviePoster: {
+              $first: "$moviePoster",
             },
           },
         },

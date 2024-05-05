@@ -4,6 +4,7 @@ import { Vote } from "./tmdb/comments";
 
 export interface CreateMoviePayload {
   advancedScore: AdvancedScore;
+  moviePoster: string;
   notes: string;
   public: boolean;
   release_date: string;
@@ -16,6 +17,7 @@ export interface MongoMoviePayload {
   advancedScore: AdvancedScore;
   averagedAdvancedScore: number;
   createdAt: TimeStamp;
+  moviePoster: string;
   notes: string;
   public: boolean;
   release_date: string;
@@ -58,6 +60,18 @@ export type AdvancedScore = {
   theme: number;
   visuals: number;
 };
+
+export type AdvancedScoreUnion =
+  | "acting"
+  | "characters"
+  | "cinematography"
+  | "climax"
+  | "ending"
+  | "music"
+  | "personalScore"
+  | "plot"
+  | "theme"
+  | "visuals";
 
 type RottenMovie = {
   audiencescore: string;

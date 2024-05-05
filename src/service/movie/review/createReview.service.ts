@@ -45,6 +45,7 @@ const createReviewService = async (
         upVote: [],
         downVote: [],
       },
+      moviePoster: data.moviePoster,
     };
 
     const created = await dbReviews.insertOne(payload);
