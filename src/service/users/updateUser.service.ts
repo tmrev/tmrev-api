@@ -17,6 +17,7 @@ const updateUserService = async (authToken: string, data: object) => {
     const newData = {
       ...dbUser,
       ...data,
+      updatedAt: new Date(),
     };
 
     await db.updateOne(
