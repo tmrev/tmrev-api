@@ -30,25 +30,13 @@ PRIVATE_KEY=""
 # the movie database
 TMDB_API_KEY=""
 ```
-you can find that information [here](https://github.com/tmrev/tmrev.io/wiki/Getting-Started-with-tmrev-io-(creationals))
 
-your're `cred.json` file should look something like this:
-```
-{
-    "type": "",
-    "project_id": "",
-    "private_key_id": "",
-    "private_key": "",
-    "client_email": "",
-    "client_id": "",
-    "auth_uri": "",
-    "token_uri": "",
-    "auth_provider_x509_cert_url": "",
-    "client_x509_cert_url": ""
-  }
-  
-```
-this should be the same JSON file you downloaded from firebase
+## Getting Auth Config
+
+Navigate to back your Firebase project Project Settings > Service Account
+Click the "Generate new private key"
+A JSON file should have been downloaded to your computer (save the file as cred.json)
+move it to the root directory of tmrev-api
 
 3. This project utilizes [ESLint](https://eslint.org/) to fix problems, and enforces [Airbnb's](https://airbnb.io/javascript/react/) coding standards. *Please download the plugin for your corresponding IDE*
     - [VS Code Eslint Extension](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint)
