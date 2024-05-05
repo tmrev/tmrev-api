@@ -15,7 +15,7 @@ const categoryChartService = async (uid: string, authToken: string | null) => {
       .db(tmrev.db)
       .collection(tmrev.collection.reviews);
 
-    const user = await dbUser.findOne({ uuid: firebaseUser?.uid || uid });
+    const user = await dbUser.findOne({ uuid: uid });
 
     if (!user) {
       return {
@@ -24,7 +24,15 @@ const categoryChartService = async (uid: string, authToken: string | null) => {
       };
     }
 
-    const userReviews = await dbReviews.find({ userId: user.uuid }).toArray();
+    const searchQuery = () => {
+      if (!firebaseUser || firebaseUser.uid !== uid) {
+        return { userId: user.uuid, public: true };
+      }
+
+      return { userId: user.uuid };
+    };
+
+    const userReviews = await dbReviews.find(searchQuery()).toArray();
 
     const data = {
       personalScore: {
