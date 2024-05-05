@@ -9,7 +9,6 @@ const postReviewFeed = async (
   followers: ObjectId[]
 ) => {
   try {
-    console.log(followers);
     // Prepare the operations for bulkWrite
     const updateOps = followers.map((followerId: ObjectId) => ({
       updateOne: {
@@ -33,8 +32,6 @@ const postReviewFeed = async (
       .bulkWrite(updateOps as any);
   } catch (err) {
     console.error(err);
-  } finally {
-    console.log("updated user feed", "+++++++++++++++++++++");
   }
 };
 
