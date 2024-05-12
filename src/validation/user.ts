@@ -1,4 +1,4 @@
-import { header, param } from "express-validator";
+import { header, param, query } from "express-validator";
 
 const getUserValidation = () => {
   return [
@@ -7,5 +7,12 @@ const getUserValidation = () => {
   ];
 };
 
-// eslint-disable-next-line import/prefer-default-export
-export { getUserValidation };
+const getUserFollowersValidation = () => {
+  return [
+    header("Authorization").isString().optional(),
+    param("uid").isString().exists(),
+    query("search").isString().optional(),
+  ];
+};
+
+export { getUserValidation, getUserFollowersValidation };
