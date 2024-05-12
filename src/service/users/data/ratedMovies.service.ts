@@ -9,16 +9,21 @@ const ratedUserMoviesService = async (
 ) => {
   try {
     let firebaseUser: DecodedIdToken | null = null;
+    let authUser: any;
 
     if (authToken) {
       firebaseUser = await getAuth().verifyIdToken(authToken);
+      authUser = await client
+        .db(tmrev.db)
+        .collection(tmrev.collection.users)
+        .findOne({ uuid: firebaseUser?.uid });
     }
     const dbUser = await client.db(tmrev.db).collection(tmrev.collection.users);
     const dbReviews = await client
       .db(tmrev.db)
       .collection(tmrev.collection.reviews);
 
-    const user = await dbUser.findOne({ uuid: firebaseUser?.uid || uid });
+    const user = await dbUser.findOne({ uuid: uid });
 
     if (!user) {
       return {
@@ -27,14 +32,23 @@ const ratedUserMoviesService = async (
       };
     }
 
+    let findQuery: any = {
+      userId: user.uuid,
+      averagedAdvancedScore: { $ne: null },
+    };
+
+    if (authUser?.uuid !== user.uuid) {
+      findQuery = { ...findQuery, public: true };
+    }
+
     const highestReviews = await dbReviews
-      .find({ userId: user.uuid, averagedAdvancedScore: { $ne: null } })
+      .find(findQuery)
       .sort({ averagedAdvancedScore: -1 })
       .limit(10)
       .toArray();
 
     const lowestReviews = await dbReviews
-      .find({ userId: user.uuid, averagedAdvancedScore: { $ne: null } })
+      .find(findQuery)
       .sort({ averagedAdvancedScore: 1 })
       .limit(10)
       .toArray();
