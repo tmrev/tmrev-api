@@ -13,6 +13,7 @@ const getUserV2Service = async (userId: string, authToken?: string) => {
     const userDB = client.db(tmrev.db).collection(tmrev.collection.users);
     const reviewDB = client.db(tmrev.db).collection(tmrev.collection.reviews);
     const listDB = client.db(tmrev.db).collection(tmrev.collection.watchlists);
+    const watchedDB = client.db(tmrev.db).collection(tmrev.collection.watched);
 
     if (authToken) {
       firebaseUser = await getAuth().verifyIdToken(authToken);
@@ -32,6 +33,7 @@ const getUserV2Service = async (userId: string, authToken?: string) => {
 
     const reviews = await reviewDB.find(mediaQuery()).toArray();
     const lists = await listDB.find(mediaQuery()).toArray();
+    const watched = await watchedDB.find(mediaQuery()).toArray();
 
     if (!searchedUser) {
       return {
@@ -60,6 +62,7 @@ const getUserV2Service = async (userId: string, authToken?: string) => {
         photoUrl: searchedUser.photoUrl,
         reviewCount: reviews.length,
         listCount: lists.length,
+        watchedCount: watched.length,
         followerCount: searchedUser.followers.length,
         followingCount: searchedUser.following.length,
         isFollowing,
