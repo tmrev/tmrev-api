@@ -1,5 +1,12 @@
 /* eslint-disable prefer-promise-reject-errors */
-import { body, header, checkSchema, check, query } from "express-validator";
+import {
+  body,
+  header,
+  checkSchema,
+  check,
+  query,
+  param,
+} from "express-validator";
 
 export const movieReviewSortList = [
   "averagedAdvancedScore.asc",
@@ -206,6 +213,24 @@ const getUserMovieReviewsValidation = () => {
   ];
 };
 
+const updatePinnedMoviesValidation = () => {
+  return [
+    body("movieReviewIds").isArray().exists(),
+    header("Authorization").isString().exists(),
+  ];
+};
+
+const createPinnedMoviesValidation = () => {
+  return [
+    body("movieReviewId").isString().exists(),
+    header("Authorization").isString().exists(),
+  ];
+};
+
+const getPinnedMoviesValidation = () => {
+  return [param("uid").isString().exists()];
+};
+
 export {
   movieReviewGetValidationRules,
   movieDeleteValidationRules,
@@ -216,4 +241,7 @@ export {
   movieGetReviewsValidation,
   voteReviewValidation,
   getUserMovieReviewsValidation,
+  getPinnedMoviesValidation,
+  createPinnedMoviesValidation,
+  updatePinnedMoviesValidation,
 };
