@@ -32,6 +32,7 @@ const createWatchService = async (
 
     const payload: MongoWatchedPayload = {
       ...data,
+      public: data.public || true,
       createdAt: timestamp(),
       updatedAt: timestamp(),
       userId: firebaseUser.uid,

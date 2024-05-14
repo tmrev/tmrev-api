@@ -4,6 +4,7 @@ import { TimeStamp } from "./movieReviews";
 export interface CreateWatchedPayload {
   liked: boolean;
   posterPath: string;
+  public: boolean;
   title: string;
   tmdbID: number;
 }
