@@ -11,6 +11,7 @@ export type UserReviewsQueryType = {
   pageNumber: number;
   pageSize: number;
   sort_by: string;
+  textSearch?: string;
 };
 
 const convertOrder = (order: "asc" | "desc" | string) => {
@@ -42,8 +43,19 @@ const GetUserReviewsService = async (
             query.advancedScore.score,
         },
       });
+    }
+
+    // Match the user's reviews
+    if (query.textSearch) {
+      pipeline.push({
+        $match: {
+          userId,
+          $text: {
+            $search: query.textSearch,
+          },
+        },
+      });
     } else {
-      // Match the user's reviews
       pipeline.push({
         $match: {
           userId,
