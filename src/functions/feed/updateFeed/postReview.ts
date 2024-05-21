@@ -1,10 +1,13 @@
 import { ObjectId } from "mongodb";
 import { client } from "../../..";
 import { tmrev } from "../../../models/mongodb";
-import { MongoMoviePayload } from "../../../models/movieReviews";
+import {
+  CreateMovieReviewV2Document,
+  MongoMoviePayload,
+} from "../../../models/movieReviews";
 
 const postReviewFeed = async (
-  review: MongoMoviePayload,
+  review: MongoMoviePayload | CreateMovieReviewV2Document,
   author: any,
   followers: ObjectId[]
 ) => {

@@ -2,8 +2,53 @@
 import { ObjectId } from "mongodb";
 import { Vote } from "./tmdb/comments";
 
+export type CreateMovieReviewV2Document = {
+  advancedScore: AdvancedScore;
+  averagedAdvancedScore: number;
+  createdAt: Date;
+  movieDetails: MovieDetails;
+  notes: string;
+  public: boolean;
+  reviewedDate: string;
+  title: string;
+  tmdbID: number;
+  updatedAt: Date;
+  userId: string;
+  votes: Vote;
+};
+
+export type CreateMovieReviewV2Payload = {
+  advancedScore: AdvancedScore;
+  movieDetails: MovieDetails;
+  notes: string;
+  public: boolean;
+  reviewedDate: string;
+  title: string;
+  tmdbID: number;
+};
+
+export type Genre = {
+  id: number;
+  name: string;
+};
+
+export type MovieDetails = {
+  backdrop_path: string;
+  budget: number;
+  genres: Genre[];
+  id: number;
+  imdb_id: string;
+  original_language: string;
+  poster_path: string | null;
+  release_date: string;
+  revenue: number;
+  runtime: number;
+  title: string;
+};
+
 export interface CreateMoviePayload {
   advancedScore: AdvancedScore;
+  movieDetails?: MovieDetails;
   moviePoster: string;
   notes: string;
   public: boolean;
