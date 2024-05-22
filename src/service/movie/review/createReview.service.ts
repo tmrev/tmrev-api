@@ -1,5 +1,4 @@
 import { getAuth } from "firebase-admin/auth";
-import _ from "lodash";
 import {
   CreateMoviePayload,
   CreateMovieReviewV2Document,
@@ -7,7 +6,7 @@ import {
 import { client } from "../../..";
 import { tmrev } from "../../../models/mongodb";
 import postReviewFeed from "../../../functions/feed/updateFeed/postReview";
-import getDetails from "../../../endpoints/tmdb/getDetails";
+import updateMovies from "../../../functions/updateMovies";
 
 const createReviewService = async (
   data: CreateMoviePayload,
@@ -28,26 +27,7 @@ const createReviewService = async (
       return sum / allValues.length;
     };
 
-    const doesMovieDetailsExist = data.movieDetails !== undefined;
-
-    if (!doesMovieDetailsExist) {
-      const dbMovies = client.db(tmrev.db).collection(tmrev.collection.movies);
-      const dbMovieResult = await getDetails(data.tmdbID, true);
-
-      const freshMovieResult = await dbMovies.findOne({ tmdbID: data.tmdbID });
-
-      const isEqual = _.isEqual(dbMovieResult, freshMovieResult);
-
-      if (!isEqual) {
-        await dbMovies.updateOne(
-          { id: data.tmdbID },
-          {
-            $set: dbMovieResult,
-          },
-          { upsert: true }
-        );
-      }
-    }
+    updateMovies(data.tmdbID);
 
     const payload: CreateMovieReviewV2Document = {
       userId: firebaseUser.uid,
