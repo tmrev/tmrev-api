@@ -5,7 +5,7 @@ import { Movie } from "../../models/tmdb";
 const getDetails = async (movieId: number, append = true) => {
   try {
     const url = `${TMDB_BASE_URL}/movie/${movieId}?api_key=${TMDB_API_KEY}`;
-    const additional = `&append_to_response=credits,release_dates,reviews
+    const additional = `&append_to_response=credits,release_dates
 `;
     const res: AxiosResponse<Movie> = await axios(
       `${url}${append ? additional : ""}`
