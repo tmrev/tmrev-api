@@ -6,7 +6,7 @@ import {
   CreateWatchedPayload,
   MongoWatchedPayload,
 } from "../../../models/watched";
-import { timestamp } from "../../../utils/common";
+import updateMovies from "../../../functions/updateMovies";
 
 const createWatchService = async (
   data: CreateWatchedPayload,
@@ -20,6 +20,13 @@ const createWatchService = async (
 
     const dbUser = await dbUsers.findOne({ uuid: firebaseUser.uid });
 
+    if (!dbUser) {
+      return {
+        success: false,
+        error: "User not found",
+      };
+    }
+
     const findWatched = await dbWatched
       .find({ tmdbID: Number(data.tmdbID), userId: firebaseUser.uid })
       .toArray();
@@ -30,13 +37,15 @@ const createWatchService = async (
       };
     }
 
+    updateMovies(data.tmdbID);
+
     const payload: MongoWatchedPayload = {
-      ...data,
+      tmdbID: data.tmdbID,
+      liked: data.liked,
       public: data.public || true,
-      createdAt: timestamp(),
-      updatedAt: timestamp(),
+      createdAt: new Date(),
+      updatedAt: new Date(),
       userId: firebaseUser.uid,
-      user: dbUser?._id,
     };
 
     const created = await dbWatched.insertOne(payload);

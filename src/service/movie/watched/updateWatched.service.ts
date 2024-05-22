@@ -5,7 +5,7 @@ import {
   CreateWatchedPayload,
   MongoWatchedPayload,
 } from "../../../models/watched";
-import { timestamp } from "../../../utils/common";
+import updateMovies from "../../../functions/updateMovies";
 
 const updateWatchedService = async (
   authToken: string,
@@ -29,10 +29,12 @@ const updateWatchedService = async (
       };
     }
 
+    updateMovies(data.tmdbID);
+
     const payload = {
       ...currentWatched,
       ...data,
-      updatedAt: timestamp(),
+      updatedAt: new Date(),
     };
 
     await db.updateOne({ _id: id }, { $set: payload });

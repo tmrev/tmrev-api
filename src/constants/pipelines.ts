@@ -38,5 +38,36 @@ const movieDetailsPipeline = [
   },
 ];
 
-// eslint-disable-next-line import/prefer-default-export
-export { movieDetailsPipeline };
+const watchedMovieDetailsPipeline = [
+  {
+    $lookup: {
+      from: tmrev.collection.movies,
+      localField: "tmdbID",
+      foreignField: "id",
+      as: "movieDetails",
+    },
+  },
+  {
+    $unwind: "$movieDetails",
+  },
+  {
+    $project: {
+      _id: 1,
+      userId: 1,
+      liked: 1,
+      tmdbID: 1,
+      movieDetails: {
+        title: 1,
+        poster_path: 1,
+        backdrop_path: 1,
+        release_date: 1,
+        genres: 1,
+        runtime: 1,
+        budget: 1,
+        revenue: 1,
+      },
+    },
+  },
+];
+
+export { movieDetailsPipeline, watchedMovieDetailsPipeline };
