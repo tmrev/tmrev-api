@@ -1,9 +1,8 @@
-// eslint-disable-next-line import/no-unresolved
 import { getAuth } from "firebase-admin/auth";
 import { ObjectId } from "mongodb";
 import { client } from "../..";
 import { tmrev } from "../../models/mongodb";
-import { timestamp } from "../../utils/common";
+import getDetails from "../../endpoints/tmdb/getDetails";
 
 const AddMovieToWatchList = async (
   authToken: string,
@@ -26,8 +25,29 @@ const AddMovieToWatchList = async (
     }
 
     const newWatchList = JSON.parse(JSON.stringify(watchList));
-    newWatchList.movies.push(data.id);
-    newWatchList.updated_at = timestamp();
+
+    const movieDetailResult = await getDetails(data.id, false);
+
+    if (movieDetailResult) {
+      const movieDetail = {
+        tmdbId: movieDetailResult.id,
+        backdrop_path: movieDetailResult.backdrop_path,
+        budget: movieDetailResult.budget,
+        genres: movieDetailResult.genres,
+        id: movieDetailResult.id,
+        imdb_id: movieDetailResult.imdb_id,
+        original_language: movieDetailResult.original_language,
+        poster_path: movieDetailResult.poster_path,
+        release_date: movieDetailResult.release_date,
+        revenue: movieDetailResult.revenue,
+        runtime: movieDetailResult.runtime,
+        title: movieDetailResult.title,
+      };
+
+      newWatchList.movies.push(movieDetail);
+    }
+
+    newWatchList.updatedAt = new Date();
     if (newWatchList._id) {
       delete newWatchList._id;
     }

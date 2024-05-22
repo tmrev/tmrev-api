@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { updateWatchListService } from "../../service/watchLists/updateWatchList.service";
+import controllerResponse from "../../utils/controllerResponse";
 
 const updateWatchListController = async (req: Request, res: Response) => {
   try {
@@ -25,7 +26,7 @@ const updateWatchListController = async (req: Request, res: Response) => {
 
     const result = await updateWatchListService(auth, uuid, body);
 
-    res.send(result);
+    controllerResponse(res, result);
   } catch (err: any) {
     console.log(err);
 

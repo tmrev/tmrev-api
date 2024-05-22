@@ -1,12 +1,12 @@
-// eslint-disable-next-line import/no-unresolved
 import { getAuth } from "firebase-admin/auth";
 import { client } from "../..";
 import { tmrev } from "../../models/mongodb";
-import { timestamp } from "../../utils/common";
+import { MovieDetails } from "../../models/movieReviews";
+import getDetails from "../../endpoints/tmdb/getDetails";
 
 export type ListData = {
   description: string;
-  movies?: number[];
+  movies?: number[] | MovieDetails[];
   public: boolean;
   tags: string[];
   title: string;
@@ -17,18 +17,46 @@ export const createWatchListService = async (
   data: ListData
 ) => {
   try {
-    const user = await getAuth().verifyIdToken(authToken);
+    const movies: MovieDetails[] = [];
 
+    const user = await getAuth().verifyIdToken(authToken);
     const db = client.db(tmrev.db).collection(tmrev.collection.watchlists);
+
+    data.movies?.forEach(async (movie) => {
+      if (typeof movie === "number") {
+        const movieResults = await getDetails(movie, false);
+
+        if (!movieResults) return;
+
+        const movieDetail = {
+          tmdbId: movieResults.id,
+          backdrop_path: movieResults.backdrop_path,
+          budget: movieResults.budget,
+          genres: movieResults.genres,
+          id: movieResults.id,
+          imdb_id: movieResults.imdb_id,
+          original_language: movieResults.original_language,
+          poster_path: movieResults.poster_path,
+          release_date: movieResults.release_date,
+          revenue: movieResults.revenue,
+          runtime: movieResults.runtime,
+          title: movieResults.title,
+        };
+
+        movies.push(movieDetail);
+      } else {
+        movies.push(movie);
+      }
+    });
 
     const newWatchList = {
       tags: data.tags,
       public: data.public,
       description: data.description,
       title: data.title,
-      movies: data.movies || [],
-      created_at: timestamp(),
-      updated_at: timestamp(),
+      movies,
+      createdAt: new Date(),
+      updatedAt: new Date(),
       userId: user.uid,
     };
 

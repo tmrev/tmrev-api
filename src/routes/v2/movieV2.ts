@@ -5,11 +5,14 @@ import {
   createPinnedMoviesValidation,
   getPinnedMoviesValidation,
   getUserMovieReviewsValidation,
+  getUserWatchListsValidation,
   updatePinnedMoviesValidation,
 } from "../../validation/movies";
 import createPinnedMoviesControllers from "../../controllers/movie/pinned/createPinnedMovie.controller";
 import getPinnedMoviesController from "../../controllers/movie/pinned/getPinnedMovie.controller";
 import updatePinnedMoviesControllers from "../../controllers/movie/pinned/updatePinnedMovine.controller";
+import getUserWatchListsController from "../../controllers/watchLists/getUserWatchLists.controller";
+import getWatchListV2Controller from "../../controllers/watchLists/v2/getWatchListV2.controller";
 
 const router: Router = Router();
 
@@ -19,6 +22,17 @@ router.get(
   "/user/review/:userId",
   getUserMovieReviewsValidation(),
   asyncMiddleware(getUserReviewsController)
+);
+
+router.get(
+  "/user/watchlist/:listId",
+  asyncMiddleware(getWatchListV2Controller)
+);
+
+router.get(
+  "/user/:userId/watchlist",
+  getUserWatchListsValidation(),
+  asyncMiddleware(getUserWatchListsController)
 );
 
 router.post(
