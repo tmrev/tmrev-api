@@ -85,7 +85,6 @@ router.get(
 
 router.post(
   "/review",
-  movieCreateSchemaValidationRules(),
   movieCreateDataValidation(),
   asyncMiddleware(createMovieReviewController)
 );

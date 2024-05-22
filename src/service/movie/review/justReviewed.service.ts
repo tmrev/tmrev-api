@@ -1,4 +1,5 @@
 import { client } from "../../..";
+import { movieDetailsPipeline } from "../../../constants/pipelines";
 import { tmrev } from "../../../models/mongodb";
 
 const justReviewedService = async () => {
@@ -14,9 +15,10 @@ const justReviewedService = async () => {
             public: true,
           },
         },
+        ...movieDetailsPipeline,
         {
           $sort: {
-            "createdAt.seconds": -1,
+            createdAt: -1,
           },
         },
         {

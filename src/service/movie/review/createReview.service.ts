@@ -1,4 +1,5 @@
 import { getAuth } from "firebase-admin/auth";
+import _ from "lodash";
 import {
   CreateMoviePayload,
   CreateMovieReviewV2Document,
@@ -16,8 +17,6 @@ const createReviewService = async (
     const dbReviews = client.db(tmrev.db).collection(tmrev.collection.reviews);
     const dbUsers = client.db(tmrev.db).collection(tmrev.collection.users);
 
-    let { movieDetails } = data;
-
     const firebaseUser = await getAuth().verifyIdToken(authToken);
 
     const dbUser = await dbUsers.findOne({ uuid: firebaseUser.uid });
@@ -32,22 +31,21 @@ const createReviewService = async (
     const doesMovieDetailsExist = data.movieDetails !== undefined;
 
     if (!doesMovieDetailsExist) {
-      const movieResults = await getDetails(data.tmdbID, false);
+      const dbMovies = client.db(tmrev.db).collection(tmrev.collection.movies);
+      const dbMovieResult = await getDetails(data.tmdbID, true);
 
-      if (movieResults) {
-        movieDetails = {
-          backdrop_path: movieResults.backdrop_path,
-          budget: movieResults.budget,
-          genres: movieResults.genres,
-          id: movieResults.id,
-          imdb_id: movieResults.imdb_id,
-          original_language: movieResults.original_language,
-          poster_path: movieResults.poster_path,
-          release_date: movieResults.release_date,
-          revenue: movieResults.revenue,
-          runtime: movieResults.runtime,
-          title: movieResults.title,
-        };
+      const freshMovieResult = await dbMovies.findOne({ tmdbID: data.tmdbID });
+
+      const isEqual = _.isEqual(dbMovieResult, freshMovieResult);
+
+      if (!isEqual) {
+        await dbMovies.updateOne(
+          { id: data.tmdbID },
+          {
+            $set: dbMovieResult,
+          },
+          { upsert: true }
+        );
       }
     }
 
@@ -63,7 +61,6 @@ const createReviewService = async (
         upVote: [],
         downVote: [],
       },
-      movieDetails: movieDetails!,
       createdAt: new Date(),
       updatedAt: new Date(),
       reviewedDate: data.reviewedDate,

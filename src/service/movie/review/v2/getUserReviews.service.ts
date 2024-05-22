@@ -2,6 +2,7 @@ import { getAuth } from "firebase-admin/auth";
 import { Document } from "mongodb";
 import { client } from "../../../..";
 import { tmrev } from "../../../../models/mongodb";
+import { movieDetailsPipeline } from "../../../../constants/pipelines";
 
 export type UserReviewsQueryType = {
   advancedScore?: {
@@ -45,13 +46,18 @@ const GetUserReviewsService = async (
       });
     }
 
+    // lookup the movie details for the review
+
+    pipeline.push(...movieDetailsPipeline);
+
     // Match the user's reviews
     if (query.textSearch) {
       pipeline.push({
         $match: {
           userId,
-          $text: {
-            $search: query.textSearch,
+          "movieDetails.title": {
+            $regex: query.textSearch,
+            $options: "i", // Case-insensitive search
           },
         },
       });

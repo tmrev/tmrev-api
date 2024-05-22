@@ -6,7 +6,6 @@ export type CreateMovieReviewV2Document = {
   advancedScore: AdvancedScore;
   averagedAdvancedScore: number;
   createdAt: Date;
-  movieDetails: MovieDetails;
   notes: string;
   public: boolean;
   reviewedDate: string;

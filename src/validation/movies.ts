@@ -37,6 +37,20 @@ export const movieReviewSortList = [
   "votes.upVote.desc",
   "votes.downVote.asc",
   "votes.downVote.desc",
+  "runtime.asc.movieDetails",
+  "runtime.desc.movieDetails",
+  "release_date.asc.movieDetails",
+  "release_date.desc.movieDetails",
+  "budget.asc.movieDetails",
+  "budget.desc.movieDetails",
+  "revenue.asc.movieDetails",
+  "revenue.desc.movieDetails",
+  "createdAt.asc",
+  "createdAt.desc",
+  "updatedAt.asc",
+  "updatedAt.desc",
+  "title.asc.movieDetails",
+  "title.desc.movieDetails",
 ];
 
 const movieBatchValidation = () => {
@@ -213,6 +227,32 @@ const getUserMovieReviewsValidation = () => {
   ];
 };
 
+const getUserWatchListsValidation = () => {
+  return [
+    header("Authorization").isString().optional(),
+    query("pageNumber")
+      .isNumeric()
+      .withMessage("Page Number must be a number.")
+      .toInt()
+      .exists(),
+    query("pageSize")
+      .isNumeric()
+      .withMessage("Page Size must be a number.")
+      .toInt()
+      .exists(),
+    query("sort_by")
+      .isString()
+      .withMessage("sort_by must be a string.")
+      .isIn(movieReviewSortList)
+      .withMessage(
+        `sort_by can only be one of these items:${movieReviewSortList.map(
+          (v) => ` ${v}`
+        )}.`
+      )
+      .optional(),
+  ];
+};
+
 const updatePinnedMoviesValidation = () => {
   return [
     body("movieReviewIds").isArray().exists(),
@@ -244,4 +284,5 @@ export {
   getPinnedMoviesValidation,
   createPinnedMoviesValidation,
   updatePinnedMoviesValidation,
+  getUserWatchListsValidation,
 };
