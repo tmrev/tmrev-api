@@ -1,6 +1,6 @@
 import { tmrev } from "../models/mongodb";
 
-const movieDetailsPipeline = [
+const movieDetailsLookUp = [
   {
     $lookup: {
       from: tmrev.collection.movies,
@@ -12,6 +12,23 @@ const movieDetailsPipeline = [
   {
     $unwind: "$movieDetails",
   },
+];
+
+const movieDetailsProjection = {
+  movieDetails: {
+    title: 1,
+    poster_path: 1,
+    backdrop_path: 1,
+    release_date: 1,
+    genres: 1,
+    runtime: 1,
+    budget: 1,
+    revenue: 1,
+  },
+};
+
+const movieDetailsPipeline = [
+  ...movieDetailsLookUp,
   {
     $project: {
       _id: 1,
@@ -24,39 +41,45 @@ const movieDetailsPipeline = [
       updatedAt: 1,
       averagedAdvancedScore: 1,
       advancedScore: 1,
-      movieDetails: {
-        title: 1,
-        poster_path: 1,
-        backdrop_path: 1,
-        release_date: 1,
-        genres: 1,
-        runtime: 1,
-        budget: 1,
-        revenue: 1,
-      },
+      ...movieDetailsProjection,
     },
   },
 ];
 
 const watchedMovieDetailsPipeline = [
-  {
-    $lookup: {
-      from: tmrev.collection.movies,
-      localField: "tmdbID",
-      foreignField: "id",
-      as: "movieDetails",
-    },
-  },
-  {
-    $unwind: "$movieDetails",
-  },
+  ...movieDetailsLookUp,
   {
     $project: {
       _id: 1,
       userId: 1,
       liked: 1,
       tmdbID: 1,
-      movieDetails: {
+      ...movieDetailsProjection,
+    },
+  },
+];
+
+const watchListPipeline = [
+  {
+    $lookup: {
+      from: tmrev.collection.movies,
+      localField: "movies",
+      foreignField: "id",
+      as: "movies",
+    },
+  },
+  {
+    $project: {
+      _id: 1,
+      userId: 1,
+      title: 1,
+      description: 1,
+      public: 1,
+      tags: 1,
+      createdAt: 1,
+      updatedAt: 1,
+      movies: {
+        id: 1,
         title: 1,
         poster_path: 1,
         backdrop_path: 1,
@@ -70,4 +93,8 @@ const watchedMovieDetailsPipeline = [
   },
 ];
 
-export { movieDetailsPipeline, watchedMovieDetailsPipeline };
+export {
+  movieDetailsPipeline,
+  watchedMovieDetailsPipeline,
+  watchListPipeline as watchListDetailsPipeline,
+};

@@ -2,6 +2,7 @@ import { getAuth } from "firebase-admin/auth";
 import { Document } from "mongodb";
 import { client } from "../..";
 import { tmrev } from "../../models/mongodb";
+import { watchListDetailsPipeline } from "../../constants/pipelines";
 
 export type UserWatchListQueryType = {
   pageNumber: number;
@@ -50,6 +51,8 @@ const getUserWatchListsService = async (
         },
       });
     }
+
+    pipeline.push(...watchListDetailsPipeline);
 
     const countPipeline = [...pipeline];
 

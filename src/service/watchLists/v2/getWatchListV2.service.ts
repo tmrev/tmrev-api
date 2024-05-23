@@ -1,7 +1,8 @@
 import { DecodedIdToken, getAuth } from "firebase-admin/auth";
-import { ObjectId } from "mongodb";
+import { Document, ObjectId } from "mongodb";
 import { client } from "../../..";
 import { tmrev } from "../../../models/mongodb";
+import { watchListDetailsPipeline } from "../../../constants/pipelines";
 
 const getWatchListV2Service = async (listId: string, authToken?: string) => {
   try {
@@ -13,7 +14,16 @@ const getWatchListV2Service = async (listId: string, authToken?: string) => {
       firebaseUser = await getAuth().verifyIdToken(authToken);
     }
 
-    const watchList = await listDB.findOne({ _id: new ObjectId(listId) });
+    const pipeline: Document[] = [
+      {
+        $match: {
+          _id: new ObjectId(listId),
+        },
+      },
+      ...watchListDetailsPipeline,
+    ];
+
+    const watchList = await listDB.aggregate(pipeline).toArray();
 
     if (!watchList) {
       return {
@@ -22,7 +32,7 @@ const getWatchListV2Service = async (listId: string, authToken?: string) => {
       };
     }
 
-    if (!watchList.public && firebaseUser?.uid !== watchList.userId) {
+    if (!watchList[0].public && firebaseUser?.uid !== watchList[0].userId) {
       return {
         success: false,
         error: "Watch list is not public",
@@ -31,7 +41,7 @@ const getWatchListV2Service = async (listId: string, authToken?: string) => {
 
     return {
       success: true,
-      body: watchList,
+      body: watchList[0],
     };
   } catch (error) {
     return {
