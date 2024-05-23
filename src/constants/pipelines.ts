@@ -42,6 +42,7 @@ const movieDetailsPipeline = [
       updatedAt: 1,
       averagedAdvancedScore: 1,
       advancedScore: 1,
+      reviewedDate: 1,
       ...movieDetailsProjection,
     },
   },
