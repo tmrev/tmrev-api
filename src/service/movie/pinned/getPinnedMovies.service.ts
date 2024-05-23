@@ -1,6 +1,7 @@
 import { ObjectId } from "mongodb";
 import { client } from "../../..";
 import { tmrev } from "../../../models/mongodb";
+import { movieDetailsPipeline } from "../../../constants/pipelines";
 
 const getPinnedMoviesService = async (userId: string) => {
   try {
@@ -21,9 +22,14 @@ const getPinnedMoviesService = async (userId: string) => {
     const movies = await client
       .db(tmrev.db)
       .collection(tmrev.collection.reviews)
-      .find({
-        _id: { $in: pinnedMovies },
-      })
+      .aggregate([
+        {
+          $match: {
+            _id: { $in: pinnedMovies },
+          },
+        },
+        ...movieDetailsPipeline,
+      ])
       .toArray();
 
     return {
