@@ -16,6 +16,7 @@ const movieDetailsLookUp = [
 
 const movieDetailsProjection = {
   movieDetails: {
+    id: 1,
     title: 1,
     poster_path: 1,
     backdrop_path: 1,
