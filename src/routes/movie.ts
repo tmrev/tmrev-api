@@ -24,6 +24,7 @@ import updateWatchedController from "../controllers/movie/watched/updateWatched.
 import {
   createWatchedSchema,
   createWatchedValidation,
+  getWatchedValidation,
 } from "../validation/watched";
 import topReviewedController from "../controllers/movie/review/topReviewed.controller";
 import justReviewedController from "../controllers/movie/review/justReviewed.controller";
@@ -52,7 +53,11 @@ router.post(
   asyncMiddleware(createWatchedController)
 );
 
-router.get("/watched/:id", asyncMiddleware(getWatchedController));
+router.get(
+  "/watched/:id",
+  getWatchedValidation(),
+  asyncMiddleware(getWatchedController)
+);
 
 router.put("/watched/:id", asyncMiddleware(updateWatchedController));
 

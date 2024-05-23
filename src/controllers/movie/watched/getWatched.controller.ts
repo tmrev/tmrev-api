@@ -6,7 +6,7 @@ const getWatchedController = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
 
-    const result = await getWatchedService(id);
+    const result = await getWatchedService(id, req.query as any);
 
     controllerResponse(res, result);
   } catch (err: unknown) {

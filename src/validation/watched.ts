@@ -1,26 +1,13 @@
-import { checkSchema, check } from "express-validator";
+import { checkSchema, check, query } from "express-validator";
 
 const createWatchedValidation = () => {
-  return [
-    check("liked").isBoolean(),
-    check("posterPath").isString().trim(),
-    check("title").isString().trim(),
-    check("tmdbID").toInt(),
-  ];
+  return [check("liked").isBoolean(), check("tmdbID").toInt()];
 };
 
 const createWatchedSchema = () => {
   return checkSchema({
     liked: {
       isBoolean: true,
-      in: ["body"],
-    },
-    posterPath: {
-      isString: true,
-      in: ["body"],
-    },
-    title: {
-      isString: true,
       in: ["body"],
     },
     tmdbID: {
@@ -35,4 +22,19 @@ const createWatchedSchema = () => {
   });
 };
 
-export { createWatchedSchema, createWatchedValidation };
+const getWatchedValidation = () => {
+  return [
+    query("pageNumber")
+      .isNumeric()
+      .withMessage("Page Number must be a number.")
+      .toInt()
+      .exists(),
+    query("pageSize")
+      .isNumeric()
+      .withMessage("Page Size must be a number.")
+      .toInt()
+      .exists(),
+  ];
+};
+
+export { createWatchedSchema, createWatchedValidation, getWatchedValidation };
