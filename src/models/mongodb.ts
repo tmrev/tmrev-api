@@ -13,19 +13,6 @@ const tmrev = {
     movies: "movies",
   },
 };
-const imdb = {
-  db: "imdb",
-  collection: {
-    basic: "basics",
-    ratings: "ratings",
-  },
-};
 
-const tmdb = {
-  db: "tmdb",
-  collection: {
-    movies: "movies",
-  },
-};
-
-export { tmrev, imdb, tmdb };
+// eslint-disable-next-line import/prefer-default-export
+export { tmrev };

@@ -2,12 +2,12 @@ import cheerio, { CheerioAPI } from "cheerio";
 import dayjs from "dayjs";
 import request from "request-promise";
 import { client } from "../..";
-import { tmdb } from "../../models/mongodb";
+import { tmrev } from "../../models/mongodb";
 import { camelize, timestamp } from "../../utils/common";
 
 const dailyBoxOffice = async (title: string, year: string, tmdbID: number) => {
   try {
-    const db = await client.db(tmdb.db).collection(tmdb.collection.movies);
+    const db = await client.db(tmrev.db).collection(tmrev.collection.movies);
 
     const result = await db.findOne({ id: tmdbID });
 
