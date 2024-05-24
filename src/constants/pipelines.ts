@@ -48,6 +48,26 @@ const movieDetailsPipeline = [
   },
 ];
 
+const movieReviewScoreProjection = {
+  _id: 1,
+  tmdbID: 1,
+  createdAt: 1,
+  updatedAt: 1,
+  averagedAdvancedScore: 1,
+  advancedScore: 1,
+  reviewedDate: 1,
+};
+
+const movieReviewScorePipeline = [
+  ...movieDetailsLookUp,
+  {
+    $project: {
+      ...movieReviewScoreProjection,
+      ...movieDetailsProjection,
+    },
+  },
+];
+
 const watchedMovieDetailsPipeline = [
   ...movieDetailsLookUp,
   {
@@ -113,4 +133,5 @@ export {
   watchedMovieDetailsPipeline,
   watchListPipeline as watchListDetailsPipeline,
   watchedGenrePipeline,
+  movieReviewScorePipeline,
 };

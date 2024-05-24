@@ -11,6 +11,7 @@ const tmrev = {
     notifications: "notifications",
     feed: "feed",
     movies: "movies",
+    insights: "insights",
   },
 };
 
