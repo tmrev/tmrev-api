@@ -9,6 +9,7 @@ export type UserReviewsQueryType = {
     category: string;
     score: number;
   };
+  genre?: string;
   pageNumber: number;
   pageSize: number;
   sort_by: string;
@@ -94,6 +95,17 @@ const GetUserReviewsService = async (
           },
         });
       }
+    }
+
+    if (query.genre) {
+      const genres = query.genre.split(",").map(Number);
+      pipeline.push({
+        $match: {
+          "movieDetails.genres.id": {
+            $in: genres,
+          },
+        },
+      });
     }
 
     const countPipeline = [...pipeline];
