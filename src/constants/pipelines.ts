@@ -95,8 +95,22 @@ const watchListPipeline = [
   },
 ];
 
+const watchedGenrePipeline = [
+  ...movieDetailsLookUp,
+  {
+    $project: {
+      _id: 1,
+      userId: 1,
+      liked: 1,
+      tmdbID: 1,
+      ...movieDetailsProjection,
+    },
+  },
+];
+
 export {
   movieDetailsPipeline,
   watchedMovieDetailsPipeline,
   watchListPipeline as watchListDetailsPipeline,
+  watchedGenrePipeline,
 };

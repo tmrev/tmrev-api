@@ -31,6 +31,7 @@ import justReviewedController from "../controllers/movie/review/justReviewed.con
 import getAllReviewsController from "../controllers/movie/review/getAllReviews.controller";
 import createCommentController from "../controllers/movie/comment/createComment.controller";
 import voteReviewController from "../controllers/movie/review/voteReview.controller";
+import getGenreInsightsController from "../controllers/movie/insights/getGenreInsights.controller";
 
 const router: Router = Router();
 
@@ -105,6 +106,11 @@ router.put(
   movieCreateSchemaValidationRules(),
   movieCreateDataValidation(),
   asyncMiddleware(updateMovieReviewController)
+);
+
+router.get(
+  "/genre/insights/:userId",
+  asyncMiddleware(getGenreInsightsController)
 );
 
 const movieRouter: Router = router;
