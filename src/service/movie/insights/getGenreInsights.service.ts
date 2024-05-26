@@ -146,7 +146,7 @@ const getGenreInsightsService = async (userId: string) => {
       .map(([genre, count]) => ({ label: genre, value: count }));
     const mostReviewedRankedGenres = Array.from(
       sortedRankedAveragedAdvancedReviewedGenres
-    );
+    ).map(([genre, count]) => ({ label: genre, value: count }));
     const leastReviewedRankedGenres = Array.from(
       sortedRankedAveragedAdvancedReviewedGenres
     )
