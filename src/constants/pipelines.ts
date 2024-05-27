@@ -30,15 +30,6 @@ const movieDetailsProjection = {
 
 const movieDetailsProjectionWithCast = {
   movieDetails: {
-    id: 1,
-    title: 1,
-    poster_path: 1,
-    backdrop_path: 1,
-    release_date: 1,
-    genres: 1,
-    runtime: 1,
-    budget: 1,
-    revenue: 1,
     credits: 1,
   },
 };
