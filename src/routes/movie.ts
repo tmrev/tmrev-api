@@ -32,6 +32,7 @@ import getAllReviewsController from "../controllers/movie/review/getAllReviews.c
 import createCommentController from "../controllers/movie/comment/createComment.controller";
 import voteReviewController from "../controllers/movie/review/voteReview.controller";
 import getGenreInsightsController from "../controllers/movie/insights/getGenreInsights.controller";
+import getActorInsightsController from "../controllers/movie/insights/getActorInsights.controller";
 
 const router: Router = Router();
 
@@ -111,6 +112,11 @@ router.put(
 router.get(
   "/genre/insights/:userId",
   asyncMiddleware(getGenreInsightsController)
+);
+
+router.get(
+  "/actor/insights/:userId",
+  asyncMiddleware(getActorInsightsController)
 );
 
 const movieRouter: Router = router;
