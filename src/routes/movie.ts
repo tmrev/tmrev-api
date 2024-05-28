@@ -33,6 +33,7 @@ import createCommentController from "../controllers/movie/comment/createComment.
 import voteReviewController from "../controllers/movie/review/voteReview.controller";
 import getGenreInsightsController from "../controllers/movie/insights/getGenreInsights.controller";
 import getActorInsightsController from "../controllers/movie/insights/getActorInsights.controller";
+import getSingleWatchedController from "../controllers/movie/watched/getSingleWatched.controller";
 
 const router: Router = Router();
 
@@ -53,6 +54,11 @@ router.post(
   createWatchedSchema(),
   createWatchedValidation(),
   asyncMiddleware(createWatchedController)
+);
+
+router.get(
+  "/watched/:userId/:movieId",
+  asyncMiddleware(getSingleWatchedController)
 );
 
 router.get(

@@ -1,5 +1,3 @@
-import { ObjectId } from "mongodb";
-
 export interface CreateWatchedPayload {
   liked: boolean;
   public: boolean;
@@ -9,6 +7,5 @@ export interface CreateWatchedPayload {
 export interface MongoWatchedPayload extends CreateWatchedPayload {
   createdAt: Date;
   updatedAt: Date;
-  user?: ObjectId;
   userId: string;
 }

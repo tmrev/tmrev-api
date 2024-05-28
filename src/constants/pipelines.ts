@@ -28,6 +28,15 @@ const movieDetailsProjection = {
   },
 };
 
+const basicMovieDetailsProjection = {
+  movieDetails: {
+    id: 1,
+    title: 1,
+    poster_path: 1,
+    release_date: 1,
+  },
+};
+
 const movieDetailsProjectionWithCast = {
   movieDetails: {
     credits: 1,
@@ -86,6 +95,25 @@ const watchedMovieDetailsPipeline = [
     },
   },
 ];
+
+const watchedMovieDetailsPipelineFunc = (basic = true) => {
+  if (basic) {
+    return [
+      ...movieDetailsLookUp,
+      {
+        $project: {
+          _id: 1,
+          userId: 1,
+          liked: 1,
+          tmdbID: 1,
+          ...basicMovieDetailsProjection,
+        },
+      },
+    ];
+  }
+
+  return watchedMovieDetailsPipeline;
+};
 
 const watchListPipeline = [
   {
@@ -161,4 +189,5 @@ export {
   watchedGenrePipeline,
   movieReviewScorePipeline,
   movieActorPipeline,
+  watchedMovieDetailsPipelineFunc,
 };
