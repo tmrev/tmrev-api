@@ -21,6 +21,12 @@ const getWatchedService = async (userId: string, query: WatchedQueryType) => {
       ...watchedMovieDetailsPipeline,
     ];
 
+    pipeline.push({
+      $sort: {
+        _id: -1,
+      },
+    });
+
     const countPipeline = [...pipeline];
 
     pipeline.push({
