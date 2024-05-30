@@ -3,11 +3,10 @@ import { getAuth } from "firebase-admin/auth";
 import { ObjectId } from "mongodb";
 import { client } from "../..";
 import { tmrev } from "../../models/mongodb";
-import { MovieDetails } from "../../models/movieReviews";
 
 type UpdateWatchListData = {
   description: string;
-  movies: MovieDetails[];
+  movies: { order: number; tmdbID: number }[];
   public: boolean;
   tags: string[];
   title: string;
@@ -20,8 +19,6 @@ export const updateWatchListService = async (
 ) => {
   try {
     const firebaseUser = await getAuth().verifyIdToken(authToken);
-
-    console.log("data", watchListId);
 
     const dbUser = await client
       .db(tmrev.db)
@@ -65,8 +62,6 @@ export const updateWatchListService = async (
 
     // update the watchlist
     const result = await db.updateOne({ _id: id }, { $set: newWatchList });
-
-    console.log(result);
 
     return {
       success: true,

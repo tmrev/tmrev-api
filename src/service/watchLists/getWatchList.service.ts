@@ -21,7 +21,7 @@ const getWatchListService = async (uuid: string, authToken?: string) => {
           {
             $lookup: {
               from: "tmdb_movies",
-              localField: "movies",
+              localField: "movies.tmdbID",
               foreignField: "id",
               as: "movieData",
             },

@@ -115,11 +115,99 @@ const watchedMovieDetailsPipelineFunc = (basic = true) => {
   return watchedMovieDetailsPipeline;
 };
 
+const watchListSortedDetails = [
+  {
+    $unwind: {
+      path: "$movies",
+    },
+  },
+  {
+    $project: {
+      tags: "$tags",
+      public: "$public",
+      description: "$description",
+      title: "$title",
+      createdAt: "$createdAt",
+      updatedAt: "$updatedAt",
+      order: "$movies.order",
+      userId: "$userId",
+      movies: "$movies",
+    },
+  },
+  {
+    $lookup: {
+      from: "movies",
+      localField: "movies.tmdbID",
+      foreignField: "id",
+      as: "movies",
+    },
+  },
+  {
+    $sort: {
+      order: 1,
+    },
+  },
+  {
+    $group: {
+      _id: "$_id",
+      title: {
+        $first: "$title",
+      },
+      description: {
+        $first: "$description",
+      },
+      tags: {
+        $first: "$tags",
+      },
+      public: {
+        $first: "$public",
+      },
+      createdAt: {
+        $first: "$createdAt",
+      },
+      updatedAt: {
+        $first: "$updatedAt",
+      },
+      userId: {
+        $first: "$userId",
+      },
+      movies: {
+        $push: {
+          $first: "$movies",
+        },
+      },
+    },
+  },
+  {
+    $project: {
+      _id: 1,
+      userId: 1,
+      title: 1,
+      description: 1,
+      public: 1,
+      tags: 1,
+      createdAt: 1,
+      updatedAt: 1,
+      movies: {
+        id: 1,
+        title: 1,
+        poster_path: 1,
+        backdrop_path: 1,
+        release_date: 1,
+        genres: 1,
+        runtime: 1,
+        budget: 1,
+        revenue: 1,
+      },
+    },
+  },
+];
+
 const watchListPipeline = [
   {
     $lookup: {
       from: tmrev.collection.movies,
-      localField: "movies",
+      localField: "movies.tmdbID",
       foreignField: "id",
       as: "movies",
     },
@@ -190,4 +278,5 @@ export {
   movieReviewScorePipeline,
   movieActorPipeline,
   watchedMovieDetailsPipelineFunc,
+  watchListSortedDetails,
 };

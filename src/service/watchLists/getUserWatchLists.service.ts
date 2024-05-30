@@ -2,7 +2,7 @@ import { getAuth } from "firebase-admin/auth";
 import { Document } from "mongodb";
 import { client } from "../..";
 import { tmrev } from "../../models/mongodb";
-import { watchListDetailsPipeline } from "../../constants/pipelines";
+import { watchListSortedDetails } from "../../constants/pipelines";
 
 export type UserWatchListQueryType = {
   pageNumber: number;
@@ -52,7 +52,7 @@ const getUserWatchListsService = async (
       });
     }
 
-    pipeline.push(...watchListDetailsPipeline);
+    pipeline.push(...watchListSortedDetails);
 
     const countPipeline = [...pipeline];
 
@@ -70,6 +70,13 @@ const getUserWatchListsService = async (
 
     const watchlists = await watchListDB.aggregate(pipeline).toArray();
     const countResult = await watchListDB.aggregate(countPipeline).toArray();
+
+    // sort watchlist movies
+    watchlists.forEach((watchlist) => {
+      watchlist.movies.sort(
+        (a: { order: number }, b: { order: number }) => a.order - b.order
+      );
+    });
 
     const totalCount = countResult[0]?.totalCount || 0;
 

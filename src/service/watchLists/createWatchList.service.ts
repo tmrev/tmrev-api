@@ -5,7 +5,7 @@ import updateMovies from "../../functions/updateMovies";
 
 export type ListData = {
   description: string;
-  movies?: number[];
+  movies?: { order: number; tmdbID: number }[];
   public: boolean;
   tags: string[];
   title: string;
@@ -19,8 +19,8 @@ export const createWatchListService = async (
     const user = await getAuth().verifyIdToken(authToken);
     const db = client.db(tmrev.db).collection(tmrev.collection.watchlists);
 
-    data.movies?.forEach(async (movieId) => {
-      updateMovies(movieId);
+    data.movies?.forEach(async (movie) => {
+      updateMovies(movie.tmdbID);
     });
 
     const newWatchList = {

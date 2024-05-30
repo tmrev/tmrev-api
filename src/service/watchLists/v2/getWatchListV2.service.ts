@@ -2,7 +2,7 @@ import { DecodedIdToken, getAuth } from "firebase-admin/auth";
 import { Document, ObjectId } from "mongodb";
 import { client } from "../../..";
 import { tmrev } from "../../../models/mongodb";
-import { watchListDetailsPipeline } from "../../../constants/pipelines";
+import { watchListSortedDetails } from "../../../constants/pipelines";
 
 const getWatchListV2Service = async (listId: string, authToken?: string) => {
   try {
@@ -20,7 +20,7 @@ const getWatchListV2Service = async (listId: string, authToken?: string) => {
           _id: new ObjectId(listId),
         },
       },
-      ...watchListDetailsPipeline,
+      ...watchListSortedDetails,
     ];
 
     const watchList = await listDB.aggregate(pipeline).toArray();
