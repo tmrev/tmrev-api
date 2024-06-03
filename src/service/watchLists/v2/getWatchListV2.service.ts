@@ -23,12 +23,38 @@ const getWatchListV2Service = async (listId: string, authToken?: string) => {
       ...watchListSortedDetails,
     ];
 
+    pipeline.push({
+      $sort: {
+        _id: -1,
+      },
+    });
+
     const watchList = await listDB.aggregate(pipeline).toArray();
+
+    console.log(watchList);
 
     if (!watchList) {
       return {
         success: false,
         error: "Watch list not found",
+      };
+    }
+
+    if (!watchList[0]) {
+      const singleWatchList = await listDB.findOne({
+        _id: new ObjectId(listId),
+      });
+
+      if (!singleWatchList) {
+        return {
+          success: false,
+          error: "Watch list not found",
+        };
+      }
+
+      return {
+        success: true,
+        body: singleWatchList,
       };
     }
 
@@ -44,6 +70,7 @@ const getWatchListV2Service = async (listId: string, authToken?: string) => {
       body: watchList[0],
     };
   } catch (error) {
+    console.log(error);
     return {
       success: false,
       error,

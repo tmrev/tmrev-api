@@ -71,6 +71,14 @@ const getUserWatchListsService = async (
     const watchlists = await watchListDB.aggregate(pipeline).toArray();
     const countResult = await watchListDB.aggregate(countPipeline).toArray();
 
+    // find watchlist with no movies to include in the response
+    const emptyWatchlists = await watchListDB
+      .find({
+        userId,
+        movies: { $size: 0 },
+      })
+      .toArray();
+
     // sort watchlist movies
     watchlists.forEach((watchlist) => {
       watchlist.movies.sort(
@@ -90,6 +98,7 @@ const getUserWatchListsService = async (
         totalNumberOfPages,
         totalCount,
         watchlists,
+        emptyWatchlists,
       },
     };
   } catch (error) {

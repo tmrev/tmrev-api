@@ -8,11 +8,17 @@ import movieWatchListCheckController from "../controllers/watchLists/movieWatchL
 import searchWatchListController from "../controllers/watchLists/searchWatchLists.controller";
 import updateWatchListController from "../controllers/watchLists/updateWatchList.controller";
 import asyncMiddleware from "../middleware/async.middleware";
-import watchListUpdateValidationRules from "../validation/watchList";
+import watchListUpdateValidationRules, {
+  addMovieToWatchListValidationRules,
+} from "../validation/watchList";
 
 const router: Router = Router();
 
-router.post("/:listId", asyncMiddleware(addMovieToWatchListController));
+router.post(
+  "/:listId",
+  addMovieToWatchListValidationRules(),
+  asyncMiddleware(addMovieToWatchListController)
+);
 
 router.get("/check/:uuid", asyncMiddleware(movieWatchListCheckController));
 

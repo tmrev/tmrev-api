@@ -2,7 +2,7 @@ import { getAuth } from "firebase-admin/auth";
 import { ObjectId } from "mongodb";
 import { client } from "../..";
 import { tmrev } from "../../models/mongodb";
-import getDetails from "../../endpoints/tmdb/getDetails";
+import updateMovies from "../../functions/updateMovies";
 
 const AddMovieToWatchList = async (
   authToken: string,
@@ -12,53 +12,84 @@ const AddMovieToWatchList = async (
   }
 ) => {
   try {
-    const user = await getAuth().verifyIdToken(authToken);
+    updateMovies(data.id);
 
-    const db = client.db(tmrev.db).collection(tmrev.collection.watchlists);
+    const watchListDB = client
+      .db(tmrev.db)
+      .collection(tmrev.collection.watchlists);
+    const userDB = client.db(tmrev.db).collection(tmrev.collection.users);
+
+    const firebaseUser = await getAuth().verifyIdToken(authToken);
+
+    if (!firebaseUser) {
+      return {
+        success: false,
+        error: "Invalid token",
+      };
+    }
+
+    const user = await userDB.findOne({ uuid: firebaseUser.uid });
+
+    if (!user) {
+      return {
+        success: false,
+        error: "User does not exist",
+      };
+    }
+
+    if (user.uuid !== firebaseUser.uid) {
+      return {
+        success: false,
+        error: "User does not have permission to add movie to watchlist",
+      };
+    }
 
     const id = new ObjectId(list_id);
 
-    const watchList = await db.findOne({ _id: id, userId: user.uid });
+    const watchList = await watchListDB.findOne({
+      _id: id,
+      userId: firebaseUser.uid,
+    });
 
     if (!watchList) {
-      throw new Error("List does not exist");
-    }
-
-    const newWatchList = JSON.parse(JSON.stringify(watchList));
-
-    const movieDetailResult = await getDetails(data.id, false);
-
-    if (movieDetailResult) {
-      const movieDetail = {
-        tmdbId: movieDetailResult.id,
-        backdrop_path: movieDetailResult.backdrop_path,
-        budget: movieDetailResult.budget,
-        genres: movieDetailResult.genres,
-        id: movieDetailResult.id,
-        imdb_id: movieDetailResult.imdb_id,
-        original_language: movieDetailResult.original_language,
-        poster_path: movieDetailResult.poster_path,
-        release_date: movieDetailResult.release_date,
-        revenue: movieDetailResult.revenue,
-        runtime: movieDetailResult.runtime,
-        title: movieDetailResult.title,
+      return {
+        success: false,
+        error: "Watchlist not found",
       };
-
-      newWatchList.movies.push(movieDetail);
     }
 
-    newWatchList.updatedAt = new Date();
-    if (newWatchList._id) {
-      delete newWatchList._id;
-    }
-
-    const result = await db.updateOne(
-      { _id: id, userId: user.uid },
-      { $set: newWatchList }
+    // check if movie already exists in the watchlist
+    const movieExists = watchList.movies.find(
+      (movie: any) => movie.tmdbID === data.id
     );
 
-    return result;
+    if (movieExists) {
+      return {
+        success: false,
+        error: "Movie already exists in the watchlist",
+      };
+    }
+
+    const movieOrder = watchList.movies.length;
+
+    // push movie to the end of the movies array in the watchlist and give order of the last movie + 1
+    await watchListDB.updateOne(
+      { _id: id },
+      {
+        $push: {
+          movies: {
+            tmdbID: data.id,
+            order: movieOrder,
+          },
+        },
+      }
+    );
+
+    return {
+      success: true,
+    };
   } catch (err) {
+    console.log(err);
     return {
       success: false,
       error: err,

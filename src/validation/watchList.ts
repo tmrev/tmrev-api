@@ -1,4 +1,4 @@
-import { checkSchema } from "express-validator";
+import { checkSchema, header, body } from "express-validator";
 
 const watchListUpdateValidationRules = () =>
   checkSchema({
@@ -24,5 +24,14 @@ const watchListUpdateValidationRules = () =>
       errorMessage: "Movies is required",
     },
   });
+
+const addMovieToWatchListValidationRules = () => {
+  return [
+    header("Authorization").isString().exists(),
+    body("data.id").isNumeric().toInt().exists(),
+  ];
+};
+
+export { watchListUpdateValidationRules, addMovieToWatchListValidationRules };
 
 export default watchListUpdateValidationRules;

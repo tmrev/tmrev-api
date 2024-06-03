@@ -3,6 +3,7 @@ import { getAuth } from "firebase-admin/auth";
 import { ObjectId } from "mongodb";
 import { client } from "../..";
 import { tmrev } from "../../models/mongodb";
+import updateMovies from "../../functions/updateMovies";
 
 type UpdateWatchListData = {
   description: string;
@@ -59,6 +60,10 @@ export const updateWatchListService = async (
       ...data,
       updatedAt: new Date(),
     };
+
+    newWatchList.movies.forEach((movie) => {
+      updateMovies(movie.tmdbID);
+    });
 
     // update the watchlist
     const result = await db.updateOne({ _id: id }, { $set: newWatchList });
