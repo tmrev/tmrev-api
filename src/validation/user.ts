@@ -15,4 +15,12 @@ const getUserFollowersValidation = () => {
   ];
 };
 
-export { getUserValidation, getUserFollowersValidation };
+const getUserFeedValidation = () => {
+  return [
+    header("Authorization").isString().optional(),
+    query("pageNumber").isNumeric().toInt().isInt().exists(),
+    query("pageSize").isNumeric().toInt().isInt().exists(),
+  ];
+};
+
+export { getUserValidation, getUserFollowersValidation, getUserFeedValidation };
