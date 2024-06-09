@@ -63,6 +63,27 @@ const movieDetailsPipeline = [
   },
 ];
 
+const customProjectMovieDetailsPipeline = (project: any) => [
+  ...movieDetailsLookUp,
+  {
+    $project: {
+      _id: 1,
+      userId: 1,
+      tmdbID: 1,
+      title: 1,
+      notes: 1,
+      public: 1,
+      createdAt: 1,
+      updatedAt: 1,
+      averagedAdvancedScore: 1,
+      advancedScore: 1,
+      reviewedDate: 1,
+      ...movieDetailsProjection,
+      ...project,
+    },
+  },
+];
+
 const movieReviewScoreProjection = {
   _id: 1,
   tmdbID: 1,
@@ -279,4 +300,5 @@ export {
   movieActorPipeline,
   watchedMovieDetailsPipelineFunc,
   watchListSortedDetails,
+  customProjectMovieDetailsPipeline,
 };
