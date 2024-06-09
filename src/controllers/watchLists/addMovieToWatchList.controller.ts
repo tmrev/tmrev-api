@@ -9,8 +9,6 @@ const addMovieToWatchListController = async (req: Request, res: Response) => {
 
     const result = await AddMovieToWatchList(auth!, listId, req.body.data);
 
-    console.log(result);
-
     controllerResponse(res, result);
   } catch (err: any) {
     res.status(500).send(err.message);

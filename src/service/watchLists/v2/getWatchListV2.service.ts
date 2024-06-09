@@ -31,8 +31,6 @@ const getWatchListV2Service = async (listId: string, authToken?: string) => {
 
     const watchList = await listDB.aggregate(pipeline).toArray();
 
-    console.log(watchList);
-
     if (!watchList) {
       return {
         success: false,
