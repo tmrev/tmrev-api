@@ -2,26 +2,28 @@ import { ObjectId } from "mongodb";
 import { TimeStamp } from "../movieReviews";
 
 enum PostTypes {
-  'REVIEWS' = 'reviews'
+  'REVIEWS' = 'reviews',
+  'COMMENTS' = 'comments',
+  'LISTS' = 'watchlists',
 }
 
 type Post = {
   id: ObjectId,
   type: PostTypes,
-  author: ObjectId,
+  author: string,
 }
 
 type Vote = {
-  upVote: ObjectId[],
-  downVote: ObjectId[],
+  upVote: string[],
+  downVote: string[],
 }
 
 interface Comment {
   post: Post
   comment: string
-  author: ObjectId
-  createdAt: TimeStamp
-  updatedAt: TimeStamp | null
+  author: string
+  createdAt: Date
+  updatedAt: Date
   votes: Vote
 }
 
