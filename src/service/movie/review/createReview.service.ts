@@ -5,8 +5,9 @@ import {
 } from "../../../models/movieReviews";
 import { client } from "../../..";
 import { tmrev } from "../../../models/mongodb";
-import postReviewFeed from "../../../functions/feed/updateFeed/postReview";
+// import postReviewFeed from "../../../functions/feed/updateFeed/postReview";
 import updateMovies from "../../../functions/updateMovies";
+import postReviewV2 from "../../../functions/feed/updateFeed/postReviewV2";
 
 const createReviewService = async (
   data: CreateMoviePayload,
@@ -48,8 +49,9 @@ const createReviewService = async (
 
     const created = await dbReviews.insertOne(payload);
 
-    if (dbUser && created) {
-      await postReviewFeed(payload, dbUser, dbUser.followers);
+    if (dbUser && created && payload.public) {
+      // only post to feed if the review is public
+      await postReviewV2(created.insertedId, dbUser._id, dbUser.followers);
     }
 
     const result = await dbReviews.findOne({ _id: created.insertedId });

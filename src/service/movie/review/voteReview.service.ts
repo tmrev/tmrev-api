@@ -4,27 +4,27 @@ import { ObjectId } from "mongodb";
 
 import { client } from "../../..";
 import { tmrev } from "../../../models/mongodb";
-import { Vote } from "../../../models/tmdb/comments";
+import { PostTypes, Vote } from "../../../models/tmdb/comments";
 import {
   NotificationTypes,
-  createNotification,
+  createNotificationV2,
 } from "../../../functions/notifications";
 
-const hasUserVoted = (userId: ObjectId, votes: Vote) => {
-  const upVoteMatch = votes.upVote.filter((vote) => vote.equals(userId));
-  const downVoteMatch = votes.downVote.filter((vote) => vote.equals(userId));
+export const hasUserVoted = (userId: string, votes: Vote) => {
+  const upVoteMatch = votes.upVote.filter((vote) => vote === userId);
+  const downVoteMatch = votes.downVote.filter((vote) => vote === userId);
 
   if (upVoteMatch.length) {
     return {
       type: NotificationTypes.UP_VOTE,
-      index: votes.upVote.findIndex((vote) => vote.equals(userId)),
+      index: votes.upVote.findIndex((vote) => vote === userId),
     };
   }
 
   if (downVoteMatch.length) {
     return {
       type: NotificationTypes.DOWN_VOTE,
-      index: votes.downVote.findIndex((vote) => vote.equals(userId)),
+      index: votes.downVote.findIndex((vote) => vote === userId),
     };
   }
 
@@ -62,7 +62,18 @@ const voteReviewService = async (
       };
     }
 
-    const voted = hasUserVoted(user._id, currentMovie.votes);
+    const currentMovieAuthor = await userDb.findOne({
+      uuid: currentMovie.userId,
+    });
+
+    if (!currentMovieAuthor) {
+      return {
+        success: false,
+        error: "Movie Review author not found",
+      };
+    }
+
+    const voted = hasUserVoted(user.uuid, currentMovie.votes);
 
     if (voted && voted.type === NotificationTypes.UP_VOTE) {
       currentMovie.votes.upVote.splice(voted.index, 1);
@@ -70,24 +81,115 @@ const voteReviewService = async (
       (currentMovie.votes.downVote as any[]).splice(voted.index, 1);
     }
 
-    if (vote) {
-      currentMovie.votes.upVote.push(user._id);
-    } else {
-      currentMovie.votes.downVote.push(user._id);
+    if (vote && voted?.type !== NotificationTypes.UP_VOTE) {
+      currentMovie.votes.upVote.push(user.uuid);
+    } else if (!vote && voted?.type !== NotificationTypes.DOWN_VOTE) {
+      currentMovie.votes.downVote.push(user.uuid);
     }
 
     await db.updateOne({ _id: new ObjectId(reviewId) }, { $set: currentMovie });
 
-    const currentMovieAuthor = await userDb.findOne({
-      uuid: currentMovie.userId,
+    const notificationDB = await client
+      .db(tmrev.db)
+      .collection(tmrev.collection.notifications);
+
+    const doesNotificationExist = await notificationDB.findOne({
+      recipient: currentMovie.userId,
+      sender: user.uuid,
+      contentType: PostTypes.REVIEWS,
+      contentId: new ObjectId(reviewId),
     });
 
-    if (currentMovieAuthor) {
-      await createNotification({
-        recipient: currentMovieAuthor._id.toString(),
-        sender: user._id.toString(),
-        reviewId,
-        type: vote ? NotificationTypes.UP_VOTE : NotificationTypes.DOWN_VOTE,
+    if (
+      vote &&
+      voted?.type !== NotificationTypes.UP_VOTE &&
+      user.uuid !== currentMovie.userId
+    ) {
+      if (!doesNotificationExist) {
+        await createNotificationV2(
+          {
+            contentId: new ObjectId(reviewId),
+            contentType: PostTypes.REVIEWS,
+            notificationContent: {
+              body: "liked your review",
+              title: "New Like",
+            },
+            notificationType: "like",
+            recipient: currentMovie.userId,
+            sender: user.uuid,
+          },
+          currentMovieAuthor.devices,
+          `/(tabs)/(home)/home/${reviewId}?contentType=${PostTypes.REVIEWS}&from=home`,
+          `${user.firstName} liked your review`
+        );
+      } else {
+        await notificationDB.updateOne(
+          {
+            recipient: currentMovie.userId,
+            sender: user.uuid,
+            contentType: PostTypes.REVIEWS,
+            contentId: new ObjectId(reviewId),
+          },
+          {
+            $set: {
+              notificationContent: {
+                body: "Liked your review",
+                title: "New Like",
+              },
+              notificationType: "like",
+              isRead: false,
+            },
+          }
+        );
+      }
+    } else if (
+      !vote &&
+      voted?.type !== NotificationTypes.DOWN_VOTE &&
+      user.uuid !== currentMovie.userId
+    ) {
+      if (!doesNotificationExist) {
+        await createNotificationV2(
+          {
+            contentId: new ObjectId(reviewId),
+            contentType: PostTypes.REVIEWS,
+            notificationContent: {
+              body: "Disliked your review",
+              title: "New Dislike",
+            },
+            notificationType: "dislike",
+            recipient: currentMovie.userId,
+            sender: user.uuid,
+          },
+          currentMovieAuthor.devices,
+          `/(tabs)/(home)/home/${reviewId}?contentType=${PostTypes.REVIEWS}&from=home`,
+          `${user.firstName} disliked your review`
+        );
+      } else {
+        await notificationDB.updateOne(
+          {
+            recipient: currentMovie.userId,
+            sender: user.uuid,
+            contentType: PostTypes.REVIEWS,
+            contentId: new ObjectId(reviewId),
+          },
+          {
+            $set: {
+              notificationContent: {
+                body: "disliked your comment",
+                title: "New Dislike",
+              },
+              notificationType: "dislike",
+              isRead: false,
+            },
+          }
+        );
+      }
+    } else if (doesNotificationExist) {
+      await notificationDB.deleteOne({
+        recipient: currentMovie.userId,
+        sender: user.uuid,
+        contentType: PostTypes.REVIEWS,
+        contentId: new ObjectId(reviewId),
       });
     }
 
@@ -100,6 +202,7 @@ const voteReviewService = async (
       body: result,
     };
   } catch (err) {
+    console.log(err);
     return {
       success: false,
       error: err,
