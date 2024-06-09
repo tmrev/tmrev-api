@@ -18,6 +18,7 @@ import notificationsRouter from "./routes/notifications";
 import followRouter from "./routes/follow";
 import userV2Router from "./routes/v2/userV2";
 import movieV2Router from "./routes/v2/movieV2";
+import commentsRouter from "./routes/comments";
 
 const shouldCompress = (req: any, res: any) => {
   if (req.headers["x-no-compression"]) {
@@ -74,6 +75,7 @@ class App {
     this.app.use("/import", importRouter);
     this.app.use("/notification", notificationsRouter);
     this.app.use("/follow", followRouter);
+    this.app.use("/comments", commentsRouter);
   }
 }
 

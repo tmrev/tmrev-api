@@ -1,4 +1,5 @@
 import { body, checkSchema, header, oneOf, query } from "express-validator";
+import { validContentType } from "./comments";
 
 const createTypes = ["downVote", "reply", "upVote"];
 
@@ -47,4 +48,28 @@ const retrieveNotificationValidation = () => {
   ];
 };
 
-export { createNotificationValidation, retrieveNotificationValidation };
+const getNotificationV2Validation = () => {
+  return [
+    header("Authorization").isString().exists(),
+    query("contentType")
+      .isString()
+      .withMessage("contentType must be a string.")
+      .isIn(validContentType)
+      .withMessage(
+        `contentType can only be one of these items:${validContentType.map(
+          (v) => ` ${v}`
+        )}.`
+      ),
+  ];
+};
+
+const getNotificationCountValidation = () => {
+  return [header("Authorization").isString().exists()];
+};
+
+export {
+  createNotificationValidation,
+  retrieveNotificationValidation,
+  getNotificationV2Validation,
+  getNotificationCountValidation,
+};

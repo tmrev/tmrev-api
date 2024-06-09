@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import saveUserDeviceTokenService from "../../service/users/saveUserDeviceToken.service";
+import controllerResponse from "../../utils/controllerResponse";
 
 const saveUserDeviceTokenController = async (req: Request, res: Response) => {
   try {
@@ -10,13 +11,9 @@ const saveUserDeviceTokenController = async (req: Request, res: Response) => {
       throw new Error("no auth provided");
     }
 
-    const result = await saveUserDeviceTokenService(
-      auth,
-      body.userId,
-      body.deviceToken
-    );
+    const result = await saveUserDeviceTokenService(auth, body.deviceToken);
 
-    res.send(result);
+    controllerResponse(res, result);
   } catch (err: any) {
     res.status(500).send(err.message);
   }
