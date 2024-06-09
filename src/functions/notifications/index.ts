@@ -3,8 +3,11 @@
 import { ObjectId } from "mongodb";
 import { client } from "../..";
 import { tmrev } from "../../models/mongodb";
+import { PostTypes } from "../../models/tmdb/comments";
+import sendNotification from "./sendNotification";
 
 export enum NotificationTypes {
+  COMMENT = "comments",
   DOWN_VOTE = "downVote",
   FOLLOW = "follow",
   REPLY = "reply",
@@ -23,20 +26,38 @@ export interface CreateNotification {
   type: NotificationTypes;
 }
 
+export type NotificationType = "like" | "dislike" | "comment" | "viewed";
+type NotificationContent = {
+  body: string;
+  title: string;
+};
+
+type ContentType = PostTypes.COMMENTS | PostTypes.REVIEWS | PostTypes.LISTS;
+
+type NotificationV2 = {
+  contentId: ObjectId;
+  contentType: ContentType;
+  createdAt: Date;
+  isRead: boolean;
+  notificationContent: NotificationContent;
+  notificationType: NotificationType;
+  recipient: string;
+  sender: string;
+};
+
+type CreateNotificationV2 = {
+  contentId: ObjectId;
+  contentType: ContentType;
+  notificationContent: NotificationContent;
+  notificationType: NotificationType;
+  recipient: string;
+  sender: string;
+};
+
 const createNotification = async (payload: CreateNotification) => {
   const notificationsDB = await client
     .db(tmrev.db)
     .collection(tmrev.collection.notifications);
-
-  const userDB = await client.db(tmrev.db).collection(tmrev.collection.users);
-  const sender = await userDB.findOne({ _id: new ObjectId(payload.sender) });
-  const recipient = await userDB.findOne({
-    _id: new ObjectId(payload.recipient),
-  });
-
-  if (!sender || !recipient) {
-    throw new Error("User not found");
-  }
 
   if (
     payload.type === NotificationTypes.FOLLOW ||
@@ -69,6 +90,43 @@ const createNotification = async (payload: CreateNotification) => {
   }
 };
 
+const createNotificationV2 = async (
+  payload: CreateNotificationV2,
+  deviceTokens?: string[],
+  linkUrl?: string,
+  notificationTitle?: string
+) => {
+  console.log(payload, deviceTokens, linkUrl, notificationTitle);
+  const notificationsDB = await client
+    .db(tmrev.db)
+    .collection(tmrev.collection.notifications);
+
+  const dbInsert: NotificationV2 = {
+    ...payload,
+    createdAt: new Date(),
+    isRead: false,
+  };
+
+  if (deviceTokens && linkUrl) {
+    try {
+      const notification = {
+        title: payload.notificationContent.title,
+        body: payload.notificationContent.body,
+      };
+      sendNotification(
+        deviceTokens,
+        notificationTitle || notification.title,
+        notification.body,
+        linkUrl
+      ).then((response) => console.dir(response, { depth: 9 }));
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  await notificationsDB.insertOne(dbInsert);
+};
+
 const readNotification = async (notificationId: ObjectId) => {
   const notificationsDB = await client
     .db(tmrev.db)
@@ -80,7 +138,7 @@ const readNotification = async (notificationId: ObjectId) => {
     },
     {
       $set: {
-        read: true,
+        isRead: true,
       },
     }
   );
@@ -97,7 +155,7 @@ const forgetNotification = async (notificationId: ObjectId) => {
     },
     {
       $set: {
-        read: false,
+        isRead: false,
       },
     }
   );
@@ -189,6 +247,7 @@ const retrieveNotification = async (userId: ObjectId, read = false) => {
 
 export {
   createNotification,
+  createNotificationV2,
   readNotification,
   forgetNotification,
   retrieveNotification,
