@@ -105,8 +105,6 @@ const getGenreInsightsService = async (userId: string) => {
       const normalizedReviewCount =
         genreList[key].length / reviewedMovies.length;
 
-      // console.log(`normalizedReviewCount-${key}`, normalizedReviewCount);
-
       // Calculate the normalized average score
       const normalizedAverageScore = value;
 

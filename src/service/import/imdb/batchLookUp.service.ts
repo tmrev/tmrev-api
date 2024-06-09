@@ -12,7 +12,6 @@ const batchLookUpService = async (movieId: string[]) => {
     const data: BatchMovie = {};
 
     results.forEach((value, i) => {
-      // console.log(value);
       if (value && value.movie_results.length) {
         const movieResult = value.movie_results[0];
         data[movieId[i]] = movieResult;

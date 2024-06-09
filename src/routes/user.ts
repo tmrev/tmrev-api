@@ -17,7 +17,7 @@ import categoryChartController from "../controllers/users/data/categoryChart.con
 
 const router: Router = Router();
 
-router.post("/device", asyncMiddleware(saveUserDeviceTokenController));
+router.post("/deviceToken", asyncMiddleware(saveUserDeviceTokenController));
 
 router.get("/isUser/:uid", asyncMiddleware(isUserController));
 

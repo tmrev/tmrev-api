@@ -6,7 +6,6 @@ import { tmrev } from "../../models/mongodb";
 
 const saveUserDeviceTokenService = async (
   authToken: string,
-  userId: string,
   deviceToken: string
 ) => {
   try {
@@ -21,7 +20,7 @@ const saveUserDeviceTokenService = async (
         error: "Unable to find user",
       };
 
-    if ((user.devices as string[]).includes(deviceToken)) {
+    if (user.devices && (user.devices as string[]).includes(deviceToken)) {
       return {
         success: false,
         error: "device token already exist",
@@ -29,12 +28,16 @@ const saveUserDeviceTokenService = async (
     }
 
     await db.updateOne(
-      { uuid: userId },
-      { $push: { devices: { $each: [deviceToken] } } }
+      { uuid: user.uuid },
+      { $push: { devices: { $each: [deviceToken] } } },
+      { upsert: true }
     );
 
-    return "success";
+    return {
+      success: true,
+    };
   } catch (error) {
+    console.log(error);
     return {
       success: false,
       error,
