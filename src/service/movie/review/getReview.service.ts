@@ -35,8 +35,7 @@ const getReviewService = async (authToken: string, reviewId: string) => {
         user: {
           _id: 1,
           uuid: 1,
-          firstName: 1,
-          lastName: 1,
+          username: 1,
           photoUrl: 1,
         },
         votes: 1,

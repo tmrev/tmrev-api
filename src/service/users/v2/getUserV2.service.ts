@@ -55,8 +55,7 @@ const getUserV2Service = async (userId: string, authToken?: string) => {
       body: {
         _id: searchedUser._id,
         uuid: searchedUser.uuid,
-        firstName: searchedUser.firstName,
-        lastName: searchedUser.lastName,
+        username: searchedUser.username,
         bio: searchedUser.bio,
         location: searchedUser.location,
         photoUrl: searchedUser.photoUrl,

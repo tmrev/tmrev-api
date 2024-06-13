@@ -120,7 +120,7 @@ const voteReviewService = async (
           },
           currentMovieAuthor.devices,
           `/(tabs)/(home)/home/${reviewId}?contentType=${PostTypes.REVIEWS}&from=home`,
-          `${user.firstName} liked your review`
+          `${user.username} liked your review`
         );
       } else {
         await notificationDB.updateOne(
@@ -162,7 +162,7 @@ const voteReviewService = async (
           },
           currentMovieAuthor.devices,
           `/(tabs)/(home)/home/${reviewId}?contentType=${PostTypes.REVIEWS}&from=home`,
-          `${user.firstName} disliked your review`
+          `${user.username} disliked your review`
         );
       } else {
         await notificationDB.updateOne(

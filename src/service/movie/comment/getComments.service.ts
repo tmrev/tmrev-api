@@ -36,8 +36,7 @@ const getCommentsService = async (postId: string) => {
           user: {
             _id: 1,
             uuid: 1,
-            firstName: 1,
-            lastName: 1,
+            username: 1,
             photoUrl: 1,
           },
         },

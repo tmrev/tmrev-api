@@ -55,10 +55,7 @@ const getFollowersV2Service = async (
       followers = await db
         .find({
           _id: { $in: listOfFollowers },
-          $or: [
-            { firstName: { $regex: query.search, $options: "i" } },
-            { lastName: { $regex: query.search, $options: "i" } },
-          ],
+          $or: [{ username: { $regex: query.search, $options: "i" } }],
         })
         .toArray();
     } else {

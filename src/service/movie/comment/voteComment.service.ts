@@ -105,7 +105,7 @@ const voteCommentService = async (
           },
           currentCommentAuthor.devices,
           `/(tabs)/(home)/home/${commendId}?contentType=${PostTypes.COMMENTS}&from=home`,
-          `${user.firstName} liked your comment`
+          `${user.username} liked your comment`
         );
       } else {
         await notificationDB.updateOne(
@@ -147,7 +147,7 @@ const voteCommentService = async (
           },
           currentCommentAuthor.devices,
           `/(tabs)/(home)/home/${commendId}?contentType=${PostTypes.COMMENTS}&from=home`,
-          `${user.firstName} disliked your comment`
+          `${user.username} disliked your comment`
         );
       } else {
         await notificationDB.updateOne(

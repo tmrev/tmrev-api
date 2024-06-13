@@ -84,7 +84,7 @@ const createCommentService = async (
           },
           postAuthor.devices,
           `/(tabs)/(home)/home/${review._id}?contentType=${PostTypes.REVIEWS}&from=home`,
-          `${user.firstName} commented on your review`
+          `${user.username} commented on your review`
         );
       }
       return {
@@ -142,7 +142,7 @@ const createCommentService = async (
           },
           postAuthor.devices,
           `/(tabs)/(home)/home/${commentResult._id}?contentType=${PostTypes.COMMENTS}&from=home`,
-          `${user.firstName} replied to your comment`
+          `${user.username} replied to your comment`
         );
       }
 

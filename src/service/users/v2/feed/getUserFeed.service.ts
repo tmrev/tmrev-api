@@ -161,11 +161,8 @@ const getUserFeed = async (authToken: string, query: UserFeedQueryType) => {
               _id: {
                 $first: "$reviews.user._id",
               },
-              firstName: {
-                $first: "$reviews.user.firstName",
-              },
-              lastName: {
-                $first: "$reviews.user.lastName",
+              username: {
+                $first: "$reviews.user.username",
               },
               photoUrl: {
                 $first: "$reviews.user.photoUrl",
