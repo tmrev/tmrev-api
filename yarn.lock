@@ -4159,6 +4159,11 @@ unique-string@^2.0.0:
   dependencies:
     crypto-random-string "^2.0.0"
 
+unique-username-generator@^1.3.0:
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/unique-username-generator/-/unique-username-generator-1.3.0.tgz#f1da1977fcd4d9f2297795960a0cff6bbda87601"
+  integrity sha512-oPs+Jq9UlXmcrpzrpYvWOWVUVLkJ0/x8zM66ikWEBe1l/hBqXS5fofsDvdScLIlPtqQKlu8/Y91b6T2XtIFubQ==
+
 unpipe@1.0.0, unpipe@~1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/unpipe/-/unpipe-1.0.0.tgz#b2bf4ee8514aae6165b4817829d21b2ef49904ec"

@@ -27,11 +27,7 @@ const createUserValidation = () => {
   return [
     header("Authorization").isString().exists(),
     body("bio").isString().optional(),
-    body("username")
-      .isString()
-      .exists()
-      .notEmpty()
-      .isLength({ min: 5, max: 15 }),
+    body("username").isString().optional(),
     body("email").isString().isEmail().exists().toString(),
     body("link").isString().optional().toString(),
     body("location").isString().optional().toString(),

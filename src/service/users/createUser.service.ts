@@ -1,4 +1,5 @@
 import { getAuth } from "firebase-admin/auth";
+import { generateFromEmail } from "unique-username-generator";
 import { client } from "../..";
 import { tmrev } from "../../models/mongodb";
 import createFeed from "../../functions/feed/createFeed";
@@ -30,13 +31,18 @@ type CreateUser = {
 
 const createUserService = async (authToken: string, body: CreateUser) => {
   try {
+    let { username } = body;
     const firebaseUser = await getAuth().verifyIdToken(authToken);
     const db = client.db(tmrev.db).collection(tmrev.collection.users);
+
+    if (!username) {
+      username = generateFromEmail(body.email);
+    }
 
     const user: User = {
       bio: body.bio,
       createdAt: new Date(),
-      username: body.username,
+      username,
       email: body.email.toLowerCase(),
       followers: [],
       following: [],
