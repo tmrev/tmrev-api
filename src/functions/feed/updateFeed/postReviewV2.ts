@@ -32,10 +32,34 @@ async function postReviewV2(
     }));
 
     // Execute bulkWrite
-    await client
-      .db(tmrev.db)
-      .collection(tmrev.collection.feed)
-      .bulkWrite(updateOps as any);
+    if (updateOps.length > 0) {
+      await client
+        .db(tmrev.db)
+        .collection(tmrev.collection.feed)
+        .bulkWrite(updateOps as any);
+    }
+
+    const feedDB = client.db(tmrev.db).collection(tmrev.collection.feed);
+
+    // update generic feed
+    await feedDB.updateOne(
+      { userId: null },
+      {
+        $push: {
+          reviews: {
+            $each: [
+              {
+                reviewData: reviewId,
+                author,
+                createdAt: new Date(),
+                seen: false,
+              },
+            ],
+          },
+        },
+      },
+      { upsert: true }
+    );
   } catch (err) {
     console.error(err);
   }
