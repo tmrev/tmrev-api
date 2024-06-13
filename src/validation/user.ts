@@ -1,4 +1,4 @@
-import { header, param, query } from "express-validator";
+import { header, param, query, body } from "express-validator";
 
 const getUserValidation = () => {
   return [
@@ -23,4 +23,22 @@ const getUserFeedValidation = () => {
   ];
 };
 
-export { getUserValidation, getUserFollowersValidation, getUserFeedValidation };
+const createUserValidation = () => {
+  return [
+    header("Authorization").isString().exists(),
+    body("bio").isString().optional(),
+    body("username").isString().exists().toString(),
+    body("email").isString().isEmail().exists().toString(),
+    body("link").isString().optional().toString(),
+    body("location").isString().optional().toString(),
+    body("photoUrl").isString().optional().toString(),
+    body("public").isBoolean().optional().toBoolean(),
+  ];
+};
+
+export {
+  getUserValidation,
+  getUserFollowersValidation,
+  getUserFeedValidation,
+  createUserValidation,
+};
