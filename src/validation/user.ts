@@ -1,4 +1,4 @@
-import { header, param, query } from "express-validator";
+import { header, param, query, body } from "express-validator";
 
 const getUserValidation = () => {
   return [
@@ -23,4 +23,37 @@ const getUserFeedValidation = () => {
   ];
 };
 
-export { getUserValidation, getUserFollowersValidation, getUserFeedValidation };
+const createUserValidation = () => {
+  return [
+    header("Authorization").isString().exists(),
+    body("bio").isString().optional(),
+    body("username")
+      .isString()
+      .exists()
+      .notEmpty()
+      .isLength({ min: 5, max: 15 }),
+    body("email").isString().isEmail().exists().toString(),
+    body("link").isString().optional().toString(),
+    body("location").isString().optional().toString(),
+    body("photoUrl").isString().optional().toString(),
+    body("public").isBoolean().optional().toBoolean(),
+  ];
+};
+
+const isUsernameAvailableValidation = () => {
+  return [
+    query("username")
+      .isString()
+      .exists()
+      .isLength({ min: 5, max: 15 })
+      .withMessage("Username must be between 5 and 15 characters long."),
+  ];
+};
+
+export {
+  isUsernameAvailableValidation,
+  getUserValidation,
+  getUserFollowersValidation,
+  getUserFeedValidation,
+  createUserValidation,
+};

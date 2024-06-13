@@ -81,8 +81,7 @@ const getNotificationV2Service = async (
               recipient: 1,
               sender: {
                 _id: 1,
-                firstName: 1,
-                lastName: 1,
+                username: 1,
                 uuid: 1,
                 photoUrl: 1,
               },
@@ -154,8 +153,7 @@ const getNotificationV2Service = async (
               createdAt: 1,
               sender: {
                 _id: 1,
-                firstName: 1,
-                lastName: 11,
+                username: 1,
                 uuid: 1,
                 photoUrl: 1,
               },

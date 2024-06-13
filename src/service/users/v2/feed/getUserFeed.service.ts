@@ -1,32 +1,58 @@
-import { getAuth } from "firebase-admin/auth";
-import { Document } from "mongodb";
+import { DecodedIdToken, getAuth } from "firebase-admin/auth";
+import { Document, WithId } from "mongodb";
 import { client } from "../../../..";
 import { tmrev } from "../../../../models/mongodb";
 
 export type UserFeedQueryType = {
+  flow?: "userFeed" | "publicFeed";
   pageNumber: number;
   pageSize: number;
 };
 
-const getUserFeed = async (authToken: string, query: UserFeedQueryType) => {
+// TODO: Implement optional auth token, if not provided, return public feed
+const getUserFeed = async (query: UserFeedQueryType, authToken?: string) => {
   try {
-    const firebaseUser = await getAuth().verifyIdToken(authToken);
+    let firebaseUser: DecodedIdToken | undefined;
+    let user: WithId<Document> | null = null;
+    let doesFeedExist: WithId<Document> | null = null;
+
     const userDB = client.db(tmrev.db).collection(tmrev.collection.users);
     const feedDB = client.db(tmrev.db).collection(tmrev.collection.feed);
 
-    const user = await userDB.findOne({ uuid: firebaseUser.uid });
-
-    if (!user) {
-      return {
-        success: false,
-        error: "User not found",
-      };
+    if (authToken) {
+      firebaseUser = await getAuth().verifyIdToken(authToken);
+      user = await userDB.findOne({ uuid: firebaseUser.uid });
+      if (user) {
+        doesFeedExist = await feedDB.findOne({ userId: user._id });
+      }
     }
+
+    const findUserId = () => {
+      if (user && query.flow === "userFeed") {
+        return user._id;
+      }
+
+      if (query.flow === "publicFeed") {
+        return null;
+      }
+
+      if (!doesFeedExist) {
+        return null;
+      }
+
+      if (doesFeedExist.reviews.length === 0) {
+        return null;
+      }
+
+      return null;
+    };
+
+    const userId = findUserId();
 
     const pipeline: Document[] = [
       {
         $match: {
-          userId: user._id,
+          userId,
           "reviews.seen": false,
         },
       },
@@ -161,11 +187,8 @@ const getUserFeed = async (authToken: string, query: UserFeedQueryType) => {
               _id: {
                 $first: "$reviews.user._id",
               },
-              firstName: {
-                $first: "$reviews.user.firstName",
-              },
-              lastName: {
-                $first: "$reviews.user.lastName",
+              username: {
+                $first: "$reviews.user.username",
               },
               photoUrl: {
                 $first: "$reviews.user.photoUrl",
@@ -206,7 +229,7 @@ const getUserFeed = async (authToken: string, query: UserFeedQueryType) => {
     const countPipeline = [
       {
         $match: {
-          userId: user._id,
+          userId,
           "reviews.seen": false,
         },
       },
