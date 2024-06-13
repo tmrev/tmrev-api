@@ -27,7 +27,11 @@ const createUserValidation = () => {
   return [
     header("Authorization").isString().exists(),
     body("bio").isString().optional(),
-    body("username").isString().exists().toString(),
+    body("username")
+      .isString()
+      .exists()
+      .notEmpty()
+      .isLength({ min: 5, max: 15 }),
     body("email").isString().isEmail().exists().toString(),
     body("link").isString().optional().toString(),
     body("location").isString().optional().toString(),
@@ -36,7 +40,18 @@ const createUserValidation = () => {
   ];
 };
 
+const isUsernameAvailableValidation = () => {
+  return [
+    query("username")
+      .isString()
+      .exists()
+      .isLength({ min: 5, max: 15 })
+      .withMessage("Username must be between 5 and 15 characters long."),
+  ];
+};
+
 export {
+  isUsernameAvailableValidation,
   getUserValidation,
   getUserFollowersValidation,
   getUserFeedValidation,

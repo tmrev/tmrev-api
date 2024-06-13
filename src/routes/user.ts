@@ -14,10 +14,18 @@ import asyncMiddleware from "../middleware/async.middleware";
 import saveUserDeviceTokenController from "../controllers/users/saveUserDeviceToken.controller";
 import ratedUserMoviesController from "../controllers/users/data/ratedMovies.controller";
 import categoryChartController from "../controllers/users/data/categoryChart.controller";
+import isUsernameAvailableController from "../controllers/users/isUsernameAvailable.controller";
+import { isUsernameAvailableValidation } from "../validation/user";
 
 const router: Router = Router();
 
 router.post("/deviceToken", asyncMiddleware(saveUserDeviceTokenController));
+
+router.get(
+  "/usernameAvailable",
+  isUsernameAvailableValidation(),
+  asyncMiddleware(isUsernameAvailableController)
+);
 
 router.get("/isUser/:uid", asyncMiddleware(isUserController));
 
