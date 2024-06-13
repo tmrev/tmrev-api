@@ -7,7 +7,7 @@ const getMovieReviewController = async (req: Request, res: Response) => {
     const auth = req.headers.authorization as string;
     const { id } = req.params;
 
-    const result = await getReviewService(auth, id);
+    const result = await getReviewService(id, auth);
 
     controllerResponse(res, result);
   } catch (err: unknown) {

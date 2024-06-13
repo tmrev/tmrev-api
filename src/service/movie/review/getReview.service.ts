@@ -1,18 +1,22 @@
 // eslint-disable-next-line import/no-unresolved
-import { getAuth } from "firebase-admin/auth";
-import { Document, ObjectId } from "mongodb";
+import { DecodedIdToken, getAuth } from "firebase-admin/auth";
+import { Document, ObjectId, WithId } from "mongodb";
 import { client } from "../../..";
 import { tmrev } from "../../../models/mongodb";
 import { customProjectMovieDetailsPipeline } from "../../../constants/pipelines";
 
-const getReviewService = async (authToken: string, reviewId: string) => {
+const getReviewService = async (reviewId: string, authToken?: string) => {
   try {
-    const firebaseUser = await getAuth().verifyIdToken(authToken);
+    let firebaseUser: DecodedIdToken | undefined;
+    let user: WithId<Document> | null = null;
 
     const reviewDB = client.db(tmrev.db).collection(tmrev.collection.reviews);
     const userDB = client.db(tmrev.db).collection(tmrev.collection.users);
 
-    const user = await userDB.findOne({ uuid: firebaseUser.uid });
+    if (authToken) {
+      firebaseUser = await getAuth().verifyIdToken(authToken);
+      user = await userDB.findOne({ uuid: firebaseUser.uid });
+    }
 
     const pipeline: Document[] = [
       {
@@ -42,13 +46,6 @@ const getReviewService = async (authToken: string, reviewId: string) => {
       }),
     ];
 
-    if (!user) {
-      return {
-        success: false,
-        error: "User not found",
-      };
-    }
-
     const results = await reviewDB.aggregate(pipeline).toArray();
 
     const result = results[0];
@@ -60,7 +57,7 @@ const getReviewService = async (authToken: string, reviewId: string) => {
       };
     }
 
-    if (!result.public && result.userId !== user.uuid) {
+    if (!result.public && result.userId !== user?.uuid) {
       return {
         success: false,
         error: "Review is private",
