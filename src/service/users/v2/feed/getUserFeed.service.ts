@@ -23,10 +23,21 @@ const getUserFeed = async (authToken: string, query: UserFeedQueryType) => {
       };
     }
 
+    const doesFeedExist = await feedDB.findOne({ userId: user._id });
+
+    if (!doesFeedExist) {
+      return {
+        success: false,
+        error: "Feed not found",
+      };
+    }
+
+    const userId = doesFeedExist.reviews.length === 0 ? null : user._id;
+
     const pipeline: Document[] = [
       {
         $match: {
-          userId: user._id,
+          userId,
           "reviews.seen": false,
         },
       },
@@ -203,7 +214,7 @@ const getUserFeed = async (authToken: string, query: UserFeedQueryType) => {
     const countPipeline = [
       {
         $match: {
-          userId: user._id,
+          userId,
           "reviews.seen": false,
         },
       },
