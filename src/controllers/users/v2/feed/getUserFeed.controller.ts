@@ -7,7 +7,7 @@ const getUserFeedController = async (req: Request, res: Response) => {
     const auth = req.headers.authorization as string;
     const { query } = req;
 
-    const result = await getUserFeedService(auth, query as any);
+    const result = await getUserFeedService(query as any, auth);
 
     controllerResponse(res, result);
   } catch (error: any) {
