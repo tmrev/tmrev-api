@@ -42,7 +42,7 @@ async function postReviewV2(
     const feedDB = client.db(tmrev.db).collection(tmrev.collection.feed);
 
     // update generic feed
-    await feedDB.updateOne(
+    const result = await feedDB.updateOne(
       { userId: null },
       {
         $push: {
@@ -55,11 +55,14 @@ async function postReviewV2(
                 seen: false,
               },
             ],
+            $position: 0, // Add to the top of the array
           },
         },
       },
       { upsert: true }
     );
+
+    console.log(result);
   } catch (err) {
     console.error(err);
   }
