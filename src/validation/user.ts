@@ -46,10 +46,31 @@ const isUsernameAvailableValidation = () => {
   ];
 };
 
+const deleteUserValidation = () => {
+  return [header("Authorization").isString().exists()];
+};
+
+const isDeviceTokenSavedValidation = () => {
+  return [
+    header("Authorization").isString().exists(),
+    body("deviceToken").isString().exists(),
+  ];
+};
+
+const deleteDeviceTokenValidation = () => {
+  return [
+    header("Authorization").isString().exists(),
+    body("deviceToken").isString().exists(),
+  ];
+};
+
 export {
   isUsernameAvailableValidation,
   getUserValidation,
   getUserFollowersValidation,
   getUserFeedValidation,
   createUserValidation,
+  deleteUserValidation,
+  isDeviceTokenSavedValidation,
+  deleteDeviceTokenValidation,
 };
