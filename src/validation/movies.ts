@@ -227,6 +227,13 @@ const getUserMovieReviewsValidation = () => {
   ];
 };
 
+const getReviewsByActorValidation = () => {
+  return [
+    param("actorId").isNumeric().exists().toInt(),
+    param("userId").isString().exists(),
+  ];
+};
+
 const getUserWatchListsValidation = () => {
   return [
     header("Authorization").isString().optional(),
@@ -285,4 +292,5 @@ export {
   createPinnedMoviesValidation,
   updatePinnedMoviesValidation,
   getUserWatchListsValidation,
+  getReviewsByActorValidation,
 };
