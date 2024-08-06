@@ -82,6 +82,9 @@ const AddMovieToWatchList = async (
             order: movieOrder,
           },
         },
+        $set: {
+          updatedAt: new Date(),
+        },
       }
     );
 
