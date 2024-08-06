@@ -3,7 +3,7 @@ import { validationResult } from "express-validator";
 import controllerResponse from "../../utils/controllerResponse";
 import getUserWatchListsService, {
   UserWatchListQueryType,
-} from "../../service/watchLists/getUserWatchLists.service";
+} from "../../service/watchLists/v2/getUserWatchLists.service";
 
 const getUserWatchListsController = async (req: Request, res: Response) => {
   try {
