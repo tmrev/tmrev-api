@@ -3,13 +3,7 @@ import { client } from "../../..";
 import { tmrev } from "../../../models/mongodb";
 import { GetMovieReviewQuery } from "../../../models/movieReviews";
 import getAvgScoreService from "../../movieReviews/getAvgScore.service";
-
-const convertOrder = (order: "asc" | "desc" | string) => {
-  if (order === "asc") return 1;
-  if (order === "desc") return -1;
-
-  return 0;
-};
+import convertOrder from "../../../utils/convertSortOrder";
 
 const getAllReviewsService = async (
   movieId: number,
