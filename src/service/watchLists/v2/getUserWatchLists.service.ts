@@ -1,8 +1,9 @@
 import { getAuth } from "firebase-admin/auth";
 import { Document } from "mongodb";
-import { client } from "../..";
-import { tmrev } from "../../models/mongodb";
-import { watchListSortedDetails } from "../../constants/pipelines";
+import { client } from "../../..";
+import { tmrev } from "../../../models/mongodb";
+import { watchListSortedDetails } from "../../../constants/pipelines";
+import convertOrder from "../../../utils/convertSortOrder";
 
 export type UserWatchListQueryType = {
   pageNumber: number;
@@ -53,6 +54,24 @@ const getUserWatchListsService = async (
     }
 
     pipeline.push(...watchListSortedDetails);
+
+    if (query.sort_by) {
+      const [name, order, category] = query.sort_by.split(".");
+
+      if (category) {
+        pipeline.push({
+          $sort: {
+            [`${category}.${name}`]: convertOrder(order),
+          },
+        });
+      } else {
+        pipeline.push({
+          $sort: {
+            [name]: convertOrder(order),
+          },
+        });
+      }
+    }
 
     const countPipeline = [...pipeline];
 
