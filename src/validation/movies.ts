@@ -53,6 +53,17 @@ export const movieReviewSortList = [
   "title.desc.movieDetails",
 ];
 
+export const watchlistSortList = [
+  "createdAt.asc",
+  "createdAt.desc",
+  "updatedAt.asc",
+  "updatedAt.desc",
+  "title.asc",
+  "title.desc",
+  "movieCount.asc",
+  "movieCount.desc",
+];
+
 const movieBatchValidation = () => {
   return [check("movieId").isArray()];
 };
@@ -98,6 +109,16 @@ const movieCreateDataValidation = () => {
       }
       return true;
     }),
+    body("advancedScore.acting").isInt().toInt(),
+    body("advancedScore.characters").isInt().toInt(),
+    body("advancedScore.cinematography").isInt().toInt(),
+    body("advancedScore.climax").isInt().toInt(),
+    body("advancedScore.ending").isInt().toInt(),
+    body("advancedScore.music").isInt().toInt(),
+    body("advancedScore.personalScore").isInt().toInt(),
+    body("advancedScore.plot").isInt().toInt(),
+    body("advancedScore.theme").isInt().toInt(),
+    body("advancedScore.visuals").isInt().toInt(),
   ];
 };
 
@@ -250,9 +271,9 @@ const getUserWatchListsValidation = () => {
     query("sort_by")
       .isString()
       .withMessage("sort_by must be a string.")
-      .isIn(movieReviewSortList)
+      .isIn(watchlistSortList)
       .withMessage(
-        `sort_by can only be one of these items:${movieReviewSortList.map(
+        `sort_by can only be one of these items:${watchlistSortList.map(
           (v) => ` ${v}`
         )}.`
       )
