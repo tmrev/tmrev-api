@@ -35,6 +35,7 @@ import voteReviewController from "../controllers/movie/review/voteReview.control
 import getGenreInsightsController from "../controllers/movie/insights/getGenreInsights.controller";
 import getActorInsightsController from "../controllers/movie/insights/getActorInsights.controller";
 import getSingleWatchedController from "../controllers/movie/watched/getSingleWatched.controller";
+import updateStoredMoviesController from "../controllers/movie/tmdb/updateStoredMovies.controller";
 import getReviewsByActorController from "../controllers/movie/review/getReviewsByActor.controller";
 
 const router: Router = Router();
@@ -131,6 +132,11 @@ router.get(
 router.get(
   "/actor/insights/:userId",
   asyncMiddleware(getActorInsightsController)
+);
+
+router.post(
+  "/tmdb/updateMovies",
+  asyncMiddleware(updateStoredMoviesController)
 );
 
 const movieRouter: Router = router;

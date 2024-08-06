@@ -15,9 +15,7 @@ const updateMovies = async (tmdbID: number | string) => {
       const threeDaysAgo = new Date();
       threeDaysAgo.setDate(threeDaysAgo.getDate() - 3);
 
-      if (updatedAt > threeDaysAgo) {
-        return;
-      }
+      if (updatedAt > threeDaysAgo) return;
     }
 
     const freshMovieResult = await getDetails(Number(tmdbID), true);
@@ -36,6 +34,8 @@ const updateMovies = async (tmdbID: number | string) => {
         { upsert: true }
       );
       console.log(`Updated movie: ${tmdbID}`);
+    } else {
+      console.log(`Skipped movie: ${tmdbID}`);
     }
   } catch (error) {
     console.error(error);
