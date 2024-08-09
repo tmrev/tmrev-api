@@ -248,6 +248,38 @@ const getUserMovieReviewsValidation = () => {
   ];
 };
 
+const getReviewsByMovieIdSortList = [
+  "createdAt.asc",
+  "createdAt.desc",
+  "updatedAt.asc",
+  "updatedAt.desc",
+  "averagedAdvancedScore.asc",
+  "averagedAdvancedScore.desc",
+  "upVote.asc.votes",
+  "upVote.desc.votes",
+  "downVote.asc.votes",
+  "downVote.desc.votes",
+];
+
+const getReviewsByMovieIdValidation = () => {
+  return [
+    param("movieId").isNumeric().exists().toInt(),
+    query("includeUserReview").isString().optional(),
+    query("pageNumber").isNumeric().exists().toInt(),
+    query("pageSize").isNumeric().exists().toInt(),
+    query("sort_by")
+      .isString()
+      .withMessage("sort_by must be a string.")
+      .isIn(getReviewsByMovieIdSortList)
+      .withMessage(
+        `sort_by can only be one of these items:${getReviewsByMovieIdSortList.map(
+          (v) => ` ${v}`
+        )}.`
+      )
+      .optional(),
+  ];
+};
+
 const getReviewsByActorValidation = () => {
   return [
     param("actorId").isNumeric().exists().toInt(),
@@ -314,4 +346,5 @@ export {
   updatePinnedMoviesValidation,
   getUserWatchListsValidation,
   getReviewsByActorValidation,
+  getReviewsByMovieIdValidation,
 };
