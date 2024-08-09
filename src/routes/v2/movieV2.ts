@@ -4,6 +4,7 @@ import asyncMiddleware from "../../middleware/async.middleware";
 import {
   createPinnedMoviesValidation,
   getPinnedMoviesValidation,
+  getReviewsByMovieIdValidation,
   getUserMovieReviewsValidation,
   getUserWatchListsValidation,
   updatePinnedMoviesValidation,
@@ -13,10 +14,17 @@ import getPinnedMoviesController from "../../controllers/movie/pinned/getPinnedM
 import updatePinnedMoviesControllers from "../../controllers/movie/pinned/updatePinnedMovine.controller";
 import getUserWatchListsController from "../../controllers/watchLists/getUserWatchLists.controller";
 import getWatchListV2Controller from "../../controllers/watchLists/v2/getWatchListV2.controller";
+import getReviewsByMovieIdController from "../../controllers/movie/review/v2/getReviewsByMovieId.controller";
 
 const router: Router = Router();
 
 const movieV2Router: Router = router;
+
+router.get(
+  "/review/:movieId",
+  getReviewsByMovieIdValidation(),
+  asyncMiddleware(getReviewsByMovieIdController)
+);
 
 router.get(
   "/user/review/:userId",

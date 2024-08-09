@@ -14,6 +14,34 @@ const movieDetailsLookUp = [
   },
 ];
 
+const profileDetailsLookUp = [
+  {
+    $lookup: {
+      from: tmrev.collection.users,
+      localField: "userId",
+      foreignField: "uuid",
+      as: "profile",
+    },
+  },
+  {
+    $unwind: "$profile",
+  },
+];
+
+const profileDetailsProjection = {
+  profile: {
+    uuid: 1,
+    username: 1,
+    email: 1,
+    displayName: 1,
+    photoURL: 1,
+    bio: 1,
+    createdAt: 1,
+    updatedAt: 1,
+    photoUrl: 1,
+  },
+};
+
 const movieDetailsProjection = {
   movieDetails: {
     id: 1,
@@ -301,4 +329,6 @@ export {
   watchedMovieDetailsPipelineFunc,
   watchListSortedDetails,
   customProjectMovieDetailsPipeline,
+  profileDetailsLookUp,
+  profileDetailsProjection,
 };
