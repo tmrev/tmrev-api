@@ -157,10 +157,6 @@ const movieCreateSchemaValidationRules = () =>
       isString: true,
       errorMessage: "Review date is required",
     },
-    release_date: {
-      isString: true,
-      errorMessage: "Release date is required",
-    },
   });
 
 const movieGetValidationRules = () =>
