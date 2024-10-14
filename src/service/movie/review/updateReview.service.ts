@@ -7,7 +7,7 @@ import {
 } from "../../../models/movieReviews";
 import { client } from "../../..";
 import { tmrev } from "../../../models/mongodb";
-import { getAvg, timestamp } from "../../../utils/common";
+import { getAvg } from "../../../utils/common";
 
 const updateReviewService = async (
   authToken: string,
@@ -35,7 +35,7 @@ const updateReviewService = async (
       ...currentMovie,
       ...data,
       averagedAdvancedScore: getAvg(data.advancedScore),
-      updatedAt: timestamp(),
+      updatedAt: new Date(),
     };
 
     await db.updateOne(
