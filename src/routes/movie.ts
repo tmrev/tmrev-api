@@ -37,6 +37,7 @@ import getActorInsightsController from "../controllers/movie/insights/getActorIn
 import getSingleWatchedController from "../controllers/movie/watched/getSingleWatched.controller";
 import updateStoredMoviesController from "../controllers/movie/tmdb/updateStoredMovies.controller";
 import getReviewsByActorController from "../controllers/movie/review/getReviewsByActor.controller";
+import getHeatmapInsightsController from "../controllers/movie/insights/getHeatmapInsights.controller";
 
 const router: Router = Router();
 
@@ -132,6 +133,11 @@ router.get(
 router.get(
   "/actor/insights/:userId",
   asyncMiddleware(getActorInsightsController)
+);
+
+router.get(
+  "/heat-map/insights/:userId",
+  asyncMiddleware(getHeatmapInsightsController)
 );
 
 router.post(
