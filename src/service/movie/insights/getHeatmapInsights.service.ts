@@ -23,7 +23,11 @@ const getHeatmapInsightsService = async (userId: string, days: number) => {
     for (let i = days - 1; i >= 0; i -= 1) {
       const currentDate = dayjs().subtract(i, "day");
       const count = filteredMovies.filter((movie) => {
-        return dayjs(movie.reviewedDate).isSame(currentDate, "day");
+        if (!movie.reviewedDate) return false;
+
+        if (dayjs(movie.reviewedDate).isSame(currentDate, "day")) return true;
+
+        return false;
       }).length;
       heatmapData.push(count);
     }
