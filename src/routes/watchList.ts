@@ -11,6 +11,7 @@ import asyncMiddleware from "../middleware/async.middleware";
 import watchListUpdateValidationRules, {
   addMovieToWatchListValidationRules,
 } from "../validation/watchList";
+import getWatchListInsightsController from "../controllers/watchLists/getWatchListInsights.controller";
 
 const router: Router = Router();
 
@@ -18,6 +19,11 @@ router.post(
   "/:listId",
   addMovieToWatchListValidationRules(),
   asyncMiddleware(addMovieToWatchListController)
+);
+
+router.get(
+  "/:listId/insights",
+  asyncMiddleware(getWatchListInsightsController)
 );
 
 router.get("/check/:uuid", asyncMiddleware(movieWatchListCheckController));
