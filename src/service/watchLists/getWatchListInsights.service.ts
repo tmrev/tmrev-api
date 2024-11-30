@@ -79,9 +79,14 @@ const GetWatchListInsightsService = async (
           as: "movie.reviews",
         },
       },
+      // ---  Changes start here ---
       {
         $group: {
+          // Group by movie id to preserve reviews
           _id: "$movie.id",
+          watchListId: {
+            $first: "$_id",
+          },
           tags: {
             $first: "$tags",
           },
@@ -112,6 +117,7 @@ const GetWatchListInsightsService = async (
           totalRevenue: {
             $first: "$movie.revenue",
           },
+          // Keep the movie document
           totalBudget: {
             $first: "$movie.budget",
           },
@@ -120,7 +126,7 @@ const GetWatchListInsightsService = async (
           },
           reviews: {
             $push: "$movie.reviews",
-          },
+          }, // Collect reviews for each movie
         },
       },
       {
@@ -130,15 +136,23 @@ const GetWatchListInsightsService = async (
         },
       },
       {
-        $addFields: {
-          averageAdvancedScore: {
-            $avg: "$reviews.averagedAdvancedScore",
+        $addFields:
+          /**
+           * newField: The new field name.
+           * expression: The new field expression.
+           */
+          {
+            averageAdvancedScore: {
+              $avg: "$reviews.averagedAdvancedScore",
+            },
           },
-        },
       },
       {
         $group: {
           _id: "$_id",
+          watchListId: {
+            $first: "$watchListId",
+          },
           tags: {
             $first: "$tags",
           },
@@ -180,12 +194,13 @@ const GetWatchListInsightsService = async (
           },
           reviews: {
             $push: "$reviews",
-          },
+          }, // Push the reviews back into an array
         },
       },
       {
         $group: {
-          _id: "$userId",
+          // Group again to get the final structure
+          _id: "$watchListId",
           tags: {
             $first: "$tags",
           },
@@ -228,7 +243,7 @@ const GetWatchListInsightsService = async (
                     $first: "$reviews",
                   },
                   order: "$movies.order",
-                },
+                }, // Add reviews back to the movie
               ],
             },
           },
