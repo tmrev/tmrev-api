@@ -5,8 +5,13 @@ const getWatchListInsightsController = async (req: Request, res: Response) => {
   try {
     const auth = req.headers.authorization;
     const { listId } = req.params;
+    const { watchProvidersRegion } = req.query;
 
-    const result = await GetWatchListInsightsService(listId, auth);
+    const result = await GetWatchListInsightsService(
+      listId,
+      auth,
+      watchProvidersRegion as string | undefined
+    );
 
     res.send(result);
   } catch (err: any) {
