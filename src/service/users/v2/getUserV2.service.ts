@@ -31,9 +31,9 @@ const getUserV2Service = async (userId: string, authToken?: string) => {
 
     const searchedUser = await userDB.findOne({ uuid: userId });
 
-    const reviews = await reviewDB.find(mediaQuery()).toArray();
-    const lists = await listDB.find(mediaQuery()).toArray();
-    const watched = await watchedDB.find(mediaQuery()).toArray();
+    const reviewCount = await reviewDB.countDocuments(mediaQuery());
+    const listCount = await listDB.countDocuments(mediaQuery());
+    const watchedCount = await watchedDB.countDocuments(mediaQuery());
 
     if (!searchedUser) {
       return {
@@ -59,12 +59,13 @@ const getUserV2Service = async (userId: string, authToken?: string) => {
         bio: searchedUser.bio,
         location: searchedUser.location,
         photoUrl: searchedUser.photoUrl,
-        reviewCount: reviews.length,
-        listCount: lists.length,
-        watchedCount: watched.length,
+        reviewCount,
+        listCount,
+        watchedCount,
         followerCount: searchedUser.followers.length,
         followingCount: searchedUser.following.length,
         isFollowing,
+        countryCode: searchedUser.countryCode,
       },
     };
   } catch (error: any) {
