@@ -321,9 +321,20 @@ const GetWatchListInsightsService = async (
     const result = await watchListDB.aggregate(pipeline).toArray();
 
     if (result.length === 0) {
+      const basicSearch = await watchListDB.findOne({ _id });
+
+      if (!basicSearch) {
+        return {
+          success: false,
+          body: "Watchlist not found",
+        };
+      }
+
       return {
-        success: false,
-        body: "Watchlist not found",
+        success: true,
+        body: {
+          ...basicSearch,
+        },
       };
     }
 
