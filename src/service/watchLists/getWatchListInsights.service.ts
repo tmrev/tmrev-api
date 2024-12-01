@@ -5,7 +5,8 @@ import { tmrev } from "../../models/mongodb";
 
 const GetWatchListInsightsService = async (
   listId: string,
-  authToken?: string
+  authToken?: string,
+  watchProvidersRegion?: string
 ) => {
   try {
     let firebaseUser: DecodedIdToken | undefined;
@@ -84,6 +85,9 @@ const GetWatchListInsightsService = async (
         $group: {
           // Group by movie id to preserve reviews
           _id: "$movie.id",
+          watchProviders: watchProvidersRegion
+            ? { $first: `$movie.watchProviders.${watchProvidersRegion}` }
+            : { $first: null },
           watchListId: {
             $first: "$_id",
           },
@@ -152,6 +156,9 @@ const GetWatchListInsightsService = async (
           _id: "$_id",
           watchListId: {
             $first: "$watchListId",
+          },
+          watchProviders: {
+            $first: "$watchProviders",
           },
           tags: {
             $first: "$tags",
@@ -243,6 +250,7 @@ const GetWatchListInsightsService = async (
                     $first: "$reviews",
                   },
                   order: "$movies.order",
+                  watchProviders: "$watchProviders",
                 }, // Add reviews back to the movie
               ],
             },
@@ -294,6 +302,7 @@ const GetWatchListInsightsService = async (
             order: 1,
             poster_path: 1,
             backdrop_path: 1,
+            watchProviders: 1,
           },
           user: {
             username: "$user.username",

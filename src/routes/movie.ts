@@ -38,6 +38,7 @@ import getSingleWatchedController from "../controllers/movie/watched/getSingleWa
 import updateStoredMoviesController from "../controllers/movie/tmdb/updateStoredMovies.controller";
 import getReviewsByActorController from "../controllers/movie/review/getReviewsByActor.controller";
 import getHeatmapInsightsController from "../controllers/movie/insights/getHeatmapInsights.controller";
+import refreshAllStoredMoviesController from "../controllers/movie/tmdb/refreshAllStoredMovies.controller";
 
 const router: Router = Router();
 
@@ -143,6 +144,11 @@ router.get(
 router.post(
   "/tmdb/updateMovies",
   asyncMiddleware(updateStoredMoviesController)
+);
+
+router.post(
+  "/tmdb/refreshAllMovies",
+  asyncMiddleware(refreshAllStoredMoviesController)
 );
 
 const movieRouter: Router = router;

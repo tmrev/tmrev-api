@@ -2,9 +2,11 @@ import _ from "lodash";
 import { client } from "../..";
 import { tmrev } from "../../models/mongodb";
 import getDetails from "../../endpoints/tmdb/getDetails";
+import getWatchProviders from "../../endpoints/tmdb/getWatchProviders";
 
 const updateMovies = async (tmdbID: number | string) => {
   try {
+    console.log(`Updating movie: ${tmdbID}`);
     const dbMovies = client.db(tmrev.db).collection(tmrev.collection.movies);
 
     const dbMovieResult = await dbMovies.findOne({ tmdbID: Number(tmdbID) });
@@ -19,6 +21,12 @@ const updateMovies = async (tmdbID: number | string) => {
     }
 
     const freshMovieResult = await getDetails(Number(tmdbID), true);
+    const freshMovieProviders = await getWatchProviders(Number(tmdbID));
+
+    if (freshMovieResult) {
+      freshMovieResult.watchProviders = freshMovieProviders?.results;
+      console.log("adding watch providers", !!freshMovieProviders?.results);
+    }
 
     const isEqual = _.isEqual(dbMovieResult, freshMovieResult);
 
